@@ -1,5 +1,5 @@
 <?php
-//設定連線資訊，建立與bbqandvenuerental資料庫的連線
+    //require_once 'connect.php';
 $host='localhost';
 $username='vincent';
 $password='iamvincent';
@@ -18,4 +18,13 @@ else
     //連線失敗，mysql_connect_error()顯示錯誤訊息
     echo '無法連線mysql資料庫:<br/>'.mysql_connect_error();
 }
+    $id=$_POST['username'];
+    $pw=$_POST['password'];
+    $name=$_POST['name'];
+    $phone=$_POST['phone'];
+    $email=$_POST['email'];
+    
+    $sql="INSERT INTO `users` (`username`,`password`,`name`,`phone`,`email`) VALUES('$id','$pw','$name','$phone','$email')";
+    mysqli_query($link,$sql);
+    header('Location:../index.php');
 ?>
