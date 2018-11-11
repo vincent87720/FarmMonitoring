@@ -1,11 +1,10 @@
-<?php
+﻿<?php
 session_start();
 require_once 'connect.php';
+$username=$_POST["username"];
 
-
-$sql="SELECT `密碼` FROM `user` WHERE `帳號` LIKE "."'".$_POST["customer"]."'";
+$sql="SELECT `密碼` FROM `user` WHERE `帳號` ='{$username}'";
 $result=mysqli_query($link,$sql);
-
 
 if(mysqli_num_rows($result)!=0)
 {

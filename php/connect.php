@@ -1,6 +1,6 @@
-<?php
+﻿<?php
 //設定連線資訊，建立與bbqandvenuerental資料庫的連線
-$host='localhost';
+$host='127.0.0.1';
 $username='root';
 $password='iamadmin';
 $database='testdb';
