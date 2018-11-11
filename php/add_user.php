@@ -7,7 +7,7 @@
     $phone=$_POST['phone'];
     $email=$_POST['email'];
     
-    $sql="INSERT INTO `users` (`username`,`password`,`name`,`phone`,`email`) VALUES('$id','$pw','$name','$phone','$email')";
+    $sql="INSERT INTO `users` (`username`,`password`,`name`,`phone`,`email`,`identity`) VALUES('$id','$pw','$name','$phone','$email','default')";
     mysqli_query($link,$sql);
     header('Location:../index.php');
 ?>
