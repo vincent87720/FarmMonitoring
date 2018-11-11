@@ -10,7 +10,7 @@
         </noscript>
         <link rel="stylesheet" href="css/style.css" type="text/css" charset="utf8">
         <!--Bootstrap CSS-->
-            <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+        <link rel="stylesheet" href="css/bootstrap.css">
         <!--Bootstrap CSS-->
 
         <!--Bootstrap JAVA-->
@@ -18,7 +18,6 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
         <!--Bootstrap JAVA-->
-
     </head>
     <body>
         <!-- CheckLogin -->
@@ -29,12 +28,23 @@
         ?>
         <!-- CheckLogin -->
 
-        <div class="top">
+        <div class="topbar">
             <div class="container-fluid">
                 <div class="row">
+                    <div class="col-sm-12 text-right">
+                        <br>
+                        <div class="btn-group" role="group" aria-label="Basic example">
+                            <button type="button" class="btn btn-secondary" onclick="location.href='register.php'">註冊</button>
+                            <button type="button" class="btn btn-secondary" onclick="location.href='index.php'">登入</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
                     <div class="col-sm-12">
-                        
-                        
+                        <embed src="./image/barrier.svg" style="display:block; width:70px; height:70px; margin:auto;"/>
+                        <br>
+                        <h2 class="text-center">自動化農場監測</h2>
+                        <br>
                     </div>
                 </div>
             </div>
@@ -44,19 +54,15 @@
             <div class="container-fluid">
                 <div class="row">
                     <div class="col-sm-12">
-                        <embed src="./image/barrier.svg" style="display:block; width:70px; height:70px; margin:auto;"/>
-                        <br>
-                        <h2 class="text-center">自動化農場監測</h2>
-                        <br>
                         <div class="col-sm-4 ml-auto mr-auto">
                             <form method="post" name="login" action="./php/checklogin.php">
                                 <div class="form-group">
                                     <label for="username">Username</label>
-                                    <input type="text" class="form-control" id="username" placeholder="Username">
+                                    <input type="text" class="form-control" id="username" placeholder="帳號">
                                 </div>
                                 <div class="form-group">
                                     <label for="password">Password</label>
-                                    <input type="password" class="form-control" id="password" placeholder="Password">
+                                    <input type="password" class="form-control" id="password" placeholder="密碼">
                                 </div>
 
                                 <!-- CheckLogin -->
@@ -72,7 +78,6 @@
                                 </div>
                             </form>
                         </div>
-                        
                     </div>
                 </div>
             </div>
