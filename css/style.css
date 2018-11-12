@@ -8,17 +8,20 @@
 }
 
 /*****TOP*****/
-html 
+html
 {
+    font-family:'setofont';
     background-color: rgb(250, 250, 250);
 }
-div.top
+div.topbar 
 {
+    font-family: 'setofont';
     min-height: 20px;
     background-color: rgb(250, 250, 250);
 }
-div.main
+
+div.main 
 {
-    font-family:'setofont';
+    font-family: 'setofont';
     background-color: rgb(250, 250, 250);
 }
