@@ -14,8 +14,9 @@
         <!--Bootstrap CSS-->
         
         <!--JQUERY-->
-        <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+        <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
         <!--JQUERY-->
+
     </head>
     <body>
         <div class="topbar">
@@ -49,7 +50,7 @@
                                     <label for="username">Username</label>
                                     <input type="text" class="form-control" name="username" id="username" placeholder="帳號" required>
                                     <div class="invalid-feedback">
-                                        帳號不得超過20個字元
+                                    <p id="demo"></p>
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -106,28 +107,56 @@
 
             
             $(document).ready(function(){
-                $("#username").keyup(function(){
+
+                var usernameInvalid = null;
+
+                //檢查欄位是否超過20個字元，以及檢查輸入的帳號是否已被註冊
+                $('input[name="username"]').on("keyup",function(){
                     //若欄位有輸入字元，則檢查該帳號是否已經被使用
+                    var input = $(this).val();
                     if($(this).val()!='')
                     {
                         $.ajax({
                             type:"POST",//使用表單的方式傳送，同form的method
-                            url:"./php/check_username.php",
+                            url:"php/check_username.php",
                             data://要傳過去的資料，使用物件方式呈現
                             {
                                 'n':$(this).val()//代表要傳遞這個變數n，裡面為username文字方塊裡的值
                             },
-                            datatype:'html'
+                            dataType:'html'
                         }).done(function(data){
-                            console.log(data);
+
+                            //檢查帳號是否超過指定字數
+                            if(input.length<=20)
+                            {
+                                //檢查帳號是否已被註冊
+                                if(data==1)
+                                {
+                                    $('input[name="username"]').addClass("is-invalid");
+                                    document.getElementById("demo").innerHTML = "帳號已被註冊";
+                                    return false;
+                                }
+                                else if(data==0)
+                                {
+                                    $('input[name="username"]').removeClass("is-invalid");
+                                    return true;
+                                }
+                                else
+                                {
+                                    console.log("Exception");
+                                    return false;
+                                }
+                            }
+                            else
+                            {
+                                $('input[name="username"]').parent().addClass("is-invalid");
+                                document.getElementById("demo").innerHTML = "帳號不得超過20個字元";
+                                return false;
+                            }
                         }).fail(function(jqXHR,textStatus,errorThrown){
                             alert("有錯誤產生，請看console log");
                             console.log(jqXHR,responseText);
                         });
-                    }
-                    else
-                    {
-                        //欄位內沒有輸入字元，不檢查帳號
                     }
                 });
 
@@ -150,6 +179,7 @@
                     if(length>20)
                     {
                         $('input[name="username"]').addClass("is-invalid");
+                        document.getElementById("demo").innerHTML = "帳號不得超過10個字元";
                         return false;
                     }
                     else
