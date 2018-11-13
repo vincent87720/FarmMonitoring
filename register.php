@@ -106,6 +106,33 @@
 
             
             $(document).ready(function(){
+                $("#username").keyup(function(){
+                    //若欄位有輸入字元，則檢查該帳號是否已經被使用
+                    if($(this).val()!='')
+                    {
+                        $.ajax({
+                            type:"POST",//使用表單的方式傳送，同form的method
+                            url:"./php/check_username.php",
+                            data://要傳過去的資料，使用物件方式呈現
+                            {
+                                'n':$(this).val()//代表要傳遞這個變數n，裡面為username文字方塊裡的值
+                            },
+                            datatype:'html'
+                        }).done(function(data){
+                            console.log(data);
+                        }).fail(function(jqXHR,textStatus,errorThrown){
+                            alert("有錯誤產生，請看console log");
+                            console.log(jqXHR,responseText);
+                        });
+                    }
+                    else
+                    {
+                        //欄位內沒有輸入字元，不檢查帳號
+                    }
+                });
+
+
+
                 //當表單送出去的時候，檢查密碼與確認密碼是否相符
                 $("#register_form").on("submit",function(){
                     
