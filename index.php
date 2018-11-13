@@ -51,8 +51,8 @@
                         <div class="col-sm-4 ml-auto mr-auto">
                             <form method="post" action="php/checklogin.php">
                                 <div class="form-group">
-                                    <label for="username">Username</label>
-                                    <input type="text" class="form-control" name="username "id="username" placeholder="帳號">
+                                    <label for="userid">Username</label>
+                                    <input type="text" class="form-control" name="userid "id="userid" placeholder="帳號">
                                 </div>
                                 <div class="form-group">
                                     <label for="password">Password</label>
