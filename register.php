@@ -17,6 +17,15 @@
         <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
         <!--JQUERY-->
 
+        <script>
+            //系統暫停涵式
+            function sleep(delay) 
+            {
+                var start = new Date().getTime();
+                while (new Date().getTime() < start + delay);
+            }
+        </script>
+
     </head>
     <body>
         <div class="topbar">
@@ -46,6 +55,7 @@
                     <div class="col-sm-12">
                         <div class="col-sm-4 ml-auto mr-auto">
                             <form method="post" name="register" id="register_form" action="php/add_user.php">
+                                <p id="register_error"></p>
                                 <div class="form-group">
                                     <label for="username">Username</label>
                                     <input type="text" class="form-control" name="username" id="username" placeholder="帳號" required>
@@ -104,12 +114,8 @@
         </div>
         
         <script>
-
-            
             $(document).ready(function(){
-
-                var usernameInvalid = null;
-
+                
                 //檢查欄位是否超過20個字元，以及檢查輸入的帳號是否已被註冊
                 $('input[name="username"]').on("keyup",function(){
                     //若欄位有輸入字元，則檢查該帳號是否已經被使用
@@ -125,10 +131,10 @@
                             },
                             dataType:'html'
                         }).done(function(data){
-
                             //檢查帳號是否超過指定字數
                             if(input.length<=20)
                             {
+                                $('input[name="username"]').removeClass("is-invalid");
                                 //檢查帳號是否已被註冊
                                 if(data==1)
                                 {
@@ -149,7 +155,7 @@
                             }
                             else
                             {
-                                $('input[name="username"]').parent().addClass("is-invalid");
+                                $('input[name="username"]').addClass("is-invalid");
                                 document.getElementById("demo").innerHTML = "帳號不得超過20個字元";
                                 return false;
                             }
@@ -163,7 +169,7 @@
 
 
                 //當表單送出去的時候，檢查密碼與確認密碼是否相符
-                $("#register_form").on("submit",function(){
+                $("#register_form").on("keyup",function(){
                     
                     if($('input[name="password"]').val()!=$('input[name="confirm-password"]').val())
                     {
@@ -171,20 +177,9 @@
                         $("#confirm-password").addClass("is-invalid");
                         return false;
                     }
-                });
-
-                //檢查帳號是否超過指定字數
-                $('input[name="username"]').keyup(function(){
-                    var length = $(this).val().length;
-                    if(length>20)
-                    {
-                        $('input[name="username"]').addClass("is-invalid");
-                        document.getElementById("demo").innerHTML = "帳號不得超過10個字元";
-                        return false;
-                    }
                     else
                     {
-                        $('input[name="username"]').removeClass("is-invalid");
+                        $("#confirm-password").removeClass("is-invalid");
                         return true;
                     }
                 });
@@ -246,6 +241,26 @@
                     {
                         $('input[name="email"]').removeClass("is-invalid");
                         return true;
+                    }
+                });
+
+
+                //若class:"form-control" not has class:"is-invalid" ，且每個欄位都不為空值，代表無誤，可送出表單
+                $("button").click(function(){
+                    if(!$('.form-control').hasClass("is-invalid")&&
+                        $('input[name="username"]').val()!=''&&
+                        $('input[name="password"]').val()!=''&&
+                        $('input[name="confirm-password"]').val()!=''&&
+                        $('input[name="phone"]').val()!=''&&
+                        $('input[name="email"]').val()!='')
+                    {
+                        document.getElementById("register_error").innerHTML = '<div class="alert alert-success" role="alert">註冊成功! 頁面將在5秒後跳轉</div>';
+
+                    }
+                    else
+                    {
+                        document.getElementById("register_error").innerHTML = '<div class="alert alert-danger" role="alert">欄位未依格式填寫，請檢查</div>';
+                        return false;
                     }
                 });
             });

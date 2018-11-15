@@ -15,6 +15,11 @@ function check_has_username($input)
             //有一筆以上相同的資料
             $result=true;
         }
+        else
+        {
+            //無相同帳號
+            $result=false;
+        }
     }
     else
     {
