@@ -12,6 +12,11 @@
         <!--Bootstrap CSS-->
         <link rel="stylesheet" href="css/bootstrap.css">
         <!--Bootstrap CSS-->
+
+        <!--JQUERY-->
+        <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
+        <!--JQUERY-->
+
     </head>
     <body>
         <!-- CheckLogin -->
@@ -49,24 +54,42 @@
                 <div class="row">
                     <div class="col-sm-12">
                         <div class="col-sm-4 ml-auto mr-auto">
-                            <form method="post" action="php/checklogin.php">
+                            <form method="POST" id="login-form" action="php/check_login.php">
+                                <!--顯示錯誤訊息-->
+                                <?php
+								if(isset($_GET['msg']))
+								{
+                                    if(!strcmp($_GET['msg'],"IdOrPasswordFail"))
+                                    {
+                                        echo '<div class="alert alert-danger text-center" role="alert">帳號或密碼錯誤，請檢查欄位是否正確</div>';
+                                    }
+                                    else if(!strcmp($_GET['msg'],"UsernameNotExists"))
+                                    {
+                                        echo '<div class="alert alert-danger text-center" role="alert">使用者帳號不存在，請註冊新帳號</div>';
+                                    }
+                                    else if(!strcmp($_GET['msg'],"NoIdAndPassword"))
+                                    {
+                                        echo '<div class="alert alert-danger text-center" role="alert">帳號或密碼不可為空值</div>';
+                                    }
+                                    else if(!strcmp($_GET['msg'],"TransferFailed"))
+                                    {
+                                        echo '<div class="alert alert-danger text-center" role="alert">帳號或密碼未正確傳送</div>';
+                                    }
+                                    else
+                                    {
+                                        echo "<p class='error'>{$_GET['msg']}</p>";
+                                    }
+								}
+								?>
+                                <!--顯示錯誤訊息-->
                                 <div class="form-group">
-                                    <label for="userid">Username</label>
-                                    <input type="text" class="form-control" name="userid "id="userid" placeholder="帳號">
+                                    <label for="id">Username</label>
+                                    <input type="text" class="form-control" name="id" id="id" placeholder="帳號">
                                 </div>
                                 <div class="form-group">
                                     <label for="password">Password</label>
                                     <input type="password" class="form-control" name="password" id="password" placeholder="密碼">
                                 </div>
-
-                                <!-- CheckLogin -->
-                                <?php
-                                    if(isset($_GET['msg']))
-                                    {
-                                        echo "<p class='error'>{$_GET['msg']}</p>";
-                                    }
-                                ?>
-                                <!-- CheckLogin -->
                                 <div class="col-sm-12 text-center">
                                     <button type="submit" class="btn btn-default">Login</button>                                    
                                 </div>
@@ -78,10 +101,24 @@
         </div>
         
         <div class="footer">
-        
         </div>
+
+        <script>
+        $(document).ready(function(){
+            $('input[name="id"]').on("submit",function(){
+                
+            });
+
+            $('input[name="password"]').on("submit",function(){
+                
+            });
+        });
+        
+        </script>
+        
         <!-- CheckLogin -->
         <?php endif;?>
         <!-- CheckLogin -->
+
     </body>
 </html>
