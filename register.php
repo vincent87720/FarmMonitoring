@@ -246,7 +246,7 @@
 
 
                 //若class:"form-control" not has class:"is-invalid" ，且每個欄位都不為空值，代表無誤，可送出表單
-                $("button").click(function(){
+                $('input[name="submit"]').click(function(){
                     if(!$('.form-control').hasClass("is-invalid")&&
                         $('input[name="username"]').val()!=''&&
                         $('input[name="password"]').val()!=''&&
