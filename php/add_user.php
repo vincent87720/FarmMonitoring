@@ -23,7 +23,7 @@
     else
     {
         //若回傳為FALSE代表資料未被新增，返回上一頁
-        header('Location:.getenv("HTTP_REFERER")');
+        header('Location:../register.php');
     }
     
     
