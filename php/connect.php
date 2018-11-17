@@ -3,8 +3,8 @@ session_cache_limiter('private');//返回上一頁時(history.go(-1))不清空�
 @session_start();
 //設定連線資訊，建立與bbqandvenuerental資料庫的連線
 $host='localhost';
-$username='root';
-$password='iamadmin';
+$username='webuser';
+$password='iamwebuser';
 $database='testdb';
 
 //宣告一個Link變數，連結結果會帶入link中
