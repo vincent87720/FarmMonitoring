@@ -55,7 +55,7 @@
                     <div class="col-sm-12">
                         <div class="col-sm-4 ml-auto mr-auto">
                             <form method="post" name="register" id="register_form" action="php/add_user.php">
-                                <p id="register_error"></p>
+                                <p id="register_status"></p>
                                 <div class="form-group">
                                     <label for="username">Username</label>
                                     <input type="text" class="form-control" name="username" id="username" placeholder="帳號" required>
@@ -254,12 +254,12 @@
                         $('input[name="phone"]').val()!=''&&
                         $('input[name="email"]').val()!='')
                     {
-                        document.getElementById("register_error").innerHTML = '<div class="alert alert-success" role="alert">註冊成功! 頁面將在5秒後跳轉</div>';
+                        document.getElementById("register_status").innerHTML = '<div class="alert alert-success text-center" role="alert">註冊成功! 頁面將在5秒後跳轉</div>';
 
                     }
                     else
                     {
-                        document.getElementById("register_error").innerHTML = '<div class="alert alert-danger" role="alert">欄位未依格式填寫，請檢查</div>';
+                        document.getElementById("register_status").innerHTML = '<div class="alert alert-danger text-center" role="alert">欄位未依格式填寫，請檢查</div>';
                         return false;
                     }
                 });
