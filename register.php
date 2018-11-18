@@ -1,4 +1,3 @@
-<!--rigister_ajax ver.1-->
 <!DOCTYPE HTML>
 <html>
     <head>
@@ -17,6 +16,10 @@
         <!--JQUERY-->
         <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
         <!--JQUERY-->
+
+        <!--JavaScript-->
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+        <!--JavaScript-->
 
         <script>
             //系統暫停涵式
@@ -55,8 +58,8 @@
                 <div class="row">
                     <div class="col-sm-12">
                         <div class="col-sm-4 ml-auto mr-auto">
-                            <form method="post" name="register" id="register_form" action="php/add_user.php">
-                                <p id="register_status"></p>
+                            <form method="post" name="register" id="register_form">
+                                <p id="register_status" class="text-center"></p>
                                 <div class="form-group">
                                     <label for="username">Username</label>
                                     <input type="text" class="form-control" name="username" id="username" placeholder="帳號" required>
@@ -101,7 +104,7 @@
                                 </div>
 
                                 <div class="col-sm-12 text-center">
-                                    <button type="submit" name="submit" class="btn btn-default">Submit</button>                                    
+                                    <button type="submit" name="submit" id="submit" class="btn btn-default">Submit</button>                                    
                                 </div>
                             </form>
                         </div>
@@ -115,10 +118,12 @@
         </div>
         
         <script>
+
+        var status = true;
             $(document).ready(function(){
                 
                 //檢查欄位是否超過20個字元，以及檢查輸入的帳號是否已被註冊
-                $('input[name="username"]').on("keyup",function(){
+                $('input[name="username"]').keyup(function(){
                     //若欄位有輸入字元，則檢查該帳號是否已經被使用
                     var input = $(this).val();
                     if($(this).val()!='')
@@ -141,12 +146,13 @@
                                 {
                                     $('input[name="username"]').addClass("is-invalid");
                                     document.getElementById("demo").innerHTML = "帳號已被註冊";
-                                    return false;
+                                    $("#register_form button").attr('disabled',true);
                                 }
                                 else if(data==0)
                                 {
                                     $('input[name="username"]').removeClass("is-invalid");
-                                    return true;
+                                    $("#register_form button").attr('disabled',false);
+
                                 }
                                 else
                                 {
@@ -157,112 +163,167 @@
                             else
                             {
                                 $('input[name="username"]').addClass("is-invalid");
+                                $("#register_form button").attr('disabled',true);
                                 document.getElementById("demo").innerHTML = "帳號不得超過20個字元";
-                                return false;
                             }
                         }).fail(function(jqXHR,textStatus,errorThrown){
                             alert("有錯誤產生，請看console log");
                             console.log(jqXHR,responseText);
                         });
                     }
+                    else
+                    {
+                        $('input[name="username"]').removeClass("is-invalid");
+                        $("#register_form button").attr('disabled',false);
+                    }
                 });
 
 
 
                 //當表單送出去的時候，檢查密碼與確認密碼是否相符
-                $("#register_form").on("keyup",function(){
+                $("#register_form").keyup(function(){
                     
                     if($('input[name="password"]').val()!=$('input[name="confirm-password"]').val())
                     {
                         //若不相符，則在confirm-password的上一層增加上is-invalid
                         $("#confirm-password").addClass("is-invalid");
+                        $("#register_form button").attr('disabled',true);
                         return false;
                     }
                     else
                     {
                         $("#confirm-password").removeClass("is-invalid");
+                        $("#register_form button").attr('disabled',false);
                         return true;
                     }
                 });
 
                 //檢查密碼是否超過指定字數
-                $('input[name="password"]').keyup(function(){
+                $('#password').keyup(function(){
                     var length = $(this).val().length;
                     if(length>20)
                     {
-                        $('input[name="password"]').addClass("is-invalid");
+                        $("#password").addClass("is-invalid");
+                        $("#register_form button").attr('disabled',true);
                         return false;
                     }
                     else
                     {
-                        $('input[name="password"]').removeClass("is-invalid");
+                        $("#password").removeClass("is-invalid");
+                        $("#register_form button").attr('disabled',false);
                         return true;
                     }
                 });
 
                 //檢查姓名是否超過指定字數
-                $('input[name="name"]').keyup(function(){
+                $('#name').keyup(function(){
                     var length = $(this).val().length;
                     if(length>10)
                     {
-                        $('input[name="name"]').addClass("is-invalid");
+                        $('#name').addClass("is-invalid");
+                        $("#register_form button").attr('disabled',true);
                         return false;
                     }
                     else
                     {
-                        $('input[name="name"]').removeClass("is-invalid");
+                        $('#name').removeClass("is-invalid");
+                        $("#register_form button").attr('disabled',false);
                         return true;
                     }
                 });
 
                 //檢查電話是否超過指定字數
-                $('input[name="phone"]').keyup(function(){
+                $('#phone').keyup(function(){
                     var length = $(this).val().length;
                     if(length>20)
                     {
-                        $('input[name="phone"]').addClass("is-invalid");
+                        $('#phone').addClass("is-invalid");
+                        $("#register_form button").attr('disabled',true);
                         return false;
                     }
                     else
                     {
-                        $('input[name="phone"]').removeClass("is-invalid");
+                        $('#phone').removeClass("is-invalid");
+                        $("#register_form button").attr('disabled',false);
                         return true;
                     }
                 });
 
                 //檢查email是否超過指定字數
-                $('input[name="email"]').keyup(function(){
+                $('#email').keyup(function(){
                     var length = $(this).val().length;
                     if(length>30)
                     {
-                        $('input[name="email"]').addClass("is-invalid");
+                        $('#email').addClass("is-invalid");
+                        $("#register_form button").attr('disabled',true);
                         return false;
                     }
                     else
                     {
-                        $('input[name="email"]').removeClass("is-invalid");
+                        $('#email').removeClass("is-invalid");
+                        $("#register_form button").attr('disabled',false);
                         return true;
                     }
                 });
 
 
                 //若class:"form-control" not has class:"is-invalid" ，且每個欄位都不為空值，代表無誤，可送出表單
-                $('input[name="submit"]').click(function(){
+                $('#register_form').on("submit",function(){
                     if(!$('.form-control').hasClass("is-invalid")&&
                         $('input[name="username"]').val()!=''&&
                         $('input[name="password"]').val()!=''&&
                         $('input[name="confirm-password"]').val()!=''&&
+                        $('input[name="name"]').val()!=''&&
                         $('input[name="phone"]').val()!=''&&
                         $('input[name="email"]').val()!='')
                     {
-                        document.getElementById("register_status").innerHTML = '<div class="alert alert-success text-center" role="alert">註冊成功! 頁面將在5秒後跳轉</div>';
+                        //document.getElementById("register_status").innerHTML = '<div class="alert alert-success text-center" role="alert">註冊成功! 頁面將在5秒後跳轉</div>';
+                        $.ajax({
+                            type:"POST",//使用表單的方式傳送，同form的method
+                            url:"php/add_user.php",
+                            //data:$('#register_form').serializeArray(),
+                            data:
+                            {
+                                'username':$('input[name="username"]').val(),
+                                'password':$('input[name="password"]').val(),
+                                'name':$('input[name="name"]').val(),
+                                'phone':$('input[name="phone"]').val(),
+                                'email':$('input[name="email"]').val()
+                            },
+                            dataType:'html'
+                        }).done(function(data){
+                            //console.log(data);
+                            //ajax執行成功(if HTTP return 200 OK)
+                            if(data==1)
+                            {
+                                //五秒鐘後跳轉
+                                document.getElementById("register_status").innerHTML = '<div class="alert alert-success alert-dismissible fade show" role="alert"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>註冊成功!! 五秒後跳轉登入頁面</div>';
+                                setTimeout('window.location.href = "index.php";',5000);
 
+                                //不跳轉，提供一個連結按鈕
+                                //document.getElementById("register_status").innerHTML = '<div class="alert alert-success alert-dismissible fade show" role="alert"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>註冊成功!! 按<a href="index.php" class="alert-link">這裡</a>或右上方按鈕登入</div>';
+                                                                
+                            }
+                            else if(data==0)
+                            {
+                                document.getElementById("register_status").innerHTML = '<div class="alert alert-danger alert-dismissible fade show" role="alert"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>註冊失敗</div>';
+                                console.log(data);
+                            }
+                            else
+                            {
+                                console.log(data);
+                            }
+                        }).fail(function(jqXHR,textStatus,errorThrown){
+                            //ajax執行失敗
+                            //alert("有錯誤產生，請看console log");
+                            console.log(jqXHR,responseText);
+                        });    
                     }
                     else
                     {
-                        document.getElementById("register_status").innerHTML = '<div class="alert alert-danger text-center" role="alert">欄位未依格式填寫，請檢查</div>';
-                        return false;
+                        document.getElementById("register_status").innerHTML = '<div class="alert alert-danger alert-dismissible fade show" role="alert"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>欄位未依格式填寫，請檢查</div>';
                     }
+                return false;
                 });
             });
         </script>
