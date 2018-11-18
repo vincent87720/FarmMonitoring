@@ -1,3 +1,4 @@
+<!--rigister_ajax ver.1-->
 <!DOCTYPE HTML>
 <html>
     <head>

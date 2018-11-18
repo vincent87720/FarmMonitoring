@@ -1,4 +1,5 @@
-﻿<?php
+﻿<!--rigister_ajax ver.1-->
+<?php
     require_once 'connect.php';
     require_once 'function.php';
 
