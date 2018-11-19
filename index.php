@@ -1,4 +1,3 @@
-<!-- CheckLogin -->
 <?php
     require_once 'php/connect.php';
     if(isset($_SESSION['is_login']) && $_SESSION['is_login']):
@@ -7,7 +6,6 @@
     }
     else:
 ?>
-<!-- CheckLogin -->
 
 <!DOCTYPE HTML>
 <html>
