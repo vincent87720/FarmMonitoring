@@ -2,7 +2,7 @@
     require_once 'php/connect.php';
     if(isset($_SESSION['is_login']) && $_SESSION['is_login']):
     {
-        header('Location: backend.php');
+        header('Location: backend/backend.php');
     }
     else:
 ?>
@@ -98,7 +98,7 @@
                     //ajax執行成功(if HTTP return 200 OK)
                     if(data.indexOf("success")!=-1)
                     {
-                        window.location.href = "backend.php";
+                        window.location.href = "backend/backend.php";
                     }
                     else if(data.indexOf("IdOrPasswordFail")!=-1)//若沒找到字串則會回傳-1
                     {
@@ -131,9 +131,11 @@
         
         </script>
         
-        <!-- CheckLogin -->
-        <?php endif;?>
-        <!-- CheckLogin -->
+
 
     </body>
 </html>
+
+<?php
+    endif;
+?>

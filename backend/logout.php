@@ -4,5 +4,5 @@
     //清除session
     session_unset();
     
-    header('Location: login.php');
+    header('Location: ../index.php');
 ?>
