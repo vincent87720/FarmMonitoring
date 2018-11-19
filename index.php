@@ -1,10 +1,21 @@
+<!-- CheckLogin -->
+<?php
+    require_once 'php/connect.php';
+    if(isset($_SESSION['is_login']) && $_SESSION['is_login']):
+    {
+        header('Location: backend.php');
+    }
+    else:
+?>
+<!-- CheckLogin -->
+
 <!DOCTYPE HTML>
 <html>
     <head>
         <title>自動化農場監測</title>
         <meta name="keyword" content="農場'自動化農場'農場數據監測'"><!--keyword讓搜索引擎容易找到此網頁-->
         <meta name="viewport" content="width=device-width, initial-scale=1" ><!--指定螢幕寬度為裝置寬度，畫面載入初始縮放比例 100%-->
-        <link rel="icon" href="./image/barrier.ico">
+        <link rel="icon" href="image/barrier.ico">
         <noscript>
             
         </noscript>
@@ -17,16 +28,11 @@
         <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
         <!--JQUERY-->
 
+        <!--JavaScript-->
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+        <!--JavaScript-->
     </head>
     <body>
-        <!-- CheckLogin -->
-        <?php
-            if(isset($_SESSION['is_login']) && $_SESSION['is_login']==TRUE):
-                header('Location: backend.php');
-            else:
-        ?>
-        <!-- CheckLogin -->
-
         <div class="topbar">
             <div class="container-fluid">
                 <div class="row">
@@ -54,34 +60,8 @@
                 <div class="row">
                     <div class="col-sm-12">
                         <div class="col-sm-4 ml-auto mr-auto">
+                            <p id="login_status" class="text-center"></p>
                             <form method="POST" id="login-form" action="php/check_login.php">
-                                <!--顯示錯誤訊息-->
-                                <?php
-								if(isset($_GET['msg']))
-								{
-                                    if(!strcmp($_GET['msg'],"IdOrPasswordFail"))
-                                    {
-                                        echo '<div class="alert alert-danger text-center" role="alert">帳號或密碼錯誤，請檢查欄位是否正確</div>';
-                                    }
-                                    else if(!strcmp($_GET['msg'],"UsernameNotExists"))
-                                    {
-                                        echo '<div class="alert alert-danger text-center" role="alert">使用者帳號不存在，請註冊新帳號</div>';
-                                    }
-                                    else if(!strcmp($_GET['msg'],"NoIdAndPassword"))
-                                    {
-                                        echo '<div class="alert alert-danger text-center" role="alert">帳號或密碼不可為空值</div>';
-                                    }
-                                    else if(!strcmp($_GET['msg'],"TransferFailed"))
-                                    {
-                                        echo '<div class="alert alert-danger text-center" role="alert">帳號或密碼未正確傳送</div>';
-                                    }
-                                    else
-                                    {
-                                        echo "<p class='error'>{$_GET['msg']}</p>";
-                                    }
-								}
-								?>
-                                <!--顯示錯誤訊息-->
                                 <div class="form-group">
                                     <label for="id">Username</label>
                                     <input type="text" class="form-control" name="id" id="id" placeholder="帳號">
@@ -91,7 +71,7 @@
                                     <input type="password" class="form-control" name="password" id="password" placeholder="密碼">
                                 </div>
                                 <div class="col-sm-12 text-center">
-                                    <button type="submit" class="btn btn-default">Login</button>                                    
+                                    <button type="submit" id="submit" class="btn btn-default">Login</button>                                    
                                 </div>
                             </form>
                         </div>
@@ -105,12 +85,49 @@
 
         <script>
         $(document).ready(function(){
-            $('input[name="id"]').on("submit",function(){
-                
-            });
-
-            $('input[name="password"]').on("submit",function(){
-                
+            $('#login-form').on("submit",function(){
+                $.ajax({
+                    type:"POST",//使用表單的方式傳送，同form的method
+                    url:"php/check_login.php",
+                    data:
+                    {
+                        'id':$('input[name="id"]').val(),
+                        'pw':$('input[name="password"]').val()
+                    },
+                    dataType:'html'
+                }).done(function(data){
+                    //console.log(data);
+                    //ajax執行成功(if HTTP return 200 OK)
+                    if(data.indexOf("success")!=-1)
+                    {
+                        window.location.href = "backend.php";
+                    }
+                    else if(data.indexOf("IdOrPasswordFail")!=-1)//若沒找到字串則會回傳-1
+                    {
+                        document.getElementById("login_status").innerHTML = '<div class="alert alert-danger alert-dismissible fade show" role="alert"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>帳號或密碼錯誤，請檢查欄位是否正確</div>'
+                    }
+                    else if(data.indexOf("UsernameNotExists")!=-1)
+                    {
+                        document.getElementById("login_status").innerHTML = '<div class="alert alert-danger alert-dismissible fade show" role="alert"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>使用者帳號不存在，請註冊新帳號</div>'
+                    }
+                    else if(data.indexOf("NoIdAndPassword")!=-1)
+                    {
+                        document.getElementById("login_status").innerHTML = '<div class="alert alert-danger alert-dismissible fade show" role="alert"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>帳號或密碼不可為空值</div>'
+                    }
+                    else if(data.indexOf("TransferFailed")!=-1)
+                    {
+                        document.getElementById("login_status").innerHTML = '<div class="alert alert-danger alert-dismissible fade show" role="alert"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>帳號或密碼未正確傳送</div>'
+                    }
+                    else
+                    {
+                        console.log(data);
+                    }
+                }).fail(function(jqXHR,textStatus,errorThrown){
+                    //ajax執行失敗
+                    //alert("有錯誤產生，請看console log");
+                    console.log(jqXHR,responseText);
+                });
+            return false;
             });
         });
         

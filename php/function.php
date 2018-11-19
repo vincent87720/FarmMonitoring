@@ -58,4 +58,34 @@ function add_user($id,$pw,$name,$phone,$email)
     }
     return $result;
 }
+
+function verify_user($id,$pw)
+{
+
+    $result=null;
+    $pw = md5($pw);
+    $sql="SELECT `password` FROM `users` WHERE `username` like '{$id}'";
+    $query = mysqli_query($_SESSION['link'],$sql);
+    $row = mysqli_fetch_array($query);
+    
+    //若mysqli_num_rows()的值不等於0，代表資料庫中已經存在該帳號，則將密碼指定給變數$db_password
+    if(mysqli_num_rows($query)!=0)
+    {
+        $db_password=$row['password'];
+
+        if($pw==$row['password'])
+        {
+            $result = 1;//VerifySuccess
+        }
+        else
+        {
+            $result = 0;//VerifyFailed
+        }
+    }
+    else
+    {
+        $result=2;//UsernameNotExists
+    }
+    return $result;
+}
 ?>
