@@ -2,7 +2,7 @@
     require_once 'php/connect.php';
     if(isset($_SESSION['is_login']) && $_SESSION['is_login']):
     {
-        header('Location: backend/backend.php');
+        header("Location: backend/backend.php");
     }
     else:
 ?>
@@ -62,7 +62,7 @@
                             <form method="POST" id="login-form" action="php/check_login.php">
                                 <div class="form-group">
                                     <label for="id">Username</label>
-                                    <input type="text" class="form-control" name="id" id="id" placeholder="帳號">
+                                    <input type="text" class="form-control" name="username" id="username" placeholder="帳號">
                                 </div>
                                 <div class="form-group">
                                     <label for="password">Password</label>
@@ -89,14 +89,14 @@
                     url:"php/check_login.php",
                     data:
                     {
-                        'id':$('input[name="id"]').val(),
-                        'pw':$('input[name="password"]').val()
+                        'id':$('#username').val(),
+                        'pw':$('#password').val()
                     },
                     dataType:'html'
                 }).done(function(data){
                     //console.log(data);
                     //ajax執行成功(if HTTP return 200 OK)
-                    if(data.indexOf("success")!=-1)
+                    if(data=='success')
                     {
                         window.location.href = "backend/backend.php";
                     }
