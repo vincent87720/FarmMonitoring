@@ -3,6 +3,7 @@
     if(isset($_SESSION['is_login']) && $_SESSION['is_login']):
     {
         header("Location: backend/backend.php");
+        print_r($_SESSION);
     }
     else:
 ?>
@@ -59,7 +60,7 @@
                     <div class="col-sm-12">
                         <div class="col-sm-4 ml-auto mr-auto">
                             <p id="login_status" class="text-center"></p>
-                            <form method="POST" id="login-form" action="php/check_login.php">
+                            <form method="POST" id="login_form" name="login_form">
                                 <div class="form-group">
                                     <label for="id">Username</label>
                                     <input type="text" class="form-control" name="username" id="username" placeholder="帳號">
@@ -83,7 +84,7 @@
 
         <script>
         $(document).ready(function(){
-            $('#login-form').on("submit",function(){
+            $('#login_form').on("submit",function(){
                 $.ajax({
                     type:"POST",//使用表單的方式傳送，同form的method
                     url:"php/check_login.php",
@@ -96,9 +97,14 @@
                 }).done(function(data){
                     //console.log(data);
                     //ajax執行成功(if HTTP return 200 OK)
-                    if(data=='success')
+                    if(data==data.indexOf("success")!=-1)
                     {
-                        window.location.href = "backend/backend.php";
+                        document.getElementById("login_status").innerHTML = '<div class="alert alert-success alert-dismissible fade show" role="alert"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>登入成功!!</div>';
+                        setTimeout('window.location.href = "./backend/backend.php";  window.event.returnValue=false;',500);
+                        //window.location.href = 'backend/backend.php';
+                        
+
+                        //setTimeout(function(){location.href = "backend/backend.php";},500);
                     }
                     else if(data.indexOf("IdOrPasswordFail")!=-1)//若沒找到字串則會回傳-1
                     {
