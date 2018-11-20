@@ -1,11 +1,9 @@
 <?php
     require_once 'php/connect.php';
-    if(isset($_SESSION['is_login']) && $_SESSION['is_login']):
+    if(isset($_SESSION['is_login']) && $_SESSION['is_login'])
     {
         header("Location: backend/backend.php");
-        print_r($_SESSION);
     }
-    else:
 ?>
 
 <!DOCTYPE HTML>
@@ -25,6 +23,11 @@
 
         <!--JQUERY-->
         <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
+        <script
+            src="https://code.jquery.com/jquery-2.2.4.js"
+            integrity="sha256-iT6Q9iMJYuQiMWNd9lDyBUStIq/8PuOW33aOqmvFpqI="
+            crossorigin="anonymous">
+        </script>
         <!--JQUERY-->
 
         <!--JavaScript-->
@@ -60,9 +63,9 @@
                     <div class="col-sm-12">
                         <div class="col-sm-4 ml-auto mr-auto">
                             <p id="login_status" class="text-center"></p>
-                            <form method="POST" id="login_form" name="login_form">
+                            <form class="login" method="POST">
                                 <div class="form-group">
-                                    <label for="id">Username</label>
+                                    <label for="username">Username</label>
                                     <input type="text" class="form-control" name="username" id="username" placeholder="帳號">
                                 </div>
                                 <div class="form-group">
@@ -83,43 +86,49 @@
         </div>
 
         <script>
-        $(document).ready(function(){
-            $('#login_form').on("submit",function(){
+        $(document).on("ready",function(){
+            $('form.login').on("submit",function(){
                 $.ajax({
                     type:"POST",//使用表單的方式傳送，同form的method
                     url:"php/check_login.php",
                     data:
                     {
-                        'id':$('#username').val(),
-                        'pw':$('#password').val()
+                        'id':$("#username").val(),
+                        'pw':$("#password").val()
                     },
                     dataType:'html'
                 }).done(function(data){
                     //console.log(data);
                     //ajax執行成功(if HTTP return 200 OK)
-                    if(data==data.indexOf("success")!=-1)
+                    if(data==1)
                     {
-                        document.getElementById("login_status").innerHTML = '<div class="alert alert-success alert-dismissible fade show" role="alert"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>登入成功!!</div>';
-                        setTimeout('window.location.href = "./backend/backend.php";  window.event.returnValue=false;',500);
-                        //window.location.href = 'backend/backend.php';
+                        //success
                         
+                        //solution1
+                        window.location.href = 'backend/backend.php';
 
-                        //setTimeout(function(){location.href = "backend/backend.php";},500);
+                        //solution2
+                        //document.getElementById("login_status").innerHTML = '<div class="alert alert-success alert-dismissible fade show" role="alert"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>登入成功!!</div>';
+                        //setTimeout('window.location.href = "./backend/backend.php";  window.event.returnValue=false;',500);
                     }
-                    else if(data.indexOf("IdOrPasswordFail")!=-1)//若沒找到字串則會回傳-1
+                    else if(data==2)
                     {
+                        //帳號或密碼錯誤 IdOrPasswordFail
                         document.getElementById("login_status").innerHTML = '<div class="alert alert-danger alert-dismissible fade show" role="alert"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>帳號或密碼錯誤，請檢查欄位是否正確</div>'
                     }
-                    else if(data.indexOf("UsernameNotExists")!=-1)
+                    else if(data==3)
                     {
+                        //帳號不存在 UsernameNotExists
                         document.getElementById("login_status").innerHTML = '<div class="alert alert-danger alert-dismissible fade show" role="alert"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>使用者帳號不存在，請註冊新帳號</div>'
                     }
-                    else if(data.indexOf("NoIdAndPassword")!=-1)
+                    else if(data==4)
                     {
+                        //帳號或密碼為空值 NoIdAndPassword
                         document.getElementById("login_status").innerHTML = '<div class="alert alert-danger alert-dismissible fade show" role="alert"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>帳號或密碼不可為空值</div>'
                     }
-                    else if(data.indexOf("TransferFailed")!=-1)
+                    else if(data==5)
                     {
+                        //帳號密碼未正確傳送 TransferFailed
                         document.getElementById("login_status").innerHTML = '<div class="alert alert-danger alert-dismissible fade show" role="alert"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>帳號或密碼未正確傳送</div>'
                     }
                     else
@@ -136,12 +145,5 @@
         });
         
         </script>
-        
-
-
     </body>
 </html>
-
-<?php
-    endif;
-?>

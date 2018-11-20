@@ -9,37 +9,37 @@ if(isset($_POST['id']) && isset($_POST['pw']))
     {
         $check = verify_user($_POST['id'],$_POST['pw']);
 
-        if($check==1)
+        if($check=='1')
         {
             $_SESSION['is_login']=TRUE;
-            echo "success";
+            echo 1;//success
         }
-        else if($check==0)
+        else if($check=='0')
         {
             $_SESSION['is_login']=FALSE;
-            echo "IdOrPasswordFail";//帳號或密碼錯誤
+            echo 2;//帳號或密碼錯誤 IdOrPasswordFail
         }
-        else if($check==2)
+        else if($check=='2')
         {
             $_SESSION['is_login']=FALSE;
-            echo "UsernameNotExists";//帳號不存在
+            echo 3;//帳號不存在 UsernameNotExists
         }
         else
         {
             $_SESSION['is_login']=FALSE;
-            echo $check;//例外
+            echo "Exception";//例外
         }
     }
     else
     {
         $_SESSION['is_login']=FALSE;
-        echo "NoIdAndPassword";//帳號或密碼為空值
+        echo 4;//帳號或密碼為空值 NoIdAndPassword
     }
 }
 else
 {
     $_SESSION['is_login']=FALSE;
-    echo "TransferFailed";//帳號密碼未正確傳送
+    echo 5;//帳號密碼未正確傳送 TransferFailed
 }
 // mysqli_free_result($result);
  

@@ -1,5 +1,5 @@
 <?php
-require 'connect.php';
+@session_start();
 function check_has_username($input)
 {
 
@@ -69,22 +69,30 @@ function verify_user($id,$pw)
     $row = mysqli_fetch_array($query);
     
     //若mysqli_num_rows()的值不等於0，代表資料庫中已經存在該帳號，則將密碼指定給變數$db_password
-    if(mysqli_num_rows($query)!=0)
+    if ($query)
     {
-        $db_password=$row['password'];
-
-        if($pw==$row['password'])
+        if(mysqli_num_rows($query)==1)
         {
-            $result = 1;//VerifySuccess
+            $db_password = $row['password'];
+            if($pw==$db_password)
+            {
+                $_SESSION['is_login'] = TRUE;
+                $_SESSION['login_user_id'] = $id;
+                $result = '1';//VerifySuccess
+            }
+            else
+            {
+                $result = '0';//VerifyFailed
+            }
         }
         else
         {
-            $result = 0;//VerifyFailed
+            $result = '2';//UsernameNotExists
         }
     }
     else
     {
-        $result=2;//UsernameNotExists
+        echo "{$sql} 語法執行失敗，錯誤訊息：" . mysqli_error($_SESSION['link']);
     }
     return $result;
 }
