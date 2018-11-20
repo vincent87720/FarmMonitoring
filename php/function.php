@@ -73,8 +73,7 @@ function verify_user($id,$pw)
     {
         if(mysqli_num_rows($query)==1)
         {
-            $db_password = $row['password'];
-            if($pw==$db_password)
+            if(stristr($pw,$row['password']))
             {
                 $_SESSION['is_login'] = TRUE;
                 $_SESSION['login_user_id'] = $id;
@@ -92,7 +91,7 @@ function verify_user($id,$pw)
     }
     else
     {
-        echo "{$sql} 語法執行失敗，錯誤訊息：" . mysqli_error($_SESSION['link']);
+        echo "語法執行失敗，錯誤訊息：" . mysqli_error($_SESSION['link']);
     }
     return $result;
 }
