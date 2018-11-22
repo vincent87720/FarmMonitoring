@@ -28,6 +28,10 @@
         <!--JavaScript-->
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
         <!--JavaScript-->
+
+        <!--Chart.js-->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
+        <!--Chart.js-->    
     </head>
     <body>
         <div class="background">
@@ -39,6 +43,7 @@
                             <div class="btn-group" role="group" aria-label="Basic example">
                                 <button type="button" class="btn btn-secondary" onclick="location.href='logout.php'">登出</button>
                             </div>
+<<<<<<< HEAD
                         </div>
                     </div>
                     <div class="row">
@@ -52,15 +57,69 @@
             <div class="main">
                 <div id="flot-placeholder"></div>
             </div>
+=======
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <embed src="../image/barrier.svg" style="display:inline; vertical-align:middle; width:70px; height:70px; margin:auto;">
+                            <h2 style="display:inline; vertical-align:middle;">自動化農場監測</h2>
+                        </div>
+                    </div>
+                </div>
+<<<<<<< Updated upstream
+                <div class="row">
+                    <div class="col-sm-12 align-middle">
+                        <embed src="./image/barrier.svg" style="display:inline; vertical-align:middle; width:70px; height:70px; margin:auto;"/>
+                        <h2 style="display:inline; vertical-align:middle;">自動化農場監測</h2>
+=======
+            </div>
+            <div class="main">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="chart-container" style="position: relative; height:40vh; width:75vw">
+                                <canvas id="Chart"></canvas>
+                            </div>
+                        </div>
+>>>>>>> Stashed changes
+                    </div>
+                </div>
+            </div>
+>>>>>>> backend
             <div class="footer">
                 <div class="container-fluid">
                     <div class="row">
                         <div class="col-sm-12">
+<<<<<<< HEAD
 
+=======
+                            
+>>>>>>> backend
                         </div>
                     </div>
                 </div>
             </div>
+
+            <script>
+                var ctx = document.getElementById("Chart");
+                var theChart = new Chart(ctx, {
+                    type: 'line',
+                    
+                    data:{
+                        labels:["00:00","03:00","06:00","09:00","12:00","15:00","18:00"],
+                        datasets: [{
+                            label: '日期',
+                            data: [4, 13, 10, 19, 2],
+                            fill:false,
+                            borderColor:"rgb(75, 192, 192)",
+                            lineTension:0.1
+                        }]
+                    }
+                });
+
+            </script>
+
         </div>
     </body>
 </html>
