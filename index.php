@@ -35,115 +35,117 @@
         <!--JavaScript-->
     </head>
     <body>
-        <div class="topbar">
-            <div class="container-fluid">
-                <div class="row">
-                    <div class="col-sm-12 text-right">
-                        <br>
-                        <div class="btn-group" role="group" aria-label="Basic example">
-                            <button type="button" class="btn btn-secondary" onclick="location.href='register.php'">註冊</button>
-                            <button type="button" class="btn btn-secondary" onclick="location.href='index.php'">登入</button>
+        <div class="background">
+            <div class="topbar">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-sm-12 text-right">
+                            <br>
+                            <div class="btn-group" role="group" aria-label="Basic example">
+                                <button type="button" class="btn btn-secondary" onclick="location.href='register.php'">註冊</button>
+                                <button type="button" class="btn btn-secondary" onclick="location.href='index.php'">登入</button>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="row">
-                    <div class="col-sm-12">
-                        <embed src="./image/barrier.svg" style="display:block; width:70px; height:70px; margin:auto;"/>
-                        <br>
-                        <h2 class="text-center">自動化農場監測</h2>
-                        <br>
-                    </div>
-                </div>
-            </div>
-        </div>
-        
-        <div class="main">
-            <div class="container-fluid">
-                <div class="row">
-                    <div class="col-sm-12">
-                        <div class="col-sm-4 ml-auto mr-auto">
-                            <p id="login_status" class="text-center"></p>
-                            <form class="login" method="POST">
-                                <div class="form-group">
-                                    <label for="username">Username</label>
-                                    <input type="text" class="form-control" name="username" id="username" placeholder="帳號">
-                                </div>
-                                <div class="form-group">
-                                    <label for="password">Password</label>
-                                    <input type="password" class="form-control" name="password" id="password" placeholder="密碼">
-                                </div>
-                                <div class="col-sm-12 text-center">
-                                    <button type="submit" id="submit" class="btn btn-default">Login</button>                                    
-                                </div>
-                            </form>
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <embed src="./image/barrier.svg" style="display:block; width:70px; height:70px; margin:auto;"/>
+                            <br>
+                            <h2 class="text-center">自動化農場監測</h2>
+                            <br>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-        
-        <div class="footer">
-        </div>
+            
+            <div class="main">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="col-sm-4 ml-auto mr-auto">
+                                <p id="login_status" class="text-center"></p>
+                                <form class="login" method="POST">
+                                    <div class="form-group">
+                                        <label for="username">Username</label>
+                                        <input type="text" class="form-control" name="username" id="username" placeholder="帳號">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="password">Password</label>
+                                        <input type="password" class="form-control" name="password" id="password" placeholder="密碼">
+                                    </div>
+                                    <div class="col-sm-12 text-center">
+                                        <button type="submit" id="submit" class="btn btn-default">Login</button>                                    
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="footer">
+            </div>
 
-        <script>
-        $(document).on("ready",function(){
-            $('form.login').on("submit",function(){
-                $.ajax({
-                    type:"POST",//使用表單的方式傳送，同form的method
-                    url:"php/check_login.php",
-                    data:
-                    {
-                        'id':$("#username").val(),
-                        'pw':$("#password").val()
-                    },
-                    dataType:'html'
-                }).done(function(data){
-                    //console.log(data);
-                    //ajax執行成功(if HTTP return 200 OK)
-                    if(data==1)
-                    {
-                        //success
-                        
-                        //solution1
-                        window.location.href = 'backend/backend.php';
+            <script>
+            $(document).on("ready",function(){
+                $('form.login').on("submit",function(){
+                    $.ajax({
+                        type:"POST",//使用表單的方式傳送，同form的method
+                        url:"php/check_login.php",
+                        data:
+                        {
+                            'id':$("#username").val(),
+                            'pw':$("#password").val()
+                        },
+                        dataType:'html'
+                    }).done(function(data){
+                        //console.log(data);
+                        //ajax執行成功(if HTTP return 200 OK)
+                        if(data==1)
+                        {
+                            //success
+                            
+                            //solution1
+                            window.location.href = 'backend/backend.php';
 
-                        //solution2
-                        //document.getElementById("login_status").innerHTML = '<div class="alert alert-success alert-dismissible fade show" role="alert"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>登入成功!!</div>';
-                        //setTimeout('window.location.href = "./backend/backend.php";  window.event.returnValue=false;',500);
-                    }
-                    else if(data==2)
-                    {
-                        //帳號或密碼錯誤 IdOrPasswordFail
-                        document.getElementById("login_status").innerHTML = '<div class="alert alert-danger alert-dismissible fade show" role="alert"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>帳號或密碼錯誤，請檢查欄位是否正確</div>'
-                    }
-                    else if(data==3)
-                    {
-                        //帳號不存在 UsernameNotExists
-                        document.getElementById("login_status").innerHTML = '<div class="alert alert-danger alert-dismissible fade show" role="alert"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>使用者帳號不存在，請註冊新帳號</div>'
-                    }
-                    else if(data==4)
-                    {
-                        //帳號或密碼為空值 NoIdAndPassword
-                        document.getElementById("login_status").innerHTML = '<div class="alert alert-danger alert-dismissible fade show" role="alert"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>帳號或密碼不可為空值</div>'
-                    }
-                    else if(data==5)
-                    {
-                        //帳號密碼未正確傳送 TransferFailed
-                        document.getElementById("login_status").innerHTML = '<div class="alert alert-danger alert-dismissible fade show" role="alert"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>帳號或密碼未正確傳送</div>'
-                    }
-                    else
-                    {
-                        console.log(data);
-                    }
-                }).fail(function(jqXHR,textStatus,errorThrown){
-                    //ajax執行失敗
-                    //alert("有錯誤產生，請看console log");
-                    console.log(jqXHR,responseText);
+                            //solution2
+                            //document.getElementById("login_status").innerHTML = '<div class="alert alert-success alert-dismissible fade show" role="alert"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>登入成功!!</div>';
+                            //setTimeout('window.location.href = "./backend/backend.php";  window.event.returnValue=false;',500);
+                        }
+                        else if(data==2)
+                        {
+                            //帳號或密碼錯誤 IdOrPasswordFail
+                            document.getElementById("login_status").innerHTML = '<div class="alert alert-danger alert-dismissible fade show" role="alert"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>帳號或密碼錯誤，請檢查欄位是否正確</div>'
+                        }
+                        else if(data==3)
+                        {
+                            //帳號不存在 UsernameNotExists
+                            document.getElementById("login_status").innerHTML = '<div class="alert alert-danger alert-dismissible fade show" role="alert"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>使用者帳號不存在，請註冊新帳號</div>'
+                        }
+                        else if(data==4)
+                        {
+                            //帳號或密碼為空值 NoIdAndPassword
+                            document.getElementById("login_status").innerHTML = '<div class="alert alert-danger alert-dismissible fade show" role="alert"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>帳號或密碼不可為空值</div>'
+                        }
+                        else if(data==5)
+                        {
+                            //帳號密碼未正確傳送 TransferFailed
+                            document.getElementById("login_status").innerHTML = '<div class="alert alert-danger alert-dismissible fade show" role="alert"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>帳號或密碼未正確傳送</div>'
+                        }
+                        else
+                        {
+                            console.log(data);
+                        }
+                    }).fail(function(jqXHR,textStatus,errorThrown){
+                        //ajax執行失敗
+                        //alert("有錯誤產生，請看console log");
+                        console.log(jqXHR,responseText);
+                    });
+                return false;
                 });
-            return false;
             });
-        });
-        
-        </script>
+            
+            </script>
+        </div>
     </body>
 </html>

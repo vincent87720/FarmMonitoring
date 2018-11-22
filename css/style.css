@@ -7,21 +7,20 @@
         url('./fonts/setofont.eot') format("embedded-opentype");
 }
 
-/*****TOP*****/
-html
+
+div.background
 {
-    font-family:'setofont';
+    height: 100vh;
+    width: 100vw;
+    font-family: 'setofont';
     background-color: rgb(250, 250, 250);
 }
 div.topbar 
 {
-    font-family: 'setofont';
     min-height: 20px;
-    background-color: rgb(250, 250, 250);
 }
 
-div.main 
+div.footer 
 {
-    font-family: 'setofont';
-    background-color: rgb(250, 250, 250);
+    min-height: 50px;
 }
