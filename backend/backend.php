@@ -30,32 +30,34 @@
         <!--JavaScript-->
     </head>
     <body>
-        <div class="topbar">
-            <div class="container-fluid">
-                <div class="row">
-                    <div class="col-sm-12 text-right">
-                        <br>
-                        <div class="btn-group" role="group" aria-label="Basic example">
-                            <button type="button" class="btn btn-secondary" onclick="location.href='logout.php'">登出</button>
+        <div class="background">
+            <div class="topbar">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-sm-12 text-right">
+                            <br>
+                            <div class="btn-group" role="group" aria-label="Basic example">
+                                <button type="button" class="btn btn-secondary" onclick="location.href='logout.php'">登出</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12 align-middle">
+                            <embed src="../image/barrier.svg" style="display:inline; vertical-align:middle; width:70px; height:70px; margin:auto;"/>
+                            <h2 style="display:inline; vertical-align:middle;">自動化農場監測</h2>
                         </div>
                     </div>
                 </div>
-                <div class="row">
-                    <div class="col-sm-12 align-middle">
-                        <embed src="../image/barrier.svg" style="display:inline; vertical-align:middle; width:70px; height:70px; margin:auto;"/>
-                        <h2 style="display:inline; vertical-align:middle;">自動化農場監測</h2>
-                    </div>
-                </div>
             </div>
-        </div>
-        <div class="main">
-            <div id="flot-placeholder"></div>
-        </div>
-        <div class="footer">
-            <div class="container-fluid">
-                <div class="row">
-                    <div class="col-sm-12">
+            <div class="main">
+                <div id="flot-placeholder"></div>
+            </div>
+            <div class="footer">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-sm-12">
 
+                        </div>
                     </div>
                 </div>
             </div>
