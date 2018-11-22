@@ -43,7 +43,6 @@
                             <div class="btn-group" role="group" aria-label="Basic example">
                                 <button type="button" class="btn btn-secondary" onclick="location.href='logout.php'">登出</button>
                             </div>
-<<<<<<< HEAD
                         </div>
                     </div>
                     <div class="row">
@@ -54,26 +53,8 @@
                     </div>
                 </div>
             </div>
-            <div class="main">
-                <div id="flot-placeholder"></div>
-            </div>
-=======
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-sm-12">
-                            <embed src="../image/barrier.svg" style="display:inline; vertical-align:middle; width:70px; height:70px; margin:auto;">
-                            <h2 style="display:inline; vertical-align:middle;">自動化農場監測</h2>
-                        </div>
-                    </div>
-                </div>
-<<<<<<< Updated upstream
-                <div class="row">
-                    <div class="col-sm-12 align-middle">
-                        <embed src="./image/barrier.svg" style="display:inline; vertical-align:middle; width:70px; height:70px; margin:auto;"/>
-                        <h2 style="display:inline; vertical-align:middle;">自動化農場監測</h2>
-=======
-            </div>
+
+            
             <div class="main">
                 <div class="container-fluid">
                     <div class="row">
@@ -82,20 +63,15 @@
                                 <canvas id="Chart"></canvas>
                             </div>
                         </div>
->>>>>>> Stashed changes
                     </div>
                 </div>
             </div>
->>>>>>> backend
+
             <div class="footer">
                 <div class="container-fluid">
                     <div class="row">
                         <div class="col-sm-12">
-<<<<<<< HEAD
 
-=======
-                            
->>>>>>> backend
                         </div>
                     </div>
                 </div>
