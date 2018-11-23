@@ -46,15 +46,13 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-sm-12 align-middle">
-                            <embed src="../image/barrier.svg" style="display:inline; vertical-align:middle; width:70px; height:70px; margin:auto;"/>
+                        <div class="col-sm-12">
+                            <embed src="../image/barrier.svg" style="display:inline; vertical-align:middle; width:70px; height:70px; margin:auto;">
                             <h2 style="display:inline; vertical-align:middle;">自動化農場監測</h2>
                         </div>
                     </div>
                 </div>
             </div>
-
-            
             <div class="main">
                 <div class="container-fluid">
                     <div class="row">
@@ -66,12 +64,10 @@
                     </div>
                 </div>
             </div>
-
             <div class="footer">
                 <div class="container-fluid">
                     <div class="row">
                         <div class="col-sm-12">
-
                         </div>
                     </div>
                 </div>
