@@ -18,20 +18,30 @@
         </noscript>
         <link rel="stylesheet" href="../css/style.css" type="text/css" charset="utf8">
         <!--Bootstrap CSS-->
-        <link rel="stylesheet" href="../css/bootstrap.css">
+        <link rel="stylesheet" href="../css/bootstrap-3.3.7.css">
         <!--Bootstrap CSS-->
         
         <!--JQUERY-->
-        <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
+        <script type="text/javascript" src="../js/jquery-3.3.1.min.js"></script>
         <!--JQUERY-->
 
         <!--JavaScript-->
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+        <script type="text/javascript" src="../js/bootstrap.min.js"></script>
         <!--JavaScript-->
 
         <!--Chart.js-->
         <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
-        <!--Chart.js-->    
+        <!--Chart.js-->
+
+        <!--DatePicker-->
+        <script type="text/javascript" src="../js/moment.min.js"></script>
+        <script type="text/javascript" src="../js/bootstrap-datetimepicker.min.js"></script>
+        <link rel="stylesheet" href="../css/bootstrap-datetimepicker.css">   
+        <!-- <script type="text/javascript" src="../js/jquery-3.3.1.min.js"></script> -->
+        <!--<script type="text/javascript" src="../js/bootstrap.min.js"></script> -->
+        <!--DatePicker-->
+
+        
     </head>
     <body>
         <div class="background">
@@ -58,9 +68,27 @@
             <div class="main">
                 <div class="container-fluid">
                     <div class="row">
-                        <div class="col-sm-12">
-                            <div class="chart-container" style="position: relative; height:40vh; width:75vw">
+                        <div class="col-sm-9">
+                            <div class="chart-container" style="position: relative; height:100%; width:95%">
                                 <canvas id="Chart"></canvas>
+                            </div>
+                        </div>
+                        <div class="col-sm-3">
+                            <div class="form-group">
+                                <div class="input-group date" id="startDateTime">
+                                    <input type="text" class="form-control" id="startText" value="" readonly>
+                                    <span class="input-group-addon">
+                                        <span class="glyphicon glyphicon-th"></span>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="input-group date" id="endDateTime">
+                                    <input type="text" class="form-control" id="endText" value="" readonly>
+                                    <span class="input-group-addon">
+                                        <span class="glyphicon glyphicon-th"></span>
+                                    </span>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -71,13 +99,28 @@
                 <div class="container-fluid">
                     <div class="row">
                         <div class="col-sm-12">
-
+                            
                         </div>
                     </div>
                 </div>
             </div>
 
             <script>
+                $(function () { 
+                    $('#startDateTime').datetimepicker({
+                        format: 'yyyy-mm-dd hh:ii',
+                        defaultDate:new Date(),
+                        todayHighlight: true
+
+                    });
+
+                    $('#endDateTime').datetimepicker({
+                        format: 'yyyy-mm-dd hh:ii',
+                        defaultDate:new Date(),
+                        todayHighlight: true
+                    });
+                });
+                
                 var ctx = document.getElementById("Chart");
                 var theChart = new Chart(ctx, {
                     type: 'line',
