@@ -98,29 +98,50 @@ function verify_user($id,$pw)
 
 function get_data($start,$end)
 {
+    // $start='2018-11-11 00:00:00';
+    // $end='2018-11-11 12:00:00';
     $datetime=null;
     $data=null;
-    $sql="SELECT `DateTime`,`Sensor value` FROM `data` WHERE `Datetime` >= '{$start}' AND `Datetime` <= '{$end}'";
+    $sql="SELECT `Datetime`,`sensorValue` FROM `data` WHERE `Datetime` >= '{$start}' AND `Datetime` <= '{$end}'";
     $query = mysqli_query($_SESSION['link'],$sql);
-    $row = mysqli_fetch_array($query);
-
-    $i=0;
-    while( $row = mysqli_fetch_array($query))
+    $json_array = array();
+    
+    if ($query)
     {
-        if($i==0)//第一圈，要先輸出一個數字
+        while($row = mysqli_fetch_assoc($query))
         {
-            $data = $row['Sensor value'];
-            $datetime = $row['DateTime'];
+            $json_array[] = $row;
         }
-        else
-        {
-            $data = $data.','.$row['Sensor value'];
-            $datetime = $datetime.','.$row['DateTime'];
-        }
-        $i++;
+        
+        return json_encode($json_array);
     }
-    $ary=array("datetime"=>$datetime,"data"=>$data);
-    return $ary;
+    else
+    {
+        echo "語法執行失敗，錯誤訊息：" . mysqli_error($_SESSION['link']);
+        return false;
+    }
+    
+
+
+
+
+    // $i=0;
+    // while( $row = mysqli_fetch_array($query))
+    // {
+    //     if($i==0)//第一圈，要先輸出一個數字
+    //     {
+    //         $data = $row['Sensor value'];
+    //         $datetime = $row['DateTime'];
+    //     }
+    //     else
+    //     {
+    //         $data = $data.','.$row['Sensor value'];
+    //         $datetime = $datetime.','.$row['DateTime'];
+    //     }
+    //     $i++;
+    // }
+    // $ary=array("datetime"=>$datetime,"data"=>$data);
+    // return $ary;
 
 }
 ?>

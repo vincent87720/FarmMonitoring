@@ -67,11 +67,20 @@
                 <div class="container-fluid">
                     <div class="row">
                         <div class="col-sm-9">
-                            <div class="chart-container" style="position: relative; height:100%; width:95%">
-                                <canvas id="Chart"></canvas>
+                            <div class="chartOnXs col-xs-12">
+                                <div class="chart-container" style="position: relative; height:100%; width:95%">
+                                    <canvas id="Chart"></canvas>
+                                </div>
                             </div>
                         </div>
-                        <div class="col-sm-3">
+                        <div class="col-sm-3 text-center">
+                            <div class="btn-group" role="group" aria-label="Basic example">
+                                <button type="button" class="btn btn-warning">溫度</button>
+                                <button type="button" class="btn btn-warning">濕度</button>
+                                <button type="button" class="btn btn-warning">日照</button>
+                            </div>
+                            <br />
+                            <br />
                             <div class="form-group">
                                 <div class="input-group date" id="startDateTime">
                                     <input type="text" class="form-control" id="startText" value="" readonly>
@@ -96,20 +105,17 @@
                 <div class="container-fluid">
                     <div class="row">
                         <div class="col-sm-12">
-<<<<<<< HEAD
-=======
                             
->>>>>>> backend-datepick
                         </div>
                     </div>
                 </div>
             </div>
 
             <script>
-<<<<<<< HEAD
+                var a = 'datetime';
+                var datas = [];
                 var datetime = null;
-                var datas = null;
-                $(document).on("ready",function(){  
+                $(document).ready(function(){  
                     $('#endDateTime').datetimepicker().on('changeDate', function(ev){
                         $.ajax({
                             type:"POST",//使用表單的方式傳送，同form的method
@@ -117,24 +123,64 @@
                             //data:$('#register_form').serializeArray(),
                             data:
                             {
-                                'startText':$('#startText').val(),
-                                'endText':$('#endText').val()
+                                'startText':$("#startText").val(),
+                                'endText':$("#endText").val()
                             },
-                            dataType:'html'
+                            dataType:'json'
 
                         }).done(function(data){
-                            datetime = data['datetime'];
-                            datas = data['data'];
-                        }).false(function(jqXHR,textStatus,errorThrown){
+                            var dataTime = [];
+                            var sensorValue = [];
+                            
+                            for(var i=0;i<data.length;i++)
+                            {
+                                dataTime.push(data[i]["Datetime"].substring(5,16));
+                                sensorValue.push(data[i]["sensorValue"].substring(0,2));
+                            }
+                            //console.log(dataTime);
+                            //console.log(sensorValue);
+                            
+                            var ctx = document.getElementById("Chart");
+                            var theChart = new Chart(ctx, {
+                                type: 'line',
+                                
+                                data:{
+                                    labels:dataTime,
+                                    datasets: [{
+                                        label: '溫度',
+                                        fill:false,
+                                        lineTension: 0.1,
+                                        backgroundColor: "rgba(75, 192, 192, 1)",//標示屬性的方格的背景顏色
+                                        borderColor:"rgba(75, 192, 192, 1)",//線條顏色
+                                        borderCapStyle: 'round',//線條端點處風格為圓形
+                                        borderJoinStyle: 'round',//線段連接處風格為圓形
+                                        pointBorderColor: "rgba(75, 192, 192, 1)",//端點外圈顏色
+                                        pointBackgroundColor: "rgba(75, 192, 192, 1)",//端點內圈顏色
+                                        pointBorderWidth: 3,//端點外圈大小
+                                        pointHoverRadius: 4,//端點放大程度
+                                        pointHoverBorderColor: "rgba(75, 192, 192, 1)",//端點放後大外圈顏色
+                                        pointHoverBackgroundColor: "rgba(75, 192, 192, 1)",//端點放大後內圈顏色
+                                        pointHoverBorderWidth: 2,//端點放大後外圈大小
+                                        pointRadius: 2,//端點大小
+                                        pointHitRadius: 10,
+                                        data: sensorValue
+                                        
+                                    }]
+                                }
+                            });
+
+                            console.log(JSON.stringify(data));
+                        }).fail(function(jqXHR,ajaxOptions,errorThrown){
                             //ajax執行失敗
                             //alert("有錯誤產生，請看console log");
-                            console.log(jqXHR,responseText);
+                            console.log(jqXHR,errorThrown);
                         });    
                     });
 
                 });
 
-=======
+
+
                 $(function () { 
                     $('#startDateTime').datetimepicker({
                         format: 'yyyy-mm-dd hh:ii',
@@ -150,15 +196,14 @@
                     });
                 });
                 
->>>>>>> backend-datepick
                 var ctx = document.getElementById("Chart");
                 var theChart = new Chart(ctx, {
                     type: 'line',
                     
                     data:{
-                        labels:[datetime],
+                        labels:[1,2,3,4,5],
                         datasets: [{
-                            label: '日期',
+                            label: 'DataType',
                             fill:false,
                             lineTension: 0.1,
                             backgroundColor: "rgba(75, 192, 192, 1)",//標示屬性的方格的背景顏色
@@ -174,13 +219,11 @@
                             pointHoverBorderWidth: 2,//端點放大後外圈大小
                             pointRadius: 2,//端點大小
                             pointHitRadius: 10,
-                            data: [datas]
+                            data: [1,2,3,6,7]
                             
                         }]
                     }
                 });
-
-                
             </script>
 
         </div>
