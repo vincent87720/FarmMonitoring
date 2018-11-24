@@ -74,12 +74,39 @@
             </div>
 
             <script>
+                var datetime = null;
+                var datas = null;
+                $(document).on("ready",function(){  
+                    $('#endDateTime').datetimepicker().on('changeDate', function(ev){
+                        $.ajax({
+                            type:"POST",//使用表單的方式傳送，同form的method
+                            url:"../php/get_monitoring_data.php",
+                            //data:$('#register_form').serializeArray(),
+                            data:
+                            {
+                                'startText':$('#startText').val(),
+                                'endText':$('#endText').val()
+                            },
+                            dataType:'html'
+
+                        }).done(function(data){
+                            datetime = data['datetime'];
+                            datas = data['data'];
+                        }).false(function(jqXHR,textStatus,errorThrown){
+                            //ajax執行失敗
+                            //alert("有錯誤產生，請看console log");
+                            console.log(jqXHR,responseText);
+                        });    
+                    });
+
+                });
+
                 var ctx = document.getElementById("Chart");
                 var theChart = new Chart(ctx, {
                     type: 'line',
                     
                     data:{
-                        labels:["00:00","03:00","06:00","09:00","12:00","03:00","06:00","09:00","12:00","12:00","03:00","06:00","09:00","12:00","12:00","03:00","06:00","09:00","12:00","12:00","03:00","06:00","09:00","12:00","12:00","03:00","06:00","09:00","12:00","12:00","03:00","06:00","09:00","12:00","12:00","03:00","06:00","09:00","12:00","12:00","03:00","06:00","09:00","12:00","12:00","03:00","06:00","09:00","12:00","12:00"],
+                        labels:[datetime],
                         datasets: [{
                             label: '日期',
                             fill:false,
@@ -97,12 +124,13 @@
                             pointHoverBorderWidth: 2,//端點放大後外圈大小
                             pointRadius: 2,//端點大小
                             pointHitRadius: 10,
-                            data: [4, 13, 10, 19, 2]
+                            data: [datas]
                             
                         }]
                     }
                 });
 
+                
             </script>
 
         </div>

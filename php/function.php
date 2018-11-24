@@ -95,4 +95,32 @@ function verify_user($id,$pw)
     }
     return $result;
 }
+
+function get_data($start,$end)
+{
+    $datetime=null;
+    $data=null;
+    $sql="SELECT `DateTime`,`Sensor value` FROM `data` WHERE `Datetime` >= '{$start}' AND `Datetime` <= '{$end}'";
+    $query = mysqli_query($_SESSION['link'],$sql);
+    $row = mysqli_fetch_array($query);
+
+    $i=0;
+    while( $row = mysqli_fetch_array($query))
+    {
+        if($i==0)//第一圈，要先輸出一個數字
+        {
+            $data = $row['Sensor value'];
+            $datetime = $row['DateTime'];
+        }
+        else
+        {
+            $data = $data.','.$row['Sensor value'];
+            $datetime = $datetime.','.$row['DateTime'];
+        }
+        $i++;
+    }
+    $ary=array("datetime"=>$datetime,"data"=>$data);
+    return $ary;
+
+}
 ?>
