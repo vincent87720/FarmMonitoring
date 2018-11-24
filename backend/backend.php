@@ -51,7 +51,7 @@
                         <div class="col-sm-12 text-right">
                             <br>
                             <div class="btn-group" role="group" aria-label="Basic example">
-                                <button type="button" class="btn btn-secondary" onclick="location.href='logout.php'">登出</button>
+                                <button type="button" class="btn btn-info" onclick="location.href='logout.php'">登出</button>
                             </div>
                         </div>
                     </div>

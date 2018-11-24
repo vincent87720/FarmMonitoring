@@ -74,7 +74,7 @@
                                         <input type="password" class="form-control" name="password" id="password" placeholder="密碼">
                                     </div>
                                     <div class="col-sm-12 text-center">
-                                        <button type="submit" id="submit" class="btn btn-default">Login</button>                                    
+                                        <button type="submit" id="submit" class="btn btn-secondary">Login</button>                                    
                                     </div>
                                 </form>
                             </div>
