@@ -134,7 +134,7 @@
                             
                             for(var i=0;i<data.length;i++)
                             {
-                                dataTime.push(data[i]["Datetime"].substring(5,16));
+                                dataTime.push(data[i]["dateTime"].substring(5,16));
                                 sensorValue.push(data[i]["sensorValue"].substring(0,2));
                             }
                             //console.log(dataTime);

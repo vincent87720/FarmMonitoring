@@ -102,7 +102,7 @@ function get_data($start,$end)
     // $end='2018-11-11 12:00:00';
     $datetime=null;
     $data=null;
-    $sql="SELECT `Datetime`,`sensorValue` FROM `data` WHERE `Datetime` >= '{$start}' AND `Datetime` <= '{$end}'";
+    $sql="SELECT `dateTime`,`sensorValue` FROM `data` WHERE `Datetime` >= '{$start}' AND `Datetime` <= '{$end}'";
     $query = mysqli_query($_SESSION['link'],$sql);
     $json_array = array();
     
