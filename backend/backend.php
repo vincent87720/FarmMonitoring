@@ -68,7 +68,7 @@
                     <div class="row">
                         <div class="col-sm-9">
                             <div class="chartOnXs col-xs-12">
-                                <div class="chart-container" style="position: relative; height:100%; width:95%">
+                                <div class="chart-container" style="position: relative; height:100%; width:100%">
                                     <canvas id="Chart"></canvas>
                                 </div>
                             </div>
