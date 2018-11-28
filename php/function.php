@@ -98,11 +98,7 @@ function verify_user($id,$pw)
 
 function get_data($start,$end)
 {
-    // $start='2018-11-11 00:00:00';
-    // $end='2018-11-11 12:00:00';
-    $datetime=null;
-    $data=null;
-    $sql="SELECT `dateTime`,`sensorValue` FROM `data` WHERE `Datetime` >= '{$start}' AND `Datetime` <= '{$end}'";
+    $sql="SELECT `dateTime`,`sensorValue` FROM `data` WHERE `dateTime` >= '{$start}' AND `dateTime` <= '{$end}'";
     $query = mysqli_query($_SESSION['link'],$sql);
     $json_array = array();
     
@@ -120,28 +116,5 @@ function get_data($start,$end)
         echo "語法執行失敗，錯誤訊息：" . mysqli_error($_SESSION['link']);
         return false;
     }
-    
-
-
-
-
-    // $i=0;
-    // while( $row = mysqli_fetch_array($query))
-    // {
-    //     if($i==0)//第一圈，要先輸出一個數字
-    //     {
-    //         $data = $row['Sensor value'];
-    //         $datetime = $row['DateTime'];
-    //     }
-    //     else
-    //     {
-    //         $data = $data.','.$row['Sensor value'];
-    //         $datetime = $datetime.','.$row['DateTime'];
-    //     }
-    //     $i++;
-    // }
-    // $ary=array("datetime"=>$datetime,"data"=>$data);
-    // return $ary;
-
 }
 ?>

@@ -30,7 +30,8 @@
         <!--JavaScript-->
 
         <!--Chart.js-->
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
+        <!-- Version 2.7.3 -->
+        <script src="../js/Chart.min.js"></script>
         <!--Chart.js-->
 
         <!--DatePicker-->
@@ -68,7 +69,7 @@
                     <div class="row">
                         <div class="col-sm-9">
                             <div class="chartOnXs col-xs-12">
-                                <div class="chart-container" style="position: relative; height:100%; width:100%">
+                                <div class="chart-container" id="ChartParent" style="position: relative; height:100%; width:100%">
                                     <canvas id="Chart"></canvas>
                                 </div>
                             </div>
@@ -112,15 +113,26 @@
             </div>
 
             <script>
-                var a = 'datetime';
-                var datas = [];
-                var datetime = null;
-                $(document).ready(function(){  
+                $(document).ready(function(){
+                    $('#startDateTime').datetimepicker().on('changeDate', function(ev){
+                        drawChart();
+                    });
                     $('#endDateTime').datetimepicker().on('changeDate', function(ev){
+                        drawChart();
+                    });
+
+                    function drawChart()
+                    {
+                        //乾他媽的下面這兩行方法我找超久
+                        //問題：使用新數據在canvas上繪圖時，之前查詢的圖表依然存在，滑鼠在圖表上移動時，兩張圖表會來回閃動
+                        //解決方法：先將上次查詢的canvas移除掉，再加入新的canvas到他的父div中
+                        //參考資料：https://zhidao.baidu.com/question/1754670090672222588.html
+                        $('#Chart').remove(); // this is my <canvas> element
+                        $('#ChartParent').append('<canvas id="Chart"></canvas>');
                         $.ajax({
                             type:"POST",//使用表單的方式傳送，同form的method
                             url:"../php/get_monitoring_data.php",
-                            //data:$('#register_form').serializeArray(),
+                            async: false,
                             data:
                             {
                                 'startText':$("#startText").val(),
@@ -129,23 +141,20 @@
                             dataType:'json'
 
                         }).done(function(data){
-                            var dataTime = [];
+                            //console.log(JSON.stringify(data));
+                            var dateTime = [];
                             var sensorValue = [];
-                            
+
                             for(var i=0;i<data.length;i++)
                             {
-                                dataTime.push(data[i]["dateTime"].substring(5,16));
+                                dateTime.push(data[i]["dateTime"].substring(5,16));
                                 sensorValue.push(data[i]["sensorValue"].substring(0,2));
                             }
-                            //console.log(dataTime);
-                            //console.log(sensorValue);
-                            
                             var ctx = document.getElementById("Chart");
                             var theChart = new Chart(ctx, {
                                 type: 'line',
-                                
                                 data:{
-                                    labels:dataTime,
+                                    labels:dateTime,
                                     datasets: [{
                                         label: '溫度',
                                         fill:false,
@@ -164,21 +173,16 @@
                                         pointRadius: 2,//端點大小
                                         pointHitRadius: 10,
                                         data: sensorValue
-                                        
                                     }]
                                 }
                             });
-
-                            console.log(JSON.stringify(data));
-                        }).fail(function(jqXHR,ajaxOptions,errorThrown){
+                        }).fail(function(jqXHR,textStatus,errorThrown){
                             //ajax執行失敗
                             //alert("有錯誤產生，請看console log");
-                            console.log(jqXHR,errorThrown);
+                            console.log(jqXHR,responseText);
                         });    
-                    });
-
+                    }
                 });
-
 
 
                 $(function () { 
@@ -201,7 +205,7 @@
                     type: 'line',
                     
                     data:{
-                        labels:[1,2,3,4,5],
+                        labels:[1,2,3,4,5,6],
                         datasets: [{
                             label: 'DataType',
                             fill:false,
@@ -219,8 +223,7 @@
                             pointHoverBorderWidth: 2,//端點放大後外圈大小
                             pointRadius: 2,//端點大小
                             pointHitRadius: 10,
-                            data: [1,2,3,6,7]
-                            
+                            data: [0,1,4,5,8,9]
                         }]
                     }
                 });
