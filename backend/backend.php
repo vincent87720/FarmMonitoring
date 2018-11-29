@@ -72,9 +72,14 @@
                                 <div class="chart-container" id="ChartParent" style="position: relative; height:100%; width:100%">
                                     <canvas id="Chart"></canvas>
                                 </div>
+                                    <p id="showFarmDescription" class="text-center"></p>
                             </div>
                         </div>
-                        <div class="col-sm-3 text-center">
+                        <div class="col-sm-3 text-center ml-auto mr-auto">
+                            <?php
+                                require_once '../php/function.php';
+                                get_farm();
+                            ?>
                             <div class="btn-group" role="group" aria-label="Basic example">
                                 <button type="button" class="btn btn-warning">溫度</button>
                                 <button type="button" class="btn btn-warning">濕度</button>
@@ -114,13 +119,33 @@
 
             <script>
                 $(document).ready(function(){
+                    //當觸發datetimepicker的開始日期時
                     $('#startDateTime').datetimepicker().on('changeDate', function(ev){
-                        drawChart();
-                    });
-                    $('#endDateTime').datetimepicker().on('changeDate', function(ev){
+                        //呼叫drawChart()函式取得資料
                         drawChart();
                     });
 
+                    //當觸發datetimepicker的結束日期時
+                    $('#endDateTime').datetimepicker().on('changeDate', function(ev){
+                        //呼叫drawChart()函式取得資料
+                        drawChart();
+                    });
+
+                    //當觸發選擇農場下拉式選單時
+                    $(".dropdown-menu").on('click', 'li a', function(){
+                        //將下拉式選單按鈕改為選擇的農場編號
+                        $("#farmChoose:first-child").text($(this).text().substring(17,28));
+                        $("#farmChoose:first-child").val($(this).text().substring(17,28));
+                        
+                        //在圖表下方顯示農場位置描述
+                        $('#showFarmDescription').val()
+                        document.getElementById("showFarmDescription").innerHTML = '<div class="btn-group" role="group" aria-label="Basic example"><button type="button" class="btn btn-warning">'+$(this).text().substring(96,150)+'</button></div>';
+                        
+                        //呼叫drawChart()函式取得資料
+                        drawChart();
+                        
+                    });
+                    
                     function drawChart()
                     {
                         //乾他媽的下面這兩行方法我找超久
@@ -135,6 +160,7 @@
                             async: false,
                             data:
                             {
+                                'farm':$("#farmChoose:first-child").val().substring(0,10),//因為是取整個<a>所以前面會空18格
                                 'startText':$("#startText").val(),
                                 'endText':$("#endText").val()
                             },
@@ -183,7 +209,8 @@
                         });    
                     }
                 });
-
+        
+                
 
                 $(function () { 
                     $('#startDateTime').datetimepicker({

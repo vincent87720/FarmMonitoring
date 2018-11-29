@@ -64,7 +64,7 @@ function verify_user($id,$pw)
 
     $result=null;
     $pw = md5($pw);
-    $sql="SELECT `password` FROM `users` WHERE `username` like '{$id}'";
+    $sql="SELECT `password`,`identity` FROM `users` WHERE `username` like '{$id}'";
     $query = mysqli_query($_SESSION['link'],$sql);
     $row = mysqli_fetch_array($query);
     
@@ -77,6 +77,7 @@ function verify_user($id,$pw)
             {
                 $_SESSION['is_login'] = TRUE;
                 $_SESSION['login_user_id'] = $id;
+                $_SESSION['login_user_identity'] = $row['identity'];
                 $result = '1';//VerifySuccess
             }
             else
@@ -96,9 +97,14 @@ function verify_user($id,$pw)
     return $result;
 }
 
-function get_data($start,$end)
+function get_data($farm,$start,$end)
 {
-    $sql="SELECT `dateTime`,`sensorValue` FROM `data` WHERE `dateTime` >= '{$start}' AND `dateTime` <= '{$end}'";
+
+    $sql="SELECT `dateTime`,`sensorValue` 
+          FROM `rawData`
+          WHERE `dateTime` >= '{$start}' 
+          AND `dateTime` <= '{$end}'
+          AND `LOCALPC#` = '{$farm}'";
     $query = mysqli_query($_SESSION['link'],$sql);
     $json_array = array();
     
@@ -110,6 +116,74 @@ function get_data($start,$end)
         }
         
         return json_encode($json_array);
+    }
+    else
+    {
+        echo "語法執行失敗，錯誤訊息：" . mysqli_error($_SESSION['link']);
+        return false;
+    }
+}
+
+//查詢全部農場
+function get_farm()
+{
+    
+    if($_SESSION['login_user_identity']=='admin')
+    {
+        //若身分為admin則顯示全部農場資料
+        $sql="SELECT * FROM `localpc`";
+    }
+    else
+    {
+        //若身分不是admin則顯示登入者負責的農場資料
+        $sql = "SELECT * FROM `localpc` WHERE `farmAdminId` LIKE '{$_SESSION['login_user_id']}'";
+    }
+    
+    $query = mysqli_query($_SESSION['link'],$sql);
+    if ($query)
+    {
+        echo <<< EOT
+        <div class="dropdown">
+            <button class="btn btn-warning dropdown-toggle" type="button" id="farmChoose" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                農場
+                <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu" aria-labelledby="farmChoose" name="farmChoose">
+EOT;
+        $i = 1;
+        while($row = mysqli_fetch_assoc($query))
+        {
+            echo <<< EOT
+            <li>
+                <a href="#" data-value=$i>
+                <p>
+EOT;
+                echo $row['LOCALPC#'];
+            echo <<< EOT
+                </p>
+                <h4> 
+                <span class="glyphicon glyphicon-leaf"></span> 
+                <span>
+EOT;
+            echo $row['positionDescription'];
+            echo <<< EOT
+            </span>  
+                </h4>
+                </a>
+            </li>
+EOT;
+            //若不是最後一行，要輸出分隔線
+            if($i!=mysqli_num_rows($query))
+            {
+                echo '<li class="divider"></li>';
+            }
+            $i++;
+        }
+        echo <<< EOT
+            </ul>
+        </div>
+        <br />
+EOT;
     }
     else
     {
