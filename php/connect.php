@@ -2,7 +2,7 @@
 //session_cache_limiter('private');//返回上一頁時(history.go(-1))不清空表單，只在session生效期間
 @session_start();
 //設定連線資訊，建立與bbqandvenuerental資料庫的連線
-$host='localhost';
+$host='127.0.0.1';
 $username='webuser';
 $password='iamwebuser';
 $database='testdb';

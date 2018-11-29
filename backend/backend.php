@@ -157,7 +157,7 @@
                         $.ajax({
                             type:"POST",//使用表單的方式傳送，同form的method
                             url:"../php/get_monitoring_data.php",
-                            async: false,
+                            async: true,
                             data:
                             {
                                 'farm':$("#farmChoose:first-child").val().substring(0,10),//因為是取整個<a>所以前面會空18格
