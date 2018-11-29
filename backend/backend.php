@@ -173,7 +173,7 @@
 
                             for(var i=0;i<data.length;i++)
                             {
-                                dateTime.push(data[i]["dateTime"].substring(5,16));
+                                dateTime.push(data[i]["dateTime"].substring(5,7)+'/'+data[i]["dateTime"].substring(8,16));
                                 sensorValue.push(data[i]["sensorValue"].substring(0,2));
                             }
                             var ctx = document.getElementById("Chart");
