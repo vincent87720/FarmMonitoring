@@ -51,15 +51,19 @@
                     <div class="row">
                         <div class="col-sm-12 text-right">
                             <br>
+                            <!--顯示登入中帳號的資訊與登出按鈕-->
                             <div class="btn-group" role="group" aria-label="Basic example">
                                 <button type="button" class="btn btn-info" onclick="location.href='logout.php'">登出</button>
                             </div>
+                            <!--顯示登入中帳號的資訊與登出按鈕-->
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-sm-12">
+                            <!--顯示LOGO與標題-->
                             <embed src="../image/barrier.svg" style="display:inline; vertical-align:middle; width:70px; height:70px; margin:auto;">
                             <h2 style="display:inline; vertical-align:middle;">自動化農場監測</h2>
+                            <!--顯示LOGO與標題-->
                         </div>
                     </div>
                 </div>
@@ -69,24 +73,35 @@
                     <div class="row">
                         <div class="col-sm-9">
                             <div class="chartOnXs col-xs-12">
+                                <!--繪製圖表-->
                                 <div class="chart-container" id="ChartParent" style="position: relative; height:100%; width:100%">
                                     <canvas id="Chart"></canvas>
                                 </div>
-                                    <p id="showFarmDescription" class="text-center"></p>
+                                <!--繪製圖表-->
+
+                                <!--顯示農場位置描述-->
+                                <p id="showFarmDescription" class="text-center"></p>
+                                <!--顯示農場位置描述-->
                             </div>
                         </div>
                         <div class="col-sm-3 text-center ml-auto mr-auto">
+                            <!--顯示選擇農場按鈕-->
                             <?php
                                 require_once '../php/function.php';
                                 get_farm();
                             ?>
+                            <!--顯示選擇農場按鈕-->
+
+                            <!--選擇要觀測數值種類的按鈕-->
                             <div class="btn-group" role="group" aria-label="Basic example">
                                 <button type="button" class="btn btn-warning">溫度</button>
                                 <button type="button" class="btn btn-warning">濕度</button>
                                 <button type="button" class="btn btn-warning">日照</button>
                             </div>
+                            <!--選擇要觀測數值種類的按鈕-->
                             <br />
                             <br />
+                            <!--選擇開始與結束日期-->
                             <div class="form-group">
                                 <div class="input-group date" id="startDateTime">
                                     <input type="text" class="form-control" id="startText" value="" readonly>
@@ -103,6 +118,7 @@
                                     </span>
                                 </div>
                             </div>
+                            <!--選擇開始與結束日期-->
                         </div>
                     </div>
                 </div>
