@@ -57,8 +57,17 @@
             <div class="main">
                 <div class="container-fluid">
                     <div class="row">
-                        <div class="col-sm-12">
-                            
+                        <div class="col-sm-4 ml-auto">
+                            <div class="jumbotron jumbotron-fluid">
+                                <div class="container">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-4 mr-auto">
+                            <div class="jumbotron jumbotron-fluid">
+                                <div class="container">
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
