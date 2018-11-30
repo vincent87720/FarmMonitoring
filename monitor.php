@@ -1,8 +1,8 @@
 <?php
-    require_once '../php/connect.php';
+    require_once 'php/connect.php';
     if(!isset($_SESSION['is_login'])||$_SESSION['is_login']==FALSE):
     {
-        header("Location: ../index.php");
+        header("Location: index.php");
     }
     else:
 ?>
@@ -12,34 +12,34 @@
         <title>自動化農場監測</title>
         <meta name="keyword" content="農場'自動化農場'農場數據監測'"><!--keyword讓搜索引擎容易找到此網頁-->
         <meta name="viewport" content="width=device-width, initial-scale=1" ><!--指定螢幕寬度為裝置寬度，畫面載入初始縮放比例 100%-->
-        <link rel="icon" href="../image/barrier.ico">
+        <link rel="icon" href="image/barrier.ico">
         <noscript>
             
         </noscript>
-        <link rel="stylesheet" href="../css/style.css" type="text/css" charset="utf8">
+        <link rel="stylesheet" href="css/style.css" type="text/css" charset="utf8">
         <!--Bootstrap CSS-->
-        <link rel="stylesheet" href="../css/bootstrap-3.3.7.css">
+        <link rel="stylesheet" href="css/bootstrap-3.3.7.css">
         <!--Bootstrap CSS-->
         
         <!--JQUERY-->
-        <script type="text/javascript" src="../js/jquery-3.3.1.min.js"></script>
+        <script type="text/javascript" src="js/jquery-3.3.1.min.js"></script>
         <!--JQUERY-->
 
         <!--JavaScript-->
-        <script type="text/javascript" src="../js/bootstrap.min.js"></script>
+        <script type="text/javascript" src="js/bootstrap.min.js"></script>
         <!--JavaScript-->
 
         <!--Chart.js-->
         <!-- Version 2.7.3 -->
-        <script src="../js/Chart.min.js"></script>
+        <script src="js/Chart.min.js"></script>
         <!--Chart.js-->
 
         <!--DatePicker-->
-        <script type="text/javascript" src="../js/moment.min.js"></script>
-        <script type="text/javascript" src="../js/bootstrap-datetimepicker.min.js"></script>
-        <link rel="stylesheet" href="../css/bootstrap-datetimepicker.css">   
-        <!-- <script type="text/javascript" src="../js/jquery-3.3.1.min.js"></script> -->
-        <!--<script type="text/javascript" src="../js/bootstrap.min.js"></script> -->
+        <script type="text/javascript" src="js/moment.min.js"></script>
+        <script type="text/javascript" src="js/bootstrap-datetimepicker.min.js"></script>
+        <link rel="stylesheet" href="css/bootstrap-datetimepicker.css">   
+        <!-- <script type="text/javascript" src="js/jquery-3.3.1.min.js"></script> -->
+        <!--<script type="text/javascript" src="js/bootstrap.min.js"></script> -->
         <!--DatePicker-->
 
         
@@ -53,7 +53,8 @@
                             <br>
                             <!--顯示登入中帳號的資訊與登出按鈕-->
                             <div class="btn-group" role="group" aria-label="Basic example">
-                                <button type="button" class="btn btn-info" onclick="location.href='logout.php'">登出</button>
+                                <button type="button" class="btn btn-info" onclick="location.href='account.php'"><?php echo $_SESSION['login_user_id']?></button>
+                                <button type="button" class="btn btn-info" onclick="location.href='php/logout.php'">登出</button>
                             </div>
                             <!--顯示登入中帳號的資訊與登出按鈕-->
                         </div>
@@ -61,7 +62,7 @@
                     <div class="row">
                         <div class="col-sm-12">
                             <!--顯示LOGO與標題-->
-                            <embed src="../image/barrier.svg" style="display:inline; vertical-align:middle; width:70px; height:70px; margin:auto;">
+                            <embed src="image/barrier.svg" style="display:inline; vertical-align:middle; width:70px; height:70px; margin:auto;">
                             <h2 style="display:inline; vertical-align:middle;">自動化農場監測</h2>
                             <!--顯示LOGO與標題-->
                         </div>
@@ -87,7 +88,7 @@
                         <div class="col-sm-3 text-center ml-auto mr-auto">
                             <!--顯示選擇農場按鈕-->
                             <?php
-                                require_once '../php/function.php';
+                                require_once 'php/function.php';
                                 get_farm();
                             ?>
                             <!--顯示選擇農場按鈕-->
@@ -172,7 +173,7 @@
                         $('#ChartParent').append('<canvas id="Chart"></canvas>');
                         $.ajax({
                             type:"POST",//使用表單的方式傳送，同form的method
-                            url:"../php/get_monitoring_data.php",
+                            url:"php/get_monitoring_data.php",
                             async: true,
                             data:
                             {

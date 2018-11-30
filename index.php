@@ -2,7 +2,7 @@
     require_once 'php/connect.php';
     if(isset($_SESSION['is_login']) && $_SESSION['is_login'])
     {
-        header("Location: backend/backend.php");
+        header("Location: monitor.php");
     }
 ?>
 
@@ -106,11 +106,11 @@
                             //success
                             
                             //solution1
-                            window.location.href = 'backend/backend.php';
+                            window.location.href = 'monitor.php';
 
                             //solution2
                             //document.getElementById("login_status").innerHTML = '<div class="alert alert-success alert-dismissible fade show" role="alert"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>登入成功!!</div>';
-                            //setTimeout('window.location.href = "./backend/backend.php";  window.event.returnValue=false;',500);
+                            //setTimeout('window.location.href = "monitor.php";  window.event.returnValue=false;',500);
                         }
                         else if(data==2)
                         {
