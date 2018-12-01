@@ -97,14 +97,15 @@ function verify_user($id,$pw)
     return $result;
 }
 
-function get_data($farm,$start,$end)
+function get_data($farm,$typeOfData,$start,$end)
 {
 
     $sql="SELECT `dateTime`,`sensorValue` 
           FROM `rawData`
-          WHERE `dateTime` >= '{$start}' 
-          AND `dateTime` <= '{$end}'
-          AND `LOCALPC#` = '{$farm}'";
+          WHERE `LOCALPC#` = '{$farm}'
+          AND `typeOfSensor` = '{$typeOfData}'
+          AND `dateTime` >= '{$start}'
+          AND `dateTime` <= '{$end}'";
     $query = mysqli_query($_SESSION['link'],$sql);
     $json_array = array();
     

@@ -94,14 +94,22 @@
                             <!--顯示選擇農場按鈕-->
 
                             <!--選擇要觀測數值種類的按鈕-->
-                            <div class="btn-group" role="group" aria-label="Basic example">
-                                <button type="button" class="btn btn-warning">溫度</button>
-                                <button type="button" class="btn btn-warning">濕度</button>
-                                <button type="button" class="btn btn-warning">日照</button>
+                            <div class="btn-group btn-group-toggle" id="dataType" data-toggle="buttons">
+                                <label class="btn btn-warning active">
+                                    <input type="radio" name="typeOfData" id="option1" value="溫度" autocomplete="off" checked>溫度
+                                </label>
+                                <label class="btn btn-warning">
+                                    <input type="radio" name="typeOfData" id="option2" value="濕度" autocomplete="off">濕度
+                                </label>
+                                <label class="btn btn-warning">
+                                    <input type="radio" name="typeOfData" id="option3" value="日照" autocomplete="off">日照
+                                </label>
                             </div>
                             <!--選擇要觀測數值種類的按鈕-->
+
                             <br />
                             <br />
+
                             <!--選擇開始與結束日期-->
                             <div class="form-group">
                                 <div class="input-group date" id="startDateTime">
@@ -136,18 +144,6 @@
 
             <script>
                 $(document).ready(function(){
-                    //當觸發datetimepicker的開始日期時
-                    $('#startDateTime').datetimepicker().on('changeDate', function(ev){
-                        //呼叫drawChart()函式取得資料
-                        drawChart();
-                    });
-
-                    //當觸發datetimepicker的結束日期時
-                    $('#endDateTime').datetimepicker().on('changeDate', function(ev){
-                        //呼叫drawChart()函式取得資料
-                        drawChart();
-                    });
-
                     //當觸發選擇農場下拉式選單時
                     $(".dropdown-menu").on('click', 'li a', function(){
                         //將下拉式選單按鈕改為選擇的農場編號
@@ -162,6 +158,29 @@
                         drawChart();
                         
                     });
+
+                    //點選按鈕選擇監測數值的種類
+                    $('#dataType').on('change',function(){
+                        //若用onclick會發生值還沒改變就先被傳送的狀況
+                        //必須用onchange等值改變後再呼叫drawChart函式
+                        drawChart();
+                    });
+                    
+                    //當觸發datetimepicker的開始日期時
+                    $('#startDateTime').datetimepicker().on('changeDate', function(ev){
+                        //隱藏日期時間選擇器
+                        $('#startDateTime').datetimepicker('hide');
+                        //呼叫drawChart()函式取得資料
+                        drawChart();
+                    });
+
+                    //當觸發datetimepicker的結束日期時
+                    $('#endDateTime').datetimepicker().on('changeDate', function(ev){
+                        //隱藏日期時間選擇器
+                        $('#endDateTime').datetimepicker('hide');
+                        //呼叫drawChart()函式取得資料
+                        drawChart();
+                    });
                     
                     function drawChart()
                     {
@@ -175,9 +194,11 @@
                             type:"POST",//使用表單的方式傳送，同form的method
                             url:"php/get_monitoring_data.php",
                             async: true,
+                            cache: false,
                             data:
                             {
                                 'farm':$("#farmChoose:first-child").val().substring(0,10),//因為是取整個<a>所以前面會空18格
+                                'typeOfData':$('input[name=typeOfData]:checked').val(),
                                 'startText':$("#startText").val(),
                                 'endText':$("#endText").val()
                             },
@@ -185,45 +206,193 @@
 
                         }).done(function(data){
                             //console.log(JSON.stringify(data));
+                            var typeOfData = $('input[name=typeOfData]:checked').val();
                             var dateTime = [];
                             var sensorValue = [];
-
-                            for(var i=0;i<data.length;i++)
+                            if(typeOfData=="溫度")
                             {
-                                dateTime.push(data[i]["dateTime"].substring(5,7)+'/'+data[i]["dateTime"].substring(8,16));
-                                sensorValue.push(data[i]["sensorValue"].substring(0,2));
-                            }
-                            var ctx = document.getElementById("Chart");
-                            var theChart = new Chart(ctx, {
-                                type: 'line',
-                                data:{
-                                    labels:dateTime,
-                                    datasets: [{
-                                        label: '溫度',
-                                        fill:false,
-                                        lineTension: 0.1,
-                                        backgroundColor: "rgba(75, 192, 192, 1)",//標示屬性的方格的背景顏色
-                                        borderColor:"rgba(75, 192, 192, 1)",//線條顏色
-                                        borderCapStyle: 'round',//線條端點處風格為圓形
-                                        borderJoinStyle: 'round',//線段連接處風格為圓形
-                                        pointBorderColor: "rgba(75, 192, 192, 1)",//端點外圈顏色
-                                        pointBackgroundColor: "rgba(75, 192, 192, 1)",//端點內圈顏色
-                                        pointBorderWidth: 3,//端點外圈大小
-                                        pointHoverRadius: 4,//端點放大程度
-                                        pointHoverBorderColor: "rgba(75, 192, 192, 1)",//端點放後大外圈顏色
-                                        pointHoverBackgroundColor: "rgba(75, 192, 192, 1)",//端點放大後內圈顏色
-                                        pointHoverBorderWidth: 2,//端點放大後外圈大小
-                                        pointRadius: 2,//端點大小
-                                        pointHitRadius: 10,
-                                        data: sensorValue
-                                    }]
+                                for(var i=0;i<data.length;i++)
+                                {
+                                    dateTime.push(data[i]["dateTime"].substring(5,7)+'/'+data[i]["dateTime"].substring(8,16));
+                                    sensorValue.push(data[i]["sensorValue"].substring(0,2));
                                 }
-                            });
+                                var ctx = document.getElementById("Chart");
+                                var theChart = new Chart(ctx, {
+                                    type: 'line',
+                                    data:{
+                                        labels:dateTime,
+                                        datasets: [{
+                                            label: '溫度',
+                                            fill:false,
+                                            lineTension: 0.1,
+                                            backgroundColor: "rgba(75, 192, 192, 1)",//標示屬性的方格的背景顏色
+                                            borderColor:"rgba(75, 192, 192, 1)",//線條顏色
+                                            borderCapStyle: 'round',//線條端點處風格為圓形
+                                            borderJoinStyle: 'round',//線段連接處風格為圓形
+                                            pointBorderColor: "rgba(75, 192, 192, 1)",//端點外圈顏色
+                                            pointBackgroundColor: "rgba(75, 192, 192, 1)",//端點內圈顏色
+                                            pointBorderWidth: 3,//端點外圈大小
+                                            pointHoverRadius: 4,//端點放大程度
+                                            pointHoverBorderColor: "rgba(75, 192, 192, 1)",//端點放後大外圈顏色
+                                            pointHoverBackgroundColor: "rgba(75, 192, 192, 1)",//端點放大後內圈顏色
+                                            pointHoverBorderWidth: 2,//端點放大後外圈大小
+                                            pointRadius: 2,//端點大小
+                                            pointHitRadius: 10,
+                                            data: sensorValue
+                                        }]
+                                    },
+                                    options: 
+                                    {
+                                        scales: 
+                                        {
+                                            xAxes: 
+                                            [{
+                                                display: true,
+                                                scaleLabel: 
+                                                {
+                                                    display: true,
+                                                    labelString: '日期時間'
+                                                }
+                                            }],
+                                            yAxes: 
+                                            [{
+                                                display: true,
+                                                scaleLabel: 
+                                                {
+                                                    display: true,
+                                                    labelString: '溫度(℃)'
+                                                }
+                                            }]
+                                        }
+                                    }
+                                });
+                            }
+                            else if(typeOfData=="濕度")
+                            {
+                                for(var i=0;i<data.length;i++)
+                                {
+                                    dateTime.push(data[i]["dateTime"].substring(5,7)+'/'+data[i]["dateTime"].substring(8,16));
+                                    sensorValue.push(data[i]["sensorValue"].substring(0,2));
+                                }
+                                var ctx = document.getElementById("Chart");
+                                var theChart = new Chart(ctx, {
+                                    type: 'line',
+                                    data:
+                                    {
+                                        labels:dateTime,
+                                        datasets: 
+                                        [{
+                                            label: '濕度',
+                                            fill:false,
+                                            lineTension: 0.1,
+                                            backgroundColor: "rgb(54, 162, 235)",//標示屬性的方格的背景顏色
+                                            borderColor:"rgb(54, 162, 235)",//線條顏色
+                                            borderCapStyle: 'round',//線條端點處風格為圓形
+                                            borderJoinStyle: 'round',//線段連接處風格為圓形
+                                            pointBorderColor: "rgb(54, 162, 235)",//端點外圈顏色
+                                            pointBackgroundColor: "rgb(54, 162, 235)",//端點內圈顏色
+                                            pointBorderWidth: 3,//端點外圈大小
+                                            pointHoverRadius: 4,//端點放大程度
+                                            pointHoverBorderColor: "rgb(54, 162, 235)",//端點放後大外圈顏色
+                                            pointHoverBackgroundColor: "rgb(54, 162, 235)",//端點放大後內圈顏色
+                                            pointHoverBorderWidth: 2,//端點放大後外圈大小
+                                            pointRadius: 2,//端點大小
+                                            pointHitRadius: 10,
+                                            data: sensorValue
+                                        }]
+                                    },
+                                    options: 
+                                    {
+                                        scales: 
+                                        {
+                                            xAxes: 
+                                            [{
+                                                display: true,
+                                                scaleLabel: 
+                                                {
+                                                    display: true,
+                                                    labelString: '日期時間'
+                                                }
+                                            }],
+                                            yAxes: 
+                                            [{
+                                                display: true,
+                                                scaleLabel: 
+                                                {
+                                                    display: true,
+                                                    labelString: '濕度(%RH)'
+                                                }
+                                            }]
+                                        }
+                                    }
+                                });
+                            }
+                            else if(typeOfData=="日照")
+                            {
+                                for(var i=0;i<data.length;i++)
+                                {
+                                    dateTime.push(data[i]["dateTime"].substring(5,7)+'/'+data[i]["dateTime"].substring(8,16));
+                                    sensorValue.push(data[i]["sensorValue"].substring(0,2));
+                                }
+                                var ctx = document.getElementById("Chart");
+                                var theChart = new Chart(ctx, {
+                                    type: 'line',
+                                    data:
+                                    {
+                                        labels:dateTime,
+                                        datasets: 
+                                        [{
+                                            label: '日照',
+                                            fill:false,
+                                            lineTension: 0.1,
+                                            backgroundColor: "rgb(255, 205, 86)",//標示屬性的方格的背景顏色
+                                            borderColor:"rgb(255, 205, 86)",//線條顏色
+                                            borderCapStyle: 'round',//線條端點處風格為圓形
+                                            borderJoinStyle: 'round',//線段連接處風格為圓形
+                                            pointBorderColor: "rgb(255, 205, 86)",//端點外圈顏色
+                                            pointBackgroundColor: "rgb(255, 205, 86)",//端點內圈顏色
+                                            pointBorderWidth: 3,//端點外圈大小
+                                            pointHoverRadius: 4,//端點放大程度
+                                            pointHoverBorderColor: "rgb(255, 205, 86)",//端點放後大外圈顏色
+                                            pointHoverBackgroundColor: "rgb(255, 205, 86)",//端點放大後內圈顏色
+                                            pointHoverBorderWidth: 2,//端點放大後外圈大小
+                                            pointRadius: 2,//端點大小
+                                            pointHitRadius: 10,
+                                            data: sensorValue
+                                        }]
+                                    },
+                                    options: 
+                                    {
+                                        scales: 
+                                        {
+                                            xAxes: 
+                                            [{
+                                                display: true,
+                                                scaleLabel: 
+                                                {
+                                                    display: true,
+                                                    labelString: '日期時間'
+                                                }
+                                            }],
+                                            yAxes: 
+                                            [{
+                                                display: true,
+                                                scaleLabel: 
+                                                {
+                                                    display: true,
+                                                    labelString: '日照'
+                                                }
+                                            }]
+                                        }
+                                    }
+                                });
+                            }
                         }).fail(function(jqXHR,textStatus,errorThrown){
                             //ajax執行失敗
                             //alert("有錯誤產生，請看console log");
                             console.log(jqXHR,responseText);
-                        });    
+                        });  
+                        return false;  
                     }
                 });
         
@@ -233,14 +402,16 @@
                     $('#startDateTime').datetimepicker({
                         format: 'yyyy-mm-dd hh:ii',
                         defaultDate:new Date(),
-                        todayHighlight: true
+                        todayHighlight: true,
+                        autoclose: true
 
                     });
 
                     $('#endDateTime').datetimepicker({
                         format: 'yyyy-mm-dd hh:ii',
                         defaultDate:new Date(),
-                        todayHighlight: true
+                        todayHighlight: true,
+                        autoclose: true
                     });
                 });
                 
