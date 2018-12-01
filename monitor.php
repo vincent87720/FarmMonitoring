@@ -88,7 +88,7 @@
                         <div class="col-sm-3 text-center ml-auto mr-auto">
                             <!--顯示選擇農場按鈕-->
                             <?php
-                                require_once 'php/function.php';
+                                require_once 'php/backend/function.php';
                                 get_farm();
                             ?>
                             <!--顯示選擇農場按鈕-->
@@ -192,7 +192,7 @@
                         $('#ChartParent').append('<canvas id="Chart"></canvas>');
                         $.ajax({
                             type:"POST",//使用表單的方式傳送，同form的method
-                            url:"php/get_monitoring_data.php",
+                            url:"php/backend/get_monitoring_data.php",
                             async: true,
                             cache: false,
                             data:

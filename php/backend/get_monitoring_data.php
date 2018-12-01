@@ -1,5 +1,11 @@
 <?php
-require_once 'connect.php';
+if(!isset($_SESSION['is_login'])||$_SESSION['is_login']==FALSE):
+{
+    header("Location: ../../index.php");
+}
+else:
+    
+require_once '../connect.php';
 require_once 'function.php';
 
 $check = get_data($_POST['farm'],$_POST['typeOfData'],$_POST['startText'],$_POST['endText']);
@@ -12,4 +18,6 @@ else
 {
     echo "執行查詢失敗";
 }
+
+endif;
 ?>
