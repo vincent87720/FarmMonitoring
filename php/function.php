@@ -1,4 +1,5 @@
 <?php
+require_once 'PasswordHash.php';
 @session_start();
 function check_has_username($input)
 {
@@ -31,9 +32,8 @@ function check_has_username($input)
 
 function add_user($id,$pw,$name,$phone,$email)
 {
-
     $result=null;
-    $pw = md5($pw);
+    $pw = create_hash($pw);
     $sql="INSERT INTO `users` (`username`,`password`,`name`,`phone`,`email`,`identity`) VALUES('{$id}','{$pw}','{$name}','{$phone}','{$email}','default')";
     $query = mysqli_query($_SESSION['link'],$sql);
     
@@ -63,7 +63,6 @@ function verify_user($id,$pw)
 {
 
     $result=null;
-    $pw = md5($pw);
     $sql="SELECT `password`,`identity` FROM `users` WHERE `username` like '{$id}'";
     $query = mysqli_query($_SESSION['link'],$sql);
     $row = mysqli_fetch_array($query);
@@ -73,7 +72,7 @@ function verify_user($id,$pw)
     {
         if(mysqli_num_rows($query)==1)
         {
-            if(stristr($pw,$row['password']))
+            if(validate_password($pw,$row['password']))
             {
                 $_SESSION['is_login'] = TRUE;
                 $_SESSION['login_user_id'] = $id;
