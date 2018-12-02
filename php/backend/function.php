@@ -10,7 +10,7 @@ function get_data($farm,$typeOfData,$start,$end)
 {
 
     $sql="SELECT `dateTime`,`sensorValue` 
-          FROM `rawData`
+          FROM `rawdata`
           WHERE `LOCALPC#` = '{$farm}'
           AND `typeOfSensor` = '{$typeOfData}'
           AND `dateTime` >= '{$start}'

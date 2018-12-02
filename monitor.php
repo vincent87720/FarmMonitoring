@@ -205,7 +205,7 @@
                             dataType:'json'
 
                         }).done(function(data){
-                            //console.log(JSON.stringify(data));
+                            console.log(JSON.stringify(data));
                             var typeOfData = $('input[name=typeOfData]:checked').val();
                             var dateTime = [];
                             var sensorValue = [];
@@ -381,6 +381,64 @@
                                                 {
                                                     display: true,
                                                     labelString: '日照'
+                                                }
+                                            }]
+                                        }
+                                    }
+                                });
+                            }
+                            else
+                            {
+                                for(var i=0;i<data.length;i++)
+                                {
+                                    dateTime.push(data[i]["dateTime"].substring(5,7)+'/'+data[i]["dateTime"].substring(8,16));
+                                    sensorValue.push(data[i]["sensorValue"].substring(0,2));
+                                }
+                                var ctx = document.getElementById("Chart");
+                                var theChart = new Chart(ctx, {
+                                    type: 'line',
+                                    data:{
+                                        labels:dateTime,
+                                        datasets: [{
+                                            label: 'NoData',
+                                            fill:false,
+                                            lineTension: 0.1,
+                                            backgroundColor: "rgba(75, 192, 192, 1)",//標示屬性的方格的背景顏色
+                                            borderColor:"rgba(75, 192, 192, 1)",//線條顏色
+                                            borderCapStyle: 'round',//線條端點處風格為圓形
+                                            borderJoinStyle: 'round',//線段連接處風格為圓形
+                                            pointBorderColor: "rgba(75, 192, 192, 1)",//端點外圈顏色
+                                            pointBackgroundColor: "rgba(75, 192, 192, 1)",//端點內圈顏色
+                                            pointBorderWidth: 3,//端點外圈大小
+                                            pointHoverRadius: 4,//端點放大程度
+                                            pointHoverBorderColor: "rgba(75, 192, 192, 1)",//端點放後大外圈顏色
+                                            pointHoverBackgroundColor: "rgba(75, 192, 192, 1)",//端點放大後內圈顏色
+                                            pointHoverBorderWidth: 2,//端點放大後外圈大小
+                                            pointRadius: 2,//端點大小
+                                            pointHitRadius: 10,
+                                            data: sensorValue
+                                        }]
+                                    },
+                                    options: 
+                                    {
+                                        scales: 
+                                        {
+                                            xAxes: 
+                                            [{
+                                                display: true,
+                                                scaleLabel: 
+                                                {
+                                                    display: true,
+                                                    labelString: 'NoData'
+                                                }
+                                            }],
+                                            yAxes: 
+                                            [{
+                                                display: true,
+                                                scaleLabel: 
+                                                {
+                                                    display: true,
+                                                    labelString: 'NoData'
                                                 }
                                             }]
                                         }
