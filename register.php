@@ -105,7 +105,7 @@
                                     </div>
 
                                     <div class="col-sm-12 text-center">
-                                        <button type="submit" name="submit" id="submit" class="btn btn-default">Submit</button>                                    
+                                        <button type="submit" name="submit" id="submit" class="btn btn-secondary">Submit</button>                                    
                                     </div>
                                 </form>
                             </div>
