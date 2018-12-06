@@ -58,7 +58,7 @@
             <div class="main">
                 <div class="container-fluid">
                     <div class="row">
-                        <div class="col-sm-5 ml-auto">
+                        <div class="col-sm-5 ml-auto mr-auto">
                             <h2 class="text-center">Account</h2>
                             <div class="jumbotron jumbotron-fluid border">
                                 <div class="container">
@@ -99,7 +99,7 @@
                             //若身分為管理員，顯示權限管理區塊
                             if($_SESSION['login_user_identity']=='admin'):
                         ?>
-                        <div class="col-sm-5 mr-auto">
+                        <div class="col-sm-5 mr-auto mr-auto">
                             <h2 class="text-center">Permission</h2>
                             <div class="jumbotron jumbotron-fluid border">
                                 <div class="container">                                                           
