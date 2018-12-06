@@ -1,5 +1,6 @@
 <?php
     require_once 'php/connect.php';
+    require_once 'php/backend/function.php';
     if(!isset($_SESSION['is_login'])||$_SESSION['is_login']==FALSE):
     {
         header("Location: index.php");
@@ -31,7 +32,7 @@
     </head>
     <body>
         <div class="background">
-            <div class="topbar">
+            <div class="account_topbar">
                 <div class="container-fluid">
                     <div class="row">
                         <div class="col-sm-12 text-right">
@@ -57,18 +58,55 @@
             <div class="main">
                 <div class="container-fluid">
                     <div class="row">
-                        <div class="col-sm-4 ml-auto">
-                            <div class="jumbotron jumbotron-fluid">
+                        <div class="col-sm-5 ml-auto">
+                            <h2 class="text-center">Account</h2>
+                            <div class="jumbotron jumbotron-fluid border">
                                 <div class="container">
+                                    <ul class="list-group">
+                                        <?php
+                                            get_user_information();
+                                        ?>
+                                        <li class="list-group-item list-group-item-action borderless">
+                                            Username&nbsp&nbsp&nbsp&nbsp&nbsp
+                                            <strong id="username"><?php echo $_SESSION["login_user_id"]; ?></strong>
+                                        </li>
+                                        <li class="list-group-item list-group-item-action borderless">
+                                            <div style="float:right;"><embed src="image/edit.svg" style="display:inline; vertical-align:middle; width:17px; height:17px; margin:right;"></div>
+                                            Password&nbsp&nbsp&nbsp&nbsp&nbsp
+                                            <strong id="password">***************</strong>
+                                        </li>
+                                        <li class="list-group-item list-group-item-action borderless">
+                                            <div style="float:right;"><embed src="image/edit.svg" style="display:inline; vertical-align:middle; width:17px; height:17px; margin:right;"></div>                                            Phone&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+                                            <strong id="phone"><?php echo $_SESSION["login_user_phone"]; ?></strong>
+                                        </li>
+                                        <li class="list-group-item list-group-item-action borderless">
+                                            <div style="float:right;"><embed src="image/edit.svg" style="display:inline; vertical-align:middle; width:17px; height:17px; margin:right;"></div>                                            Name&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+                                            <strong id="name"><?php echo $_SESSION["login_user_name"]; ?></strong>
+                                        </li>
+                                        <li class="list-group-item list-group-item-action borderless">
+                                            <div style="float:right;"><embed src="image/edit.svg" style="display:inline; vertical-align:middle; width:17px; height:17px; margin:right;"></div>                                            Email&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+                                            <strong id="email"><?php echo $_SESSION["login_user_email"]; ?></strong>
+                                        </li>
+                                        <li class="list-group-item list-group-item-action borderless">
+                                            Identity&nbsp&nbsp&nbsp&nbsp&nbsp
+                                            <strong id="identity"><?php echo $_SESSION["login_user_identity"]; ?></strong>
+                                        </li>
+                                    </ul>
                                 </div>
                             </div>
                         </div>
-                        <div class="col-sm-4 mr-auto">
-                            <div class="jumbotron jumbotron-fluid">
-                                <div class="container">
+                        <?php 
+                            //若身分為管理員，顯示權限管理區塊
+                            if($_SESSION['login_user_identity']=='admin'):
+                        ?>
+                        <div class="col-sm-5 mr-auto">
+                            <h2 class="text-center">Permission</h2>
+                            <div class="jumbotron jumbotron-fluid border">
+                                <div class="container">                                                           
                                 </div>
                             </div>
                         </div>
+                        <?php endif;?>
                     </div>
                 </div>
             </div>
@@ -82,6 +120,35 @@
                 </div>
             </div>
         </div>
+
+        <script>
+            $(document).on("ready",function(){
+                $.ajax({
+                    type:"POST",//使用表單的方式傳送，同form的method
+                    url:"php/backend/get_user_information.php",
+                    dataType:'json'
+                }).done(function(data){
+                    var phone=null,name=null,email=null,identity=null;
+                    console.log(data[0]["phone"]);
+
+                    phone.push(data[0]["phone"]);
+                    name=data[0]["name"];
+                    email=data[0]["email"];
+                    identity=data[0]["identity"];
+                    document.getElementById("phone").innerHTML = $_SESSION["login_user_id"];
+                    document.getElementById("phone").innerHTML = phone;
+                    document.getElementById("name").innerHTML = name;
+                    document.getElementById("email").innerHTML = email;
+                    document.getElementById("identity").innerHTML = identity;
+
+                }).fail(function(jqXHR,textStatus,errorThrown){
+                    //ajax執行失敗
+                    //alert("有錯誤產生，請看console log");
+                    console.log(jqXHR,responseText);
+                });
+            });
+        </script>
+
     </body>
 </html>
 

@@ -32,3 +32,30 @@ div.chartOnXs
 {
     min-height : 25vh;
 }
+
+/*****account.php*****/
+div.account_topbar
+{
+    min-height: 200px;
+}
+div.jumbotron
+{
+    background-color:white;
+    min-height: 250px;
+    
+}
+li
+{
+    /* word-wrap:break-word; /*依單字換行*/
+    /* word-break: normal;  */
+    white-space:nowrap; /*強制不換行*/
+    overflow:hidden; /*自动隐藏文字*/
+    text-overflow: ellipsis; /*文字隱藏後添加省略符號*/
+}
+li.borderless
+{
+    border-top: 0 none;
+    border-bottom: 0 none;
+    border-left: 0 none;
+    border-right: 0 none;
+}

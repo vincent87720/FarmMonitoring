@@ -101,5 +101,23 @@ EOT;
         return false;
     }
 }
+
+function get_user_information()
+{
+    $sql="SELECT * FROM `users` WHERE `username` LIKE '{$_SESSION['login_user_id']}'";
+    $query = mysqli_query($_SESSION['link'],$sql);
+    $row = mysqli_fetch_assoc($query);
+    if ($query)
+    {
+        $_SESSION['login_user_phone']=$row["phone"];
+        $_SESSION['login_user_name']=$row["name"];
+        $_SESSION['login_user_email']=$row["email"];
+    }
+    else
+    {
+        echo "語法執行失敗，錯誤訊息：" . mysqli_error($_SESSION['link']);
+        return false;
+    }
+}
 endif;
 ?>
