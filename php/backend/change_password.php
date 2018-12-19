@@ -2,13 +2,33 @@
 require_once '../connect.php';
 require_once 'function.php';
 
-$changepw = change_password($_POST['pw'],$_POST['nupw']);
-if($changepw=='1')
+if(!isset($_SESSION['is_login'])||$_SESSION['is_login']==FALSE):
 {
-    echo 1;//變更密碼成功
+    header("Location: ../../index.php");
+}
+else:
+
+$check = change_password($_POST['pw'],$_POST['nupw']);
+if($check=='0')
+{
+    //舊密碼驗證失敗
+    echo 'VarificationFailed';
+}
+else if($check=='1')
+{
+    //變更密碼成功
+    echo 'PasswordChangedSuccessfully';
+}
+else if($check=='2')
+{
+    //變更密碼失敗
+    echo 'PasswordChangedFailed';
 }
 else
 {
-    echo 0;//變更密碼失敗
+    //例外
+    echo 'Exception';
 }
+
+endif;
 ?>

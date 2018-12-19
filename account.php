@@ -122,53 +122,53 @@
         </div>
 
         <script>
-            $(document).on("ready",function(){
-                $.ajax({
-                    type:"POST",//使用表單的方式傳送，同form的method
-                    url:"php/backend/get_user_information.php",
-                    dataType:'json'
-                }).done(function(data){
-                    var phone=null,name=null,email=null,identity=null;
-                    console.log(data[0]["phone"]);
+            $(document).ready(function(){
+                // $.ajax({
+                //     type:"POST",//使用表單的方式傳送，同form的method
+                //     url:"php/backend/get_user_information.php",
+                //     dataType:'json'
+                // }).done(function(data){
+                //     var phone=null,name=null,email=null,identity=null;
+                //     console.log(data[0]["phone"]);
 
-                    phone.push(data[0]["phone"]);
-                    name=data[0]["name"];
-                    email=data[0]["email"];
-                    identity=data[0]["identity"];
-                    document.getElementById("phone").innerHTML = $_SESSION["login_user_id"];
-                    document.getElementById("phone").innerHTML = phone;
-                    document.getElementById("name").innerHTML = name;
-                    document.getElementById("email").innerHTML = email;
-                    document.getElementById("identity").innerHTML = identity;
+                //     phone.push(data[0]["phone"]);
+                //     name=data[0]["name"];
+                //     email=data[0]["email"];
+                //     identity=data[0]["identity"];
+                //     document.getElementById("phone").innerHTML = $_SESSION["login_user_id"];
+                //     document.getElementById("phone").innerHTML = phone;
+                //     document.getElementById("name").innerHTML = name;
+                //     document.getElementById("email").innerHTML = email;
+                //     document.getElementById("identity").innerHTML = identity;
 
-                }).fail(function(jqXHR,textStatus,errorThrown){
-                    //ajax執行失敗
-                    //alert("有錯誤產生，請看console log");
-                    console.log(jqXHR,responseText);
-                });
-            });
-            $(document).on('click', 'ul li', function(e){
-                if(this.id=="usernameList")
-                {
-                    console.log("username");
-                }
-                if(this.id=="passwordList")
-                {
-                    var data = {type:1};
-                    $.ajax({
-                        type : "post",
-                        //async: false,
-                        url : "php/backend/account_edit/password.php",
-                        data : data
-                    }).done(function(dates){
-                        $("#account_edit").html(dates);//要刷新的div
-                    }).fail(function(jqXHR,textStatus,errorThrown){
-                        console.log(jqXHR,responseText);
-                    });
+                // }).fail(function(jqXHR,textStatus,errorThrown){
+                //     //ajax執行失敗
+                //     //alert("有錯誤產生，請看console log");
+                //     console.log(jqXHR,responseText);
+                // });
+
+                $('.list-group li').click(function() {
+                    if(this.id=="usernameList")
+                    {
+                        console.log("username");
+                    }
+                    if(this.id=="passwordList")
+                    {
+                        var data = {type:1};
+                        $.ajax({
+                            type : "post",
+                            //async: false,
+                            url : "php/backend/account_edit/password.php",
+                            data : data
+                        }).done(function(dates){
+                            $("#account_edit").html(dates);//要刷新的div
+                        }).fail(function(jqXHR,textStatus,errorThrown){
+                            console.log(jqXHR,responseText);
+                        });
+                    }
+                    console.log(this.id);
                     return false;
-                }
-                console.log(this.id);
-            return false;
+                });
             });
         </script>
 

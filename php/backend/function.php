@@ -1,4 +1,5 @@
 <?php
+require_once (realpath($_SERVER["DOCUMENT_ROOT"]) .'/php/PasswordHash.php');
 @session_start();
 
 if(!isset($_SESSION['is_login'])||$_SESSION['is_login']==FALSE):
@@ -121,24 +122,42 @@ function get_user_information()
     }
 }
 
-function change_password($pw)
+function change_password($pw,$nupw)
 {
-    
-    require_once '../PasswordHash.php';
+    //比對目前密碼是否與資料庫的使用者密碼相同
     $result=null;
-    $pw = create_hash($pw);
-    $sql="UPDATE `users` SET `password` = '{$pw}' WHERE `username` LIKE '{$_SESSION['login_user_id']}'";
+    $sql="SELECT `password` FROM `users` WHERE `username` LIKE '{$_SESSION['login_user_id']}'";
     $query = mysqli_query($_SESSION['link'],$sql);
+    $row = mysqli_fetch_array($query);
     if ($query)
     {
-        if(mysqli_num_rows($query)==1)
+        if(validate_password($pw,$row['password']))
         {
-            //變更密碼成功
-            $result = '1';
+            //驗證成功，變更密碼
+            $nupw = create_hash($nupw);
+            $sql="UPDATE `users` SET `password` = '{$nupw}' WHERE `username` LIKE '{$_SESSION['login_user_id']}'";
+            $query = mysqli_query($_SESSION['link'],$sql);
+            if ($query)
+            {
+                if(mysqli_affected_rows($_SESSION['link'])==1)
+                {
+                    //變更密碼成功
+                    $result = '1';
+                }
+                else
+                {
+                    //變更密碼失敗
+                    $result = '2';
+                }
+            }
+            else
+            {
+                echo "語法執行失敗，錯誤訊息：" . mysqli_error($_SESSION['link']);
+            }
         }
         else
         {
-            //變更密碼失敗
+            //驗證失敗
             $result = '0';
         }
     }
