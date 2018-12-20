@@ -191,6 +191,19 @@
                             console.log(jqXHR,responseText);
                         });
                     }
+                    else if(this.id=="emailList")
+                    {
+                        var data = {type:1};
+                        $.ajax({
+                            type : "post",
+                            url : "php/backend/account_edit/email.php",
+                            data : data
+                        }).done(function(dates){
+                            $("#account_edit").html(dates);//要刷新的div
+                        }).fail(function(jqXHR,textStatus,errorThrown){
+                            console.log(jqXHR,responseText);
+                        });
+                    }
                     //console.log(this.id);
                     return false;
                 });

@@ -217,5 +217,30 @@ function change_name($nuname)
     }
     return $result;
 }
+
+function change_email($nuemail)
+{
+    $result = null;
+    $sql = "UPDATE `users` SET `email` = '{$nuemail}' WHERE `username` LIKE '{$_SESSION['login_user_id']}'";
+    $query = mysqli_query($_SESSION['link'],$sql);
+    if($query)
+    {
+        if(mysqli_affected_rows($_SESSION['link'])==1)
+        {
+            //Email變更成功
+            $result = '1';
+        }
+        else
+        {
+            //Email變更成功
+            $result = '0';
+        }
+    }
+    else
+    {
+        echo "語法執行失敗，錯誤訊息：" . mysqli_error($_SESSION['link']);
+    }
+    return $result;
+}
 endif;
 ?>
