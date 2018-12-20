@@ -150,14 +150,13 @@
                 $('.list-group li').click(function() {
                     if(this.id=="usernameList")
                     {
-                        console.log("username");
+
                     }
-                    if(this.id=="passwordList")
+                    else if(this.id=="passwordList")
                     {
                         var data = {type:1};
                         $.ajax({
                             type : "post",
-                            //async: false,
                             url : "php/backend/account_edit/password.php",
                             data : data
                         }).done(function(dates){
@@ -166,7 +165,20 @@
                             console.log(jqXHR,responseText);
                         });
                     }
-                    console.log(this.id);
+                    else if(this.id=="phoneList")
+                    {
+                        var data = {type:1};
+                        $.ajax({
+                            type : "post",
+                            url : "php/backend/account_edit/phone.php",
+                            data : data
+                        }).done(function(dates){
+                            $("#account_edit").html(dates);//要刷新的div
+                        }).fail(function(jqXHR,textStatus,errorThrown){
+                            console.log(jqXHR,responseText);
+                        });
+                    }
+                    //console.log(this.id);
                     return false;
                 });
             });

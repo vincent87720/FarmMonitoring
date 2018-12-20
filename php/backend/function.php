@@ -167,5 +167,30 @@ function change_password($pw,$nupw)
     }
     return $result;
 }
+
+function change_phone($nuphone)
+{
+    $result = null;
+    $sql = "UPDATE `users` SET `phone` = '{$nuphone}' WHERE `username` LIKE '{$_SESSION['login_user_id']}'";
+    $query = mysqli_query($_SESSION['link'],$sql);
+    if($query)
+    {
+        if(mysqli_affected_rows($_SESSION['link'])==1)
+        {
+            //變更電話號碼成功
+            $result = '1';
+        }
+        else
+        {
+            //變更電話號碼成功
+            $result = '0';
+        }
+    }
+    else
+    {
+        echo "語法執行失敗，錯誤訊息：" . mysqli_error($_SESSION['link']);
+    }
+    return $result;
+}
 endif;
 ?>
