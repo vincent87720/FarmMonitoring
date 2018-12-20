@@ -15,7 +15,7 @@ else:
     <body>
         <div class="row">
             <div class="col-sm-10 ml-auto mr-auto">
-                <p id="varify_status" class="text-center"></p>
+                <p id="edit_status" class="text-center"></p>
                 <form id="password_change_form">
                 <div class="form-group">
                     <label for="current-password">Current</label>
@@ -120,18 +120,18 @@ else:
                             if(data=='PasswordChangedSuccessfully')
                             {
                                 //密碼變更成功 
-                                document.getElementById("varify_status").innerHTML = '<div class="alert alert-success alert-dismissible fade show" role="alert"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>密碼變更成功!!</div>';
+                                document.getElementById("edit_status").innerHTML = '<div class="alert alert-success alert-dismissible fade show" role="alert"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>密碼變更成功!!</div>';
                                 setTimeout('window.location.href = "account.php";',5000);
                             }
                             else if(data=='VarificationFailed')
                             {
                                 //密碼錯誤 
-                                document.getElementById("varify_status").innerHTML = '<div class="alert alert-danger alert-dismissible fade show" role="alert"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>密碼錯誤，請檢查欄位是否正確</div>';
+                                document.getElementById("edit_status").innerHTML = '<div class="alert alert-danger alert-dismissible fade show" role="alert"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>密碼錯誤，請檢查欄位是否正確</div>';
                             }
                             else if(data=='PasswordChangedFailed')
                             {
                                 //密碼變更失敗
-                                document.getElementById("varify_status").innerHTML = '<div class="alert alert-danger alert-dismissible fade show" role="alert"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>密碼變更失敗</div>';
+                                document.getElementById("edit_status").innerHTML = '<div class="alert alert-danger alert-dismissible fade show" role="alert"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>密碼變更失敗</div>';
                             }
                             else
                             {
@@ -146,7 +146,7 @@ else:
                     }
                     else
                     {
-                        document.getElementById("varify_status").innerHTML = '<div class="alert alert-danger alert-dismissible fade show" role="alert"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>欄位未依格式填寫，請檢查</div>';
+                        document.getElementById("edit_status").innerHTML = '<div class="alert alert-danger alert-dismissible fade show" role="alert"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>欄位未依格式填寫，請檢查</div>';
                     }
                     return false;
                 });

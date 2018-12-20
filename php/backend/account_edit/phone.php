@@ -18,14 +18,14 @@ else:
                 <p id="edit_status" class="text-center"></p>
                 <form id="phone_change_form">
                 <div class="form-group">
-                    <label for="current-password">Current</label>
+                    <label for="current_phone">Current</label>
                     <input type="text" class="form-control" id="current_phone" placeholder="目前的電話號碼" value="<?php echo $_SESSION["login_user_phone"]; ?>" readonly="readonly" required>
                     <div class="invalid-feedback">
                         電話號碼不得超過20個字元
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="new-password">New Phone</label>
+                    <label for="new_phone">New Phone</label>
                     <input type="text" class="form-control" id="new_phone" placeholder="新電話號碼" required>
                     <div class="invalid-feedback">
                         電話號碼不得超過20個字元
