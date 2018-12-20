@@ -192,5 +192,30 @@ function change_phone($nuphone)
     }
     return $result;
 }
+
+function change_name($nuname)
+{
+    $result = null;
+    $sql = "UPDATE `users` SET `name` = '{$nuname}' WHERE `username` LIKE '{$_SESSION['login_user_id']}'";
+    $query = mysqli_query($_SESSION['link'],$sql);
+    if($query)
+    {
+        if(mysqli_affected_rows($_SESSION['link'])==1)
+        {
+            //姓名變更成功
+            $result = '1';
+        }
+        else
+        {
+            //姓名變更成功
+            $result = '0';
+        }
+    }
+    else
+    {
+        echo "語法執行失敗，錯誤訊息：" . mysqli_error($_SESSION['link']);
+    }
+    return $result;
+}
 endif;
 ?>
