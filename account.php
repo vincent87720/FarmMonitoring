@@ -61,33 +61,33 @@
                         <div class="col-sm-5 ml-auto mr-auto">
                             <h2 class="text-center">Account</h2>
                             <div class="jumbotron jumbotron-fluid border">
-                                <div class="container">
+                                <div class="container" id="account_edit">
                                     <ul class="list-group">
                                         <?php
                                             get_user_information();
                                         ?>
-                                        <li class="list-group-item list-group-item-action borderless">
+                                        <li class="list-group-item list-group-item-action borderless" id="usernameList">
                                             Username&nbsp&nbsp&nbsp&nbsp&nbsp
                                             <strong id="username"><?php echo $_SESSION["login_user_id"]; ?></strong>
                                         </li>
-                                        <li class="list-group-item list-group-item-action borderless">
+                                        <li class="list-group-item list-group-item-action borderless" id="passwordList">
                                             <div style="float:right;"><embed src="image/edit.svg" style="display:inline; vertical-align:middle; width:17px; height:17px; margin:right;"></div>
                                             Password&nbsp&nbsp&nbsp&nbsp&nbsp
                                             <strong id="password">***************</strong>
                                         </li>
-                                        <li class="list-group-item list-group-item-action borderless">
+                                        <li class="list-group-item list-group-item-action borderless" id="phoneList">
                                             <div style="float:right;"><embed src="image/edit.svg" style="display:inline; vertical-align:middle; width:17px; height:17px; margin:right;"></div>                                            Phone&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
                                             <strong id="phone"><?php echo $_SESSION["login_user_phone"]; ?></strong>
                                         </li>
-                                        <li class="list-group-item list-group-item-action borderless">
+                                        <li class="list-group-item list-group-item-action borderless" id="nameList">
                                             <div style="float:right;"><embed src="image/edit.svg" style="display:inline; vertical-align:middle; width:17px; height:17px; margin:right;"></div>                                            Name&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
                                             <strong id="name"><?php echo $_SESSION["login_user_name"]; ?></strong>
                                         </li>
-                                        <li class="list-group-item list-group-item-action borderless">
+                                        <li class="list-group-item list-group-item-action borderless" id="emailList">
                                             <div style="float:right;"><embed src="image/edit.svg" style="display:inline; vertical-align:middle; width:17px; height:17px; margin:right;"></div>                                            Email&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
                                             <strong id="email"><?php echo $_SESSION["login_user_email"]; ?></strong>
                                         </li>
-                                        <li class="list-group-item list-group-item-action borderless">
+                                        <li class="list-group-item list-group-item-action borderless" id="identityList">
                                             Identity&nbsp&nbsp&nbsp&nbsp&nbsp
                                             <strong id="identity"><?php echo $_SESSION["login_user_identity"]; ?></strong>
                                         </li>
@@ -122,29 +122,90 @@
         </div>
 
         <script>
-            $(document).on("ready",function(){
-                $.ajax({
-                    type:"POST",//使用表單的方式傳送，同form的method
-                    url:"php/backend/get_user_information.php",
-                    dataType:'json'
-                }).done(function(data){
-                    var phone=null,name=null,email=null,identity=null;
-                    console.log(data[0]["phone"]);
+            $(document).ready(function(){
+                // $.ajax({
+                //     type:"POST",//使用表單的方式傳送，同form的method
+                //     url:"php/backend/get_user_information.php",
+                //     dataType:'json'
+                // }).done(function(data){
+                //     var phone=null,name=null,email=null,identity=null;
+                //     console.log(data[0]["phone"]);
 
-                    phone.push(data[0]["phone"]);
-                    name=data[0]["name"];
-                    email=data[0]["email"];
-                    identity=data[0]["identity"];
-                    document.getElementById("phone").innerHTML = $_SESSION["login_user_id"];
-                    document.getElementById("phone").innerHTML = phone;
-                    document.getElementById("name").innerHTML = name;
-                    document.getElementById("email").innerHTML = email;
-                    document.getElementById("identity").innerHTML = identity;
+                //     phone.push(data[0]["phone"]);
+                //     name=data[0]["name"];
+                //     email=data[0]["email"];
+                //     identity=data[0]["identity"];
+                //     document.getElementById("phone").innerHTML = $_SESSION["login_user_id"];
+                //     document.getElementById("phone").innerHTML = phone;
+                //     document.getElementById("name").innerHTML = name;
+                //     document.getElementById("email").innerHTML = email;
+                //     document.getElementById("identity").innerHTML = identity;
 
-                }).fail(function(jqXHR,textStatus,errorThrown){
-                    //ajax執行失敗
-                    //alert("有錯誤產生，請看console log");
-                    console.log(jqXHR,responseText);
+                // }).fail(function(jqXHR,textStatus,errorThrown){
+                //     //ajax執行失敗
+                //     //alert("有錯誤產生，請看console log");
+                //     console.log(jqXHR,responseText);
+                // });
+
+                $('.list-group li').click(function() {
+                    if(this.id=="usernameList")
+                    {
+
+                    }
+                    else if(this.id=="passwordList")
+                    {
+                        var data = {type:1};
+                        $.ajax({
+                            type : "post",
+                            url : "php/backend/account_edit/password.php",
+                            data : data
+                        }).done(function(dates){
+                            $("#account_edit").html(dates);//要刷新的div
+                        }).fail(function(jqXHR,textStatus,errorThrown){
+                            console.log(jqXHR,responseText);
+                        });
+                    }
+                    else if(this.id=="phoneList")
+                    {
+                        var data = {type:1};
+                        $.ajax({
+                            type : "post",
+                            url : "php/backend/account_edit/phone.php",
+                            data : data
+                        }).done(function(dates){
+                            $("#account_edit").html(dates);//要刷新的div
+                        }).fail(function(jqXHR,textStatus,errorThrown){
+                            console.log(jqXHR,responseText);
+                        });
+                    }
+                    else if(this.id=="nameList")
+                    {
+                        var data = {type:1};
+                        $.ajax({
+                            type : "post",
+                            url : "php/backend/account_edit/name.php",
+                            data : data
+                        }).done(function(dates){
+                            $("#account_edit").html(dates);//要刷新的div
+                        }).fail(function(jqXHR,textStatus,errorThrown){
+                            console.log(jqXHR,responseText);
+                        });
+                    }
+                    else if(this.id=="emailList")
+                    {
+                        var data = {type:1};
+                        $.ajax({
+                            type : "post",
+                            url : "php/backend/account_edit/email.php",
+                            data : data
+                        }).done(function(dates){
+                            $("#account_edit").html(dates);//要刷新的div
+                        }).fail(function(jqXHR,textStatus,errorThrown){
+                            console.log(jqXHR,responseText);
+                        });
+                    }
+                    //console.log(this.id);
+                    return false;
                 });
             });
         </script>

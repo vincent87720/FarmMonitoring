@@ -1,5 +1,7 @@
 <?php
+require_once (realpath($_SERVER["DOCUMENT_ROOT"]) .'/php/PasswordHash.php');
 @session_start();
+
 if(!isset($_SESSION['is_login'])||$_SESSION['is_login']==FALSE):
 {
     header("Location: ../../index.php");
@@ -118,6 +120,127 @@ function get_user_information()
         echo "語法執行失敗，錯誤訊息：" . mysqli_error($_SESSION['link']);
         return false;
     }
+}
+
+function change_password($pw,$nupw)
+{
+    //比對目前密碼是否與資料庫的使用者密碼相同
+    $result=null;
+    $sql="SELECT `password` FROM `users` WHERE `username` LIKE '{$_SESSION['login_user_id']}'";
+    $query = mysqli_query($_SESSION['link'],$sql);
+    $row = mysqli_fetch_array($query);
+    if ($query)
+    {
+        if(validate_password($pw,$row['password']))
+        {
+            //驗證成功，變更密碼
+            $nupw = create_hash($nupw);
+            $sql="UPDATE `users` SET `password` = '{$nupw}' WHERE `username` LIKE '{$_SESSION['login_user_id']}'";
+            $query = mysqli_query($_SESSION['link'],$sql);
+            if ($query)
+            {
+                if(mysqli_affected_rows($_SESSION['link'])==1)
+                {
+                    //變更密碼成功
+                    $result = '1';
+                }
+                else
+                {
+                    //變更密碼失敗
+                    $result = '2';
+                }
+            }
+            else
+            {
+                echo "語法執行失敗，錯誤訊息：" . mysqli_error($_SESSION['link']);
+            }
+        }
+        else
+        {
+            //驗證失敗
+            $result = '0';
+        }
+    }
+    else
+    {
+        echo "語法執行失敗，錯誤訊息：" . mysqli_error($_SESSION['link']);
+    }
+    return $result;
+}
+
+function change_phone($nuphone)
+{
+    $result = null;
+    $sql = "UPDATE `users` SET `phone` = '{$nuphone}' WHERE `username` LIKE '{$_SESSION['login_user_id']}'";
+    $query = mysqli_query($_SESSION['link'],$sql);
+    if($query)
+    {
+        if(mysqli_affected_rows($_SESSION['link'])==1)
+        {
+            //變更電話號碼成功
+            $result = '1';
+        }
+        else
+        {
+            //變更電話號碼成功
+            $result = '0';
+        }
+    }
+    else
+    {
+        echo "語法執行失敗，錯誤訊息：" . mysqli_error($_SESSION['link']);
+    }
+    return $result;
+}
+
+function change_name($nuname)
+{
+    $result = null;
+    $sql = "UPDATE `users` SET `name` = '{$nuname}' WHERE `username` LIKE '{$_SESSION['login_user_id']}'";
+    $query = mysqli_query($_SESSION['link'],$sql);
+    if($query)
+    {
+        if(mysqli_affected_rows($_SESSION['link'])==1)
+        {
+            //姓名變更成功
+            $result = '1';
+        }
+        else
+        {
+            //姓名變更成功
+            $result = '0';
+        }
+    }
+    else
+    {
+        echo "語法執行失敗，錯誤訊息：" . mysqli_error($_SESSION['link']);
+    }
+    return $result;
+}
+
+function change_email($nuemail)
+{
+    $result = null;
+    $sql = "UPDATE `users` SET `email` = '{$nuemail}' WHERE `username` LIKE '{$_SESSION['login_user_id']}'";
+    $query = mysqli_query($_SESSION['link'],$sql);
+    if($query)
+    {
+        if(mysqli_affected_rows($_SESSION['link'])==1)
+        {
+            //Email變更成功
+            $result = '1';
+        }
+        else
+        {
+            //Email變更成功
+            $result = '0';
+        }
+    }
+    else
+    {
+        echo "語法執行失敗，錯誤訊息：" . mysqli_error($_SESSION['link']);
+    }
+    return $result;
 }
 endif;
 ?>

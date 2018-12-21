@@ -86,7 +86,7 @@
                                         <label for="name">Name</label>
                                         <input type="text" class="form-control" name="name" id="name" placeholder="姓名" required>
                                         <div class="invalid-feedback">
-                                            姓名不得超過10個字元
+                                            姓名不得超過20個字元
                                         </div>
                                     </div>
                                     <div class="form-group">
@@ -219,7 +219,7 @@
                     //檢查姓名是否超過指定字數
                     $('#name').keyup(function(){
                         var length = $(this).val().length;
-                        if(length>10)
+                        if(length>20)
                         {
                             $('#name').addClass("is-invalid");
                             $("#register_form button").attr('disabled',true);
