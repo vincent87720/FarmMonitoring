@@ -36,6 +36,40 @@ function get_data($farm,$typeOfData,$start,$end)
     }
 }
 
+function get_all_data($farm,$start,$end)
+{
+    $sql="SELECT `dateTime`,`sensorValue`,`typeOfSensor`
+          FROM `rawdata`
+          WHERE `LOCALPC#` = '{$farm}'
+          AND `dateTime` >= '{$start}'
+          AND `dateTime` <= '{$end}'";
+    $test="SELECT t1.`dateTime`,t1.`typeOfSensor` as '溫度',t1.`sensorValue` as t1s,t2.`typeOfSensor` as t2t,t2.`sensorValue` as t2s
+          FROM `rawdata` t1 JOIN `rawdata` t2 ON t1.`dateTime`=t2.`dateTime` AND t1.`typeOfSensor`='溫度' AND t2.`typeOfSensor`='濕度'
+          WHERE t1.`LOCALPC#` = '{$farm}'
+          AND t1.`dateTime` >= '{$start}'
+          AND t1.`dateTime` <= '{$end}'
+          AND t2.`LOCALPC#` = '{$farm}'
+          AND t2.`dateTime` >= '{$start}'
+          AND t2.`dateTime` <= '{$end}'";
+    $query = mysqli_query($_SESSION['link'],$sql);
+    $json_array = array();
+    
+    if ($query)
+    {
+        while($row = mysqli_fetch_assoc($query))
+        {
+            $json_array[] = $row;
+        }
+        
+        return json_encode($json_array);
+    }
+    else
+    {
+        echo "語法執行失敗，錯誤訊息：" . mysqli_error($_SESSION['link']);
+        return false;
+    }
+}
+
 //查詢全部農場
 function get_farm()
 {
@@ -60,7 +94,7 @@ function get_farm()
                 農場
                 <span class="caret"></span>
             </button>
-            <ul class="dropdown-menu" aria-labelledby="farmChoose" name="farmChoose">
+            <ul class="dropdown-menu" aria-labelledby="farmChoose" id="farmChoose1stChild">
 EOT;
         $i = 1;
         while($row = mysqli_fetch_assoc($query))
