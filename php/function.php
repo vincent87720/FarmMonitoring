@@ -63,7 +63,7 @@ function verify_user($id,$pw)
 {
 
     $result=null;
-    $sql="SELECT `password`,`identity` FROM `users` WHERE `username` like '{$id}'";
+    $sql="SELECT `password`,`identity`,`name` FROM `users` WHERE `username` like '{$id}'";
     $query = mysqli_query($_SESSION['link'],$sql);
     $row = mysqli_fetch_array($query);
     
@@ -76,6 +76,7 @@ function verify_user($id,$pw)
             {
                 $_SESSION['is_login'] = TRUE;
                 $_SESSION['login_user_id'] = $id;
+                $_SESSION['login_user_name'] = $row['name'];
                 $_SESSION['login_user_identity'] = $row['identity'];
                 $result = '1';//VerifySuccess
             }
