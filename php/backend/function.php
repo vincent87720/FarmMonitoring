@@ -8,15 +8,16 @@ if(!isset($_SESSION['is_login'])||$_SESSION['is_login']==FALSE):
 }
 else:
 
+//取得單一種類感測器資料
 function get_data($farm,$typeOfData,$start,$end)
 {
 
-    $sql="SELECT `dateTime`,`sensorValue` 
-          FROM `rawdata`
-          WHERE `LOCALPC#` = '{$farm}'
-          AND `typeOfSensor` = '{$typeOfData}'
-          AND `dateTime` >= '{$start}'
-          AND `dateTime` <= '{$end}'";
+    $sql="SELECT d.`dateTime`,d.`data` 
+          FROM (`data` d INNER JOIN `arduino` a ON d.`arduino#` = a.`arduino#`) INNER JOIN `farm` f ON a.`farm#` = f.`farm#`
+          WHERE f.`farm#` = '{$farm}'
+          AND d.`dataType` = '{$typeOfData}'
+          AND d.`dateTime` >= '{$start}'
+          AND d.`dateTime` <= '{$end}'";
     $query = mysqli_query($_SESSION['link'],$sql);
     $json_array = array();
     
@@ -36,13 +37,14 @@ function get_data($farm,$typeOfData,$start,$end)
     }
 }
 
+//取得所有種類感測器資料
 function get_all_data($farm,$start,$end)
 {
-    $sql="SELECT `dateTime`,`sensorValue`,`typeOfSensor`
-          FROM `rawdata`
-          WHERE `LOCALPC#` = '{$farm}'
-          AND `dateTime` >= '{$start}'
-          AND `dateTime` <= '{$end}'";
+    $sql="SELECT d.`dateTime`,d.`data`,d.`dataType`
+          FROM (`data` d INNER JOIN `arduino` a ON d.`arduino#` = a.`arduino#`) INNER JOIN `farm` f ON a.`farm#` = f.`farm#`
+          WHERE f.`farm#` = '{$farm}'
+          AND d.`dateTime` >= '{$start}'
+          AND d.`dateTime` <= '{$end}'";
     $test="SELECT t1.`dateTime`,t1.`typeOfSensor` as '溫度',t1.`sensorValue` as t1s,t2.`typeOfSensor` as t2t,t2.`sensorValue` as t2s
           FROM `rawdata` t1 JOIN `rawdata` t2 ON t1.`dateTime`=t2.`dateTime` AND t1.`typeOfSensor`='溫度' AND t2.`typeOfSensor`='濕度'
           WHERE t1.`LOCALPC#` = '{$farm}'
@@ -70,19 +72,21 @@ function get_all_data($farm,$start,$end)
     }
 }
 
-//查詢全部農場
+//查詢該使用者管理的全部農場
 function get_farm()
 {
     
     if($_SESSION['login_user_identity']=='admin')
     {
         //若身分為admin則顯示全部農場資料
-        $sql="SELECT * FROM `localpc`";
+        $sql="SELECT * FROM `farm`";
     }
     else
     {
         //若身分不是admin則顯示登入者負責的農場資料
-        $sql = "SELECT * FROM `localpc` WHERE `farmAdminId` LIKE '{$_SESSION['login_user_id']}'";
+        $sql = "SELECT * 
+                FROM `farm` f INNER JOIN `manage` m ON f.`farm#` = m.`farm#`
+                WHERE `username` LIKE '{$_SESSION['login_user_id']}'";
     }
     
     $query = mysqli_query($_SESSION['link'],$sql);
@@ -104,7 +108,7 @@ EOT;
                 <a href="#" data-value=$i>
                 <p>
 EOT;
-                echo $row['LOCALPC#'];
+                echo $row['farm#'];   
             echo <<< EOT
                 </p>
                 <h4> 

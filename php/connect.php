@@ -5,7 +5,7 @@
 $host='127.0.0.1';
 $username='webuser';
 $password='iamwebuser';
-$database='testdb';
+$database='farmmonitoring';
 
 //宣告一個Link變數，連結結果會帶入link中
 //$link=mysqli_connect($host,$username,$password,$database);
