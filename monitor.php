@@ -271,7 +271,7 @@
                             dataType:'json'
 
                         }).done(function(data){
-                            console.log(JSON.stringify(data));
+                            //console.log(JSON.stringify(data));
                             var typeOfData = $('input[name=typeOfData]:checked').val();
                             var dateTime = [];
                             var sensorValue = [];
@@ -280,7 +280,7 @@
                                 for(var i=0;i<data.length;i++)
                                 {
                                     dateTime.push(data[i]["dateTime"].substring(5,7)+'/'+data[i]["dateTime"].substring(8,16));
-                                    sensorValue.push(data[i]["sensorValue"].substring(0,2));
+                                    sensorValue.push(data[i]["data"].substring(0,2));
                                 }
                                 var ctx = document.getElementById("Chart");
                                 var theChart = new Chart(ctx, {
@@ -338,7 +338,7 @@
                                 for(var i=0;i<data.length;i++)
                                 {
                                     dateTime.push(data[i]["dateTime"].substring(5,7)+'/'+data[i]["dateTime"].substring(8,16));
-                                    sensorValue.push(data[i]["sensorValue"].substring(0,2));
+                                    sensorValue.push(data[i]["data"].substring(0,2));
                                 }
                                 var ctx = document.getElementById("Chart");
                                 var theChart = new Chart(ctx, {
@@ -398,7 +398,7 @@
                                 for(var i=0;i<data.length;i++)
                                 {
                                     dateTime.push(data[i]["dateTime"].substring(5,7)+'/'+data[i]["dateTime"].substring(8,16));
-                                    sensorValue.push(data[i]["sensorValue"].substring(0,2));
+                                    sensorValue.push(data[i]["data"].substring(0,2));
                                 }
                                 var ctx = document.getElementById("Chart");
                                 var theChart = new Chart(ctx, {
@@ -458,7 +458,7 @@
                                 for(var i=0;i<data.length;i++)
                                 {
                                     dateTime.push(data[i]["dateTime"].substring(5,7)+'/'+data[i]["dateTime"].substring(8,16));
-                                    sensorValue.push(data[i]["sensorValue"].substring(0,2));
+                                    sensorValue.push(data[i]["data"].substring(0,2));
                                 }
                                 var ctx = document.getElementById("Chart");
                                 var theChart = new Chart(ctx, {
@@ -514,7 +514,9 @@
                         }).fail(function(jqXHR,textStatus,errorThrown){
                             //ajax執行失敗
                             //alert("有錯誤產生，請看console log");
-                            console.log(jqXHR,responseText);
+                            console.log(jqXHR);
+                            console.log(textStatus);
+                            console.log(errorThrown);
                         });  
                         return false;  
                     }
@@ -559,17 +561,17 @@
                                     dateTime.push(data[i]["dateTime"].substring(5,7)+'/'+data[i]["dateTime"].substring(8,16));
                                 }
                                 
-                                if(data[i]["typeOfSensor"]=="溫度")
+                                if(data[i]["dataType"]=="溫度")
                                 {
-                                    temperatureValue.push(data[i]["sensorValue"].substring(0,2));
+                                    temperatureValue.push(data[i]["data"].substring(0,2));
                                 }
-                                else if(data[i]["typeOfSensor"]=="濕度")
+                                else if(data[i]["dataType"]=="濕度")
                                 {
-                                    humidityValue.push(data[i]["sensorValue"].substring(0,2));
+                                    humidityValue.push(data[i]["data"].substring(0,2));
                                 }
-                                else if(data[i]["typeOfSensor"]=="日照")
+                                else if(data[i]["dataType"]=="日照")
                                 {
-                                    sunshineValue.push(data[i]["sensorValue"].substring(0,2));
+                                    sunshineValue.push(data[i]["data"].substring(0,2));
                                 }
                                 else
                                 {
