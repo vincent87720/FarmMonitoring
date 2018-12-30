@@ -141,7 +141,7 @@ else:
                         }).fail(function(jqXHR,textStatus,errorThrown){
                             //ajax執行失敗
                             //alert("有錯誤產生，請看console log");
-                            console.log(jqXHR,responseText);
+                            console.log(jqXHR);console.log(textStatus);console.log(errorThrown);
                         });
                     }
                     else
