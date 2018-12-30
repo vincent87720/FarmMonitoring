@@ -184,7 +184,7 @@
                         $("#farmChoose:first-child").val($(this).text().substring(17,28));
                         
                         //在圖表下方顯示農場位置描述
-                        $('#showFarmDescription').val()
+                        //$('#showFarmDescription').val()
                         document.getElementById("showFarmDescription").innerHTML = '<div class="btn-group" role="group" aria-label="Basic example"><button type="button" class="btn btn-warning">'+$(this).text().substring(96,150)+'</button></div>';
                         
                         if($('input[name=typeOfData]:checked').val()=="總覽")
@@ -514,9 +514,7 @@
                         }).fail(function(jqXHR,textStatus,errorThrown){
                             //ajax執行失敗
                             //alert("有錯誤產生，請看console log");
-                            console.log(jqXHR);
-                            console.log(textStatus);
-                            console.log(errorThrown);
+                            console.log(jqXHR);console.log(textStatus);console.log(errorThrown);
                         });  
                         return false;  
                     }
@@ -667,9 +665,7 @@
                         }).fail(function(jqXHR,textStatus,errorThrown){
                             //ajax執行失敗
                             //alert("有錯誤產生，請看console log");
-                            console.log(jqXHR);
-                            console.log(textStatus);
-                            console.log(errorThrown);
+                            console.log(jqXHR);console.log(textStatus);console.log(errorThrown);
                         });
                     }
 
