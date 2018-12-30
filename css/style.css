@@ -42,10 +42,9 @@ div.account_topbar
 div.jumbotron
 {
     background-color:white;
-    min-height: 250px;
-    
+    min-height: 420px;
 }
-li
+.account-list-group li
 {
     /* word-wrap:break-word; /*依單字換行*/
     /* word-break: normal;  */
@@ -53,10 +52,33 @@ li
     overflow:hidden; /*自动隐藏文字*/
     text-overflow: ellipsis; /*文字隱藏後添加省略符號*/
 }
+.permission-list-group li
+{
+    word-wrap:break-word;/*依單字換行*/
+    word-break: keep-all;/*不允許CJK(Chinese/Japanese/Korean)文本中的單辭換行，只能在半角空格或連字符處換行。非CJK文本的行為實際上和normal一致*/
+}
+
+/*隱藏list-group外框線*/
 li.borderless
 {
     border-top: 0 none;
     border-bottom: 0 none;
     border-left: 0 none;
     border-right: 0 none;
+}
+
+.permission-list-group
+{
+    width:85%;
+    margin:0px auto;/*讓DIV置中*/
+}
+
+/*變更carousel左右箭頭顏色*/
+.carousel-control-prev-icon 
+{
+    background-image: url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='rgb(128,128,128)' viewBox='0 0 8 8'%3E%3Cpath d='M5.25 0l-4 4 4 4 1.5-1.5-2.5-2.5 2.5-2.5-1.5-1.5z'/%3E%3C/svg%3E") !important;
+}
+.carousel-control-next-icon 
+{
+    background-image: url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='rgb(128,128,128)' viewBox='0 0 8 8'%3E%3Cpath d='M2.75 0l-1.5 1.5 2.5 2.5-2.5 2.5 1.5 1.5 4-4-4-4z'/%3E%3C/svg%3E") !important;
 }

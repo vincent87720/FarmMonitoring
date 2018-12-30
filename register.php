@@ -168,9 +168,7 @@
                                     document.getElementById("demo").innerHTML = "帳號不得超過30個字元";
                                 }
                             }).fail(function(jqXHR,textStatus,errorThrown){
-                                console.log(jqXHR);
-                                console.log(textStatus);
-                                console.log(errorThrown);
+                                console.log(jqXHR);console.log(textStatus);console.log(errorThrown);
                             });
                         }
                         else
@@ -316,9 +314,7 @@
                                 }
                             }).fail(function(jqXHR,textStatus,errorThrown){
                                 //ajax執行失敗
-                                console.log(jqXHR);
-                                console.log(textStatus);
-                                console.log(errorThrown);
+                                console.log(jqXHR);console.log(textStatus);console.log(errorThrown);
                             });    
                         }
                         else

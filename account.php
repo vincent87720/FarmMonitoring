@@ -18,17 +18,22 @@
             
         </noscript>
         <link rel="stylesheet" href="css/style.css" type="text/css" charset="utf8">
-        <!--Bootstrap CSS-->
-        <link rel="stylesheet" href="css/bootstrap.css">
-        <!--Bootstrap CSS-->
-        
         <!--JQUERY-->
         <script type="text/javascript" src="js/jquery-3.3.1.min.js"></script>
         <!--JQUERY-->
 
-        <!--JavaScript-->
-        <script type="text/javascript" src="js/bootstrap.min.js"></script>
-        <!--JavaScript-->
+        <!--Popper.JS-->
+        <script src="js/popper-1.14.3.min.js"></script>
+        <!--Popper.JS-->
+
+        <!--Bootstrap-->
+        <script src="js/bootstrap-4.1.3.min.js"></script>
+        <!--Bootstrap-->
+        
+        <!--Bootstrap CSS-->
+        <link rel="stylesheet" href="css/bootstrap.css">
+        <!--Bootstrap CSS-->
+
     </head>
     <body>
         <div class="background">
@@ -62,7 +67,7 @@
                             <h2 class="text-center">Account</h2>
                             <div class="jumbotron jumbotron-fluid border">
                                 <div class="container" id="account_edit">
-                                    <ul class="list-group">
+                                    <ul class="list-group account-list-group">
                                         <?php
                                             get_user_information();
                                         ?>
@@ -76,18 +81,22 @@
                                             <strong id="password">***************</strong>
                                         </li>
                                         <li class="list-group-item list-group-item-action borderless" id="phoneList">
-                                            <div style="float:right;"><embed src="image/edit.svg" style="display:inline; vertical-align:middle; width:17px; height:17px; margin:right;"></div>                                            Phone&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+                                            <div style="float:right;"><embed src="image/edit.svg" style="display:inline; vertical-align:middle; width:17px; height:17px; margin:right;"></div>
+                                            Phone&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
                                             <strong id="phone"><?php echo $_SESSION["login_user_phone"]; ?></strong>
                                         </li>
                                         <li class="list-group-item list-group-item-action borderless" id="nameList">
-                                            <div style="float:right;"><embed src="image/edit.svg" style="display:inline; vertical-align:middle; width:17px; height:17px; margin:right;"></div>                                            Name&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+                                            <div style="float:right;"><embed src="image/edit.svg" style="display:inline; vertical-align:middle; width:17px; height:17px; margin:right;"></div>
+                                            Name&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
                                             <strong id="name"><?php echo $_SESSION["login_user_name"]; ?></strong>
                                         </li>
                                         <li class="list-group-item list-group-item-action borderless" id="emailList">
-                                            <div style="float:right;"><embed src="image/edit.svg" style="display:inline; vertical-align:middle; width:17px; height:17px; margin:right;"></div>                                            Email&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+                                            <div style="float:right;"><embed src="image/edit.svg" style="display:inline; vertical-align:middle; width:17px; height:17px; margin:right;"></div>
+                                            Email&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
                                             <strong id="email"><?php echo $_SESSION["login_user_email"]; ?></strong>
                                         </li>
                                         <li class="list-group-item list-group-item-action borderless" id="identityList">
+                                            <div style="float:right;"><embed src="image/edit.svg" style="display:inline; vertical-align:middle; width:17px; height:17px; margin:right;"></div>
                                             Identity&nbsp&nbsp&nbsp&nbsp&nbsp
                                             <strong id="identity"><?php echo $_SESSION["login_user_identity"]; ?></strong>
                                         </li>
@@ -97,12 +106,20 @@
                         </div>
                         <?php 
                             //若身分為管理員，顯示權限管理區塊
-                            if($_SESSION['login_user_identity']=='admin'):
+                            if($_SESSION['login_user_identity']=='ADMIN'||$_SESSION['login_user_identity']=='MIS'):
                         ?>
                         <div class="col-sm-5 mr-auto mr-auto">
                             <h2 class="text-center">Permission</h2>
                             <div class="jumbotron jumbotron-fluid border">
-                                <div class="container">                                                           
+                                <div class="container" id="permission_admin">
+                                    <p id="edit_status" class="text-center"></p>     
+                                    <?php 
+                                        get_application_list();
+                                    ?>
+                                </div>
+                                <div class="col-sm-12 text-center">
+                                    <button class="btn btn-info" id="application_delete">刪除申請</button>
+                                    <button class="btn btn-info" id="application_permit">允許權限</button>
                                 </div>
                             </div>
                         </div>
@@ -123,30 +140,7 @@
 
         <script>
             $(document).ready(function(){
-                // $.ajax({
-                //     type:"POST",//使用表單的方式傳送，同form的method
-                //     url:"php/backend/get_user_information.php",
-                //     dataType:'json'
-                // }).done(function(data){
-                //     var phone=null,name=null,email=null,identity=null;
-                //     console.log(data[0]["phone"]);
-
-                //     phone.push(data[0]["phone"]);
-                //     name=data[0]["name"];
-                //     email=data[0]["email"];
-                //     identity=data[0]["identity"];
-                //     document.getElementById("phone").innerHTML = $_SESSION["login_user_id"];
-                //     document.getElementById("phone").innerHTML = phone;
-                //     document.getElementById("name").innerHTML = name;
-                //     document.getElementById("email").innerHTML = email;
-                //     document.getElementById("identity").innerHTML = identity;
-
-                // }).fail(function(jqXHR,textStatus,errorThrown){
-                //     //ajax執行失敗
-                //     //alert("有錯誤產生，請看console log");
-                //     console.log(jqXHR,responseText);
-                // });
-
+                //點擊Account區塊觸發
                 $('.list-group li').click(function() {
                     if(this.id=="usernameList")
                     {
@@ -162,7 +156,9 @@
                         }).done(function(dates){
                             $("#account_edit").html(dates);//要刷新的div
                         }).fail(function(jqXHR,textStatus,errorThrown){
-                            console.log(jqXHR,responseText);
+                            console.log(jqXHR);
+                            console.log(textStatus);
+                            console.log(errorThrown);
                         });
                     }
                     else if(this.id=="phoneList")
@@ -175,7 +171,9 @@
                         }).done(function(dates){
                             $("#account_edit").html(dates);//要刷新的div
                         }).fail(function(jqXHR,textStatus,errorThrown){
-                            console.log(jqXHR,responseText);
+                            console.log(jqXHR);
+                            console.log(textStatus);
+                            console.log(errorThrown);
                         });
                     }
                     else if(this.id=="nameList")
@@ -188,7 +186,9 @@
                         }).done(function(dates){
                             $("#account_edit").html(dates);//要刷新的div
                         }).fail(function(jqXHR,textStatus,errorThrown){
-                            console.log(jqXHR,responseText);
+                            console.log(jqXHR);
+                            console.log(textStatus);
+                            console.log(errorThrown);
                         });
                     }
                     else if(this.id=="emailList")
@@ -201,12 +201,122 @@
                         }).done(function(dates){
                             $("#account_edit").html(dates);//要刷新的div
                         }).fail(function(jqXHR,textStatus,errorThrown){
-                            console.log(jqXHR,responseText);
+                            console.log(jqXHR);
+                            console.log(textStatus);
+                            console.log(errorThrown);
+                        });
+                    }
+                    else if(this.id=="identityList")
+                    {
+                        var data = {type:1};
+                        $.ajax({
+                            type : "post",
+                            url : "php/backend/account_edit/identity.php",
+                            data : data
+                        }).done(function(dates){
+                            $("#account_edit").html(dates);//要刷新的div
+                        }).fail(function(jqXHR,textStatus,errorThrown){
+                            console.log(jqXHR);
+                            console.log(textStatus);
+                            console.log(errorThrown);
                         });
                     }
                     //console.log(this.id);
                     return false;
                 });
+
+                //點擊Permission區塊觸發新增權限功能
+                $('#application_permit').click(function() {
+                    $.ajax({
+                        type:"POST",//使用表單的方式傳送，同form的method
+                        url:"php/backend/application_permit.php",
+                        data:
+                        {
+                            'username':$('.carousel-inner div.active #application_username strong').text(),
+                            'farm':$('.carousel-inner div.active #application_farm strong').text(),
+                            'identity':$('.carousel-inner div.active #application_identity strong').text(),
+                            'dateTime':$('.carousel-inner div.active #application_dateTime strong').text()
+                        },
+                        dataType:'html'
+                    }).done(function(data){
+                        //ajax執行成功(if HTTP return 200 OK)
+                        if(data=='success')
+                        {
+                            //新增權限成功
+                            document.getElementById("edit_status").innerHTML = '<div class="alert alert-success alert-dismissible fade show" role="alert"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>新增權限成功</div>';
+                            setTimeout('window.location.href = "account.php";',5000);
+                        }
+                        else if(data=='applicationDataNotDelete')
+                        {
+                            //新增權限成功，申請資料尚未刪除
+                            document.getElementById("edit_status").innerHTML = '<div class="alert alert-success alert-dismissible fade show" role="alert"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>新增權限成功，申請資料尚未刪除</div>';
+                            setTimeout('window.location.href = "account.php";',5000);
+                        }
+                        else if(data=='duplicatePrimaryKey')
+                        {
+                            //語法執行失敗，權限已存在
+                            document.getElementById("edit_status").innerHTML = '<div class="alert alert-danger alert-dismissible fade show" role="alert"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>權限已存在</div>';
+                        }
+                        else
+                        {
+                            document.getElementById("edit_status").innerHTML = '<div class="alert alert-danger alert-dismissible fade show" role="alert"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>新增權限失敗</div>';
+                            console.log(data);
+                        }
+                    }).fail(function(jqXHR,textStatus,errorThrown){
+                        //ajax執行失敗
+                        //alert("有錯誤產生，請看console log");
+                        console.log(jqXHR);
+                        console.log(textStatus);
+                        console.log(errorThrown);
+                    });
+                    return false;
+                });
+                
+                //刪除權限申請資料功能
+                $('#application_delete').click(function() {
+                    $.ajax({
+                        type:"POST",//使用表單的方式傳送，同form的method
+                        url:"php/backend/application_delete.php",
+                        data:
+                        {
+                            'username':$('.carousel-inner div.active #application_username strong').text(),
+                            'farm':$('.carousel-inner div.active #application_farm strong').text(),
+                            'identity':$('.carousel-inner div.active #application_identity strong').text(),
+                            'dateTime':$('.carousel-inner div.active #application_dateTime strong').text()
+                        },
+                        dataType:'html'
+                    }).done(function(data){
+                        //ajax執行成功(if HTTP return 200 OK)
+                        if(data=='applicationDataDeleteSuccess')
+                        {
+                            //刪除資料成功
+                            document.getElementById("edit_status").innerHTML = '<div class="alert alert-success alert-dismissible fade show" role="alert"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>申請資料已刪除</div>';
+                            setTimeout('window.location.href = "account.php";',5000);
+                        }
+                        else if(data=='applicationDataDeleteFail')
+                        {
+                            //刪除資料失敗
+                            document.getElementById("edit_status").innerHTML = '<div class="alert alert-danger alert-dismissible fade show" role="alert"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>申請資料刪除失敗</div>';
+                            setTimeout('window.location.href = "account.php";',5000);
+                        }
+                        else
+                        {
+                            console.log(data);
+                        }
+                    }).fail(function(jqXHR,textStatus,errorThrown){
+                        //ajax執行失敗
+                        //alert("有錯誤產生，請看console log");
+                        console.log(jqXHR);
+                        console.log(textStatus);
+                        console.log(errorThrown);
+                    });
+                    return false;
+                });
+                
+                //讓carousel不自動切換
+                $('.carousel').carousel({
+                    interval: false
+                }); 
             });
         </script>
 
