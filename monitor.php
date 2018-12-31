@@ -46,6 +46,8 @@
     </head>
     <body>
         <div class="background">
+
+            <!--顯示網頁LOGO、管理及登出按鈕-->
             <div class="topbar">
                 <div class="container-fluid">
                     <div class="row">
@@ -69,31 +71,51 @@
                     </div>
                 </div>
             </div>
+
+            <br/>
+
+            <!--顯示選擇農場及感測種類按鈕-->
             <div class="main">
                 <div class="container-fluid">
                     <div class="row">
-                        <div class="col-sm-9 text-right">
-                            <div class="chartOnXs col-xs-12">
-                                <!--選擇要觀測數值種類的按鈕-->
-                                <div class="btn-group btn-group-toggle" id="dataType" data-toggle="buttons">
-                                    <label class="btn btn-warning">
-                                        <input type="radio" name="typeOfData" id="option1" value="總覽" autocomplete="off" checked>總覽
-                                    </label>
-                                    <label class="btn btn-warning">
-                                        <input type="radio" name="typeOfData" id="option2" value="溫度" autocomplete="off">溫度
-                                    </label>
-                                    <label class="btn btn-warning">
-                                        <input type="radio" name="typeOfData" id="option3" value="濕度" autocomplete="off">濕度
-                                    </label>
-                                    <label class="btn btn-warning">
-                                        <input type="radio" name="typeOfData" id="option4" value="日照" autocomplete="off">日照
-                                    </label>
-                                </div>
-                                <!--選擇要觀測數值種類的按鈕-->
+                        <div class="col-sm-2 text-center">
+                            <!--顯示選擇農場按鈕-->
+                            <?php
+                                require_once 'php/backend/function.php';
+                                get_farm();
+                                ?>
+                            <!--顯示選擇農場按鈕-->
+                        </div>
+                        <div class="col-sm-10 text-center">
+                            <!--選擇要觀測數值種類的按鈕-->
+                            <div class="btn-group btn-group-toggle" id="dataType" data-toggle="buttons">
+                                <label class="btn btn-warning">
+                                    <input type="radio" name="typeOfData" id="option1" value="總覽" autocomplete="off" checked>總覽
+                                </label>
+                                <label class="btn btn-warning">
+                                    <input type="radio" name="typeOfData" id="option2" value="溫度" autocomplete="off">溫度
+                                </label>
+                                <label class="btn btn-warning">
+                                    <input type="radio" name="typeOfData" id="option3" value="濕度" autocomplete="off">濕度
+                                </label>
+                                <label class="btn btn-warning">
+                                    <input type="radio" name="typeOfData" id="option4" value="日照" autocomplete="off">日照
+                                </label>
+                            </div>
+                            <!--選擇要觀測數值種類的按鈕-->
+                        </div>
+                        <!-- <div class="col-sm-3"></div> -->
+                        
+                    </div>
+                </div>
+            </div>
 
-                                <br/>
-                                <br/>
-
+            <!--顯示圖表及日期時間選擇功能-->
+            <div class="main">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-sm-9 text-center">
+                            <div class="col-sm-12 ml-auto mr-auto">
                                 <!--繪製圖表-->
                                 <div class="chart-container" id="ChartParent" style="position: relative; height:100%; width:100%">
                                     <canvas id="Chart"></canvas>
@@ -107,15 +129,6 @@
                             </div>
                         </div>
                         <div class="col-sm-3 text-center ml-auto mr-auto">
-                            <!--顯示選擇農場按鈕-->
-                            <?php
-                                require_once 'php/backend/function.php';
-                                get_farm();
-                            ?>
-                            <!--顯示選擇農場按鈕-->
-
-                            <br/>
-                            <br/>
                             <!--選擇開始與結束日期-->
                             <div class="form-group">
                                 <div class="input-group date" id="startDateTime">
@@ -138,6 +151,8 @@
                     </div>
                 </div>
             </div>
+
+            <!--頁底-->
             <div class="footer">
                 <div class="container-fluid">
                     <div class="row">
