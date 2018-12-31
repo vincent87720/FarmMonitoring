@@ -28,12 +28,6 @@ div.footer
     min-height: 50px;
 }
 
-/*****backend.php*****/
-div.chartOnXs
-{
-    min-height : 25vh;
-}
-
 /*****account.php*****/
 div.account_topbar
 {
