@@ -134,7 +134,8 @@
                         }
                         else
                         {
-                            console.log(data);
+                            //console.log(data);
+                            document.getElementById("login_status").innerHTML = '<div class="alert alert-danger alert-dismissible fade show" role="alert"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>登入失敗</div>'
                         }
                     }).fail(function(jqXHR,textStatus,errorThrown){
                         //ajax執行失敗
