@@ -134,7 +134,7 @@
                                 <button type="button" class="btn btn-warning" id="inThePastYear">年</button>
                                 <button type="button" class="btn btn-warning" id="inThePastMonth">月</button>
                                 <button type="button" class="btn btn-warning" id="inThreeDays">三天</button>
-                                <button type="button" class="btn btn-warning" id="inADay">日</button>
+                                <button type="button" class="btn btn-warning" id="inADay">一天</button>
                             </div>
                             <!--預設開始與結束日期區間按鈕-->
 
