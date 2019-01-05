@@ -114,7 +114,7 @@
             <div class="main">
                 <div class="container-fluid">
                     <div class="row">
-                        <div class="col-sm-9 text-center">
+                        <div class="col-md-9 text-center">
                             <div class="col-sm-12 ml-auto mr-auto">
                                 <!--繪製圖表-->
                                 <div class="chart-container" id="ChartParent" style="position: relative; height:100%; width:100%">
@@ -128,7 +128,18 @@
                                 <!--顯示農場位置描述-->
                             </div>
                         </div>
-                        <div class="col-sm-3 text-center ml-auto mr-auto">
+                        <div class="col-md-3 text-center ml-auto mr-auto">
+                            <!--預設開始與結束日期區間按鈕-->
+                            <div class="btn-group" role="group" aria-label="Basic example">
+                                <button type="button" class="btn btn-warning" id="inThePastYear">年</button>
+                                <button type="button" class="btn btn-warning" id="inThePastMonth">月</button>
+                                <button type="button" class="btn btn-warning" id="inThreeDays">三天</button>
+                                <button type="button" class="btn btn-warning" id="inADay">日</button>
+                            </div>
+                            <!--預設開始與結束日期區間按鈕-->
+
+                            <br/>
+                            <br/>
                             <!--選擇開始與結束日期-->
                             <div class="form-group">
                                 <div class="input-group date" id="startDateTime">
@@ -251,6 +262,70 @@
                     $('#endDateTime').datetimepicker().on('changeDate', function(ev){
                         //隱藏日期時間選擇器
                         $('#endDateTime').datetimepicker('hide');
+                        if($('input[name=typeOfData]:checked').val()=="總覽")
+                        {
+                            //呼叫drawChart_All()函式繪製圖表
+                            drawChart_All();
+                        }
+                        else
+                        {
+                            //呼叫drawChart()函式繪製圖表
+                            drawChart();
+                        }
+                    });
+
+                    //當觸發過去一年內按鈕，把日期時間設定為從現在往前推一年
+                    $("#inThePastYear").on('click', function(){
+                        $("#startDateTime").datetimepicker("setDate", new Date(new Date()-365*24*60*60*1000));
+                        $("#endDateTime").datetimepicker("setDate", new Date());
+                        if($('input[name=typeOfData]:checked').val()=="總覽")
+                        {
+                            //呼叫drawChart_All()函式繪製圖表
+                            drawChart_All();
+                        }
+                        else
+                        {
+                            //呼叫drawChart()函式繪製圖表
+                            drawChart();
+                        }
+                    });
+
+                    //當觸發過去一個月內按鈕，把日期時間設定為從現在往前推一個月
+                    $("#inThePastMonth").on('click', function(){
+                        $("#startDateTime").datetimepicker("setDate", new Date(new Date()-31*24*60*60*1000));
+                        $("#endDateTime").datetimepicker("setDate", new Date());
+                        if($('input[name=typeOfData]:checked').val()=="總覽")
+                        {
+                            //呼叫drawChart_All()函式繪製圖表
+                            drawChart_All();
+                        }
+                        else
+                        {
+                            //呼叫drawChart()函式繪製圖表
+                            drawChart();
+                        }
+                    });
+
+                    //當觸發過去三天內按鈕，把日期時間設定為從現在往前推三天
+                    $("#inThreeDays").on('click', function(){
+                        $("#startDateTime").datetimepicker("setDate", new Date(new Date()-3*24*60*60*1000));
+                        $("#endDateTime").datetimepicker("setDate", new Date());
+                        if($('input[name=typeOfData]:checked').val()=="總覽")
+                        {
+                            //呼叫drawChart_All()函式繪製圖表
+                            drawChart_All();
+                        }
+                        else
+                        {
+                            //呼叫drawChart()函式繪製圖表
+                            drawChart();
+                        }
+                    });
+
+                    //當觸發過去一天內按鈕，把日期時間設定為從現在往前推一天
+                    $("#inADay").on('click', function(){
+                        $("#startDateTime").datetimepicker("setDate", new Date(new Date()-1*24*60*60*1000));
+                        $("#endDateTime").datetimepicker("setDate", new Date());
                         if($('input[name=typeOfData]:checked').val()=="總覽")
                         {
                             //呼叫drawChart_All()函式繪製圖表
