@@ -1,5 +1,8 @@
 <?php
 //session_cache_limiter('private');//返回上一頁時(history.go(-1))不清空表單，只在session生效期間
+ini_set("session.cookie_httponly", 1);//限制Cookie只能經由HTTP(S)協定來存取
+ini_set("session.cookie_lifetime", 0);//設定Cookie的存活時間在瀏覽器關閉後失效(有些瀏覽器不支援)
+//ini_set('session.cookie_secure', 1);//限制Cookie只能透過https的方式傳輸
 @session_start();
 //設定連線資訊，建立與bbqandvenuerental資料庫的連線
 $host='127.0.0.1';

@@ -148,6 +148,9 @@ function verify_user($id,$pw)
     // {
     //     echo "語法執行失敗，錯誤訊息：" . mysqli_error($_SESSION['link']);
     // }
+
+    //改變SESSION ID的值
+    session_regenerate_id();
     return $result;
 }
 ?>
