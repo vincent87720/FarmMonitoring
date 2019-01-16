@@ -1,14 +1,14 @@
 <?php
-require_once '../connect.php';
-require_once 'function.php';
+@require_once '../connect.php';
+@require_once 'function.php';
 
 if(!isset($_SESSION['is_login'])||$_SESSION['is_login']==FALSE):
 {
-    header("Location: ../../index.php");
+    @header("Location: /index.php");
 }
 else:
 
-$check = change_password($_POST['pw'],$_POST['nupw']);
+$check = @change_password($_POST['pw'],$_POST['nupw']);
 if($check=='0')
 {
     //舊密碼驗證失敗
@@ -29,6 +29,5 @@ else
     //例外
     echo 'Exception';
 }
-
 endif;
 ?>

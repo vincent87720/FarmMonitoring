@@ -1,11 +1,11 @@
 <?php 
-require_once '../../connect.php';
-require_once '../function.php';
+@require_once '../../connect.php';
+@require_once '../function.php';
 
 if(!isset($_SESSION['is_login'])||$_SESSION['is_login']==FALSE):
-    {
-        header("Location: ../../index.php");
-    }
+{
+    @header("Location: /index.php");
+}
 else:
 ?>
 <!DOCTYPE HTML>
@@ -109,7 +109,7 @@ else:
                         }).fail(function(jqXHR,textStatus,errorThrown){
                             //ajax執行失敗
                             //alert("有錯誤產生，請看console log");
-                            console.log(jqXHR);console.log(textStatus);console.log(errorThrown);
+                            //console.log(jqXHR);console.log(textStatus);console.log(errorThrown);
                         });
                     }
                     else

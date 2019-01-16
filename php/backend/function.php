@@ -1,10 +1,10 @@
 <?php
-require_once (realpath($_SERVER["DOCUMENT_ROOT"]) .'/php/PasswordHash.php');
+@require_once (realpath($_SERVER["DOCUMENT_ROOT"]) .'/php/PasswordHash.php');
 @session_start();
 
 if(!isset($_SESSION['is_login'])||$_SESSION['is_login']==FALSE):
 {
-    header("Location: ../../index.php");
+    @header("Location: /index.php");
 }
 else:
 
@@ -18,21 +18,21 @@ function get_data($farm,$typeOfData,$start,$end)
           AND d.`dataType` = '{$typeOfData}'
           AND d.`dateTime` >= '{$start}'
           AND d.`dateTime` <= '{$end}'";
-    $query = mysqli_query($_SESSION['link'],$sql);
-    $json_array = array();
+    $query = @mysqli_query($_SESSION['link'],$sql);
+    $json_array = @array();
     
     if ($query)
     {
-        while($row = mysqli_fetch_assoc($query))
+        while($row = @mysqli_fetch_assoc($query))
         {
             $json_array[] = $row;
         }
         
-        return json_encode($json_array);
+        return @json_encode($json_array);
     }
     else
     {
-        echo "語法執行失敗，錯誤訊息：" . mysqli_error($_SESSION['link']);
+        //echo "語法執行失敗，錯誤訊息：" . mysqli_error($_SESSION['link']);
         return false;
     }
 }
@@ -53,21 +53,21 @@ function get_all_data($farm,$start,$end)
           AND t2.`LOCALPC#` = '{$farm}'
           AND t2.`dateTime` >= '{$start}'
           AND t2.`dateTime` <= '{$end}'";
-    $query = mysqli_query($_SESSION['link'],$sql);
-    $json_array = array();
+    $query = @mysqli_query($_SESSION['link'],$sql);
+    $json_array = @array();
     
     if ($query)
     {
-        while($row = mysqli_fetch_assoc($query))
+        while($row = @mysqli_fetch_assoc($query))
         {
             $json_array[] = $row;
         }
         
-        return json_encode($json_array);
+        return @json_encode($json_array);
     }
     else
     {
-        echo "語法執行失敗，錯誤訊息：" . mysqli_error($_SESSION['link']);
+        //echo "語法執行失敗，錯誤訊息：" . mysqli_error($_SESSION['link']);
         return false;
     }
 }
@@ -88,7 +88,7 @@ function get_farm()
                 WHERE `username` LIKE '{$_SESSION['login_user_id']}'";
     }
     
-    $query = mysqli_query($_SESSION['link'],$sql);
+    $query = @mysqli_query($_SESSION['link'],$sql);
     if ($query)
     {
         echo <<< EOT
@@ -100,7 +100,7 @@ function get_farm()
             <ul class="dropdown-menu" aria-labelledby="farmChoose" id="farmChoose1stChild">
 EOT;
         $i = 1;
-        while($row = mysqli_fetch_assoc($query))
+        while($row = @mysqli_fetch_assoc($query))
         {
             echo <<< EOT
             <li>
@@ -122,7 +122,7 @@ EOT;
             </li>
 EOT;
             //若不是最後一行，要輸出分隔線
-            if($i!=mysqli_num_rows($query))
+            if($i!=@mysqli_num_rows($query))
             {
                 echo '<li class="divider"></li>';
             }
@@ -136,7 +136,7 @@ EOT;
     }
     else
     {
-        echo "語法執行失敗，錯誤訊息：" . mysqli_error($_SESSION['link']);
+        //echo "語法執行失敗，錯誤訊息：" . mysqli_error($_SESSION['link']);
         return false;
     }
 }
@@ -146,7 +146,7 @@ function application_get_farm()
 {
     $sql="SELECT * FROM `farm`";
     
-    $query = mysqli_query($_SESSION['link'],$sql);
+    $query = @mysqli_query($_SESSION['link'],$sql);
     if ($query)
     {
         echo <<< EOT
@@ -160,14 +160,14 @@ function application_get_farm()
             <div class="dropdown-divider"></div>
 EOT;
         $i = 1;
-        while($row = mysqli_fetch_assoc($query))
+        while($row = @mysqli_fetch_assoc($query))
         {
             echo '<a class="dropdown-item" href="#">';
             echo $row['farm#'];
             echo ' ';
             echo $row['positionDescription'];
             echo '</a>';
-            if($i!=mysqli_num_rows($query))
+            if($i!=@mysqli_num_rows($query))
             {
                 echo '<div class="dropdown-divider"></div>';
             }
@@ -181,7 +181,7 @@ EOT;
     }
     else
     {
-        echo "語法執行失敗，錯誤訊息：" . mysqli_error($_SESSION['link']);
+        //echo "語法執行失敗，錯誤訊息：" . mysqli_error($_SESSION['link']);
         return false;
     }
 }
@@ -190,7 +190,7 @@ EOT;
 function get_application_list()
 {
     $sql="SELECT * FROM `application`";
-    $query = mysqli_query($_SESSION['link'],$sql);
+    $query = @mysqli_query($_SESSION['link'],$sql);
     if($query)
     {
         echo <<< EOT
@@ -198,7 +198,7 @@ function get_application_list()
             <div class="carousel-inner">
 EOT;
         $i=1;
-        while($row = mysqli_fetch_assoc($query))
+        while($row = @mysqli_fetch_assoc($query))
         {
             if($i==1)
             {
@@ -256,7 +256,7 @@ EOT;
     }
     else
     {
-        echo "語法執行失敗，錯誤訊息：" . mysqli_error($_SESSION['link']);
+        //echo "語法執行失敗，錯誤訊息：" . mysqli_error($_SESSION['link']);
         return false;
     }
     
@@ -271,12 +271,12 @@ function application_identity($farm,$identity)
     {
         $identity = $farm.' '.$identity;
     }
-    $dateTime = date ("Y-m-d H:i:s" , mktime(date('H')+8, date('i'), date('s'), date('m'), date('d'), date('Y'))); 
+    $dateTime = @date ("Y-m-d H:i:s" , mktime(date('H')+8, date('i'), date('s'), date('m'), date('d'), date('Y'))); 
     $sql = "INSERT INTO `application` (`username`,`farm#`,`applicationDateTime`,`identity`) VALUES ('{$_SESSION['login_user_id']}','{$farm}','{$dateTime}','{$identity}')";
-    $query = mysqli_query($_SESSION['link'],$sql);
+    $query = @mysqli_query($_SESSION['link'],$sql);
     if($query)
     {
-        if(mysqli_affected_rows($_SESSION['link'])==1)
+        if(@mysqli_affected_rows($_SESSION['link'])==1)
         {
             //identity申請成功
             $result = '1';
@@ -289,7 +289,7 @@ function application_identity($farm,$identity)
     }
     else
     {
-        if(mysqli_connect_errno()=='#1062')
+        if(@mysqli_connect_errno()=='#1062')
         {
             //語法執行失敗，權限已存在
             $result = '1062';
@@ -297,7 +297,7 @@ function application_identity($farm,$identity)
         else
         {
             $result = '0';
-            echo "語法執行失敗，錯誤訊息：" . mysqli_error($_SESSION['link']);
+            //echo "語法執行失敗，錯誤訊息：" . mysqli_error($_SESSION['link']);
         }
     }
     return $result;
@@ -308,7 +308,7 @@ function application_permit($username,$farm,$identity,$dateTime)
 {
     $result = null;
     $sql1 = "UPDATE `users` SET `identity` = '{$identity}' WHERE `username` = '{$username}';";
-    $query1 = mysqli_query($_SESSION['link'],$sql1);
+    $query1 = @mysqli_query($_SESSION['link'],$sql1);
     
     if($query1)
     {
@@ -316,7 +316,7 @@ function application_permit($username,$farm,$identity,$dateTime)
         if($farm=="FARM000000")
         {
             //申請總公司的權限不用將可管理農場加入manage資料表
-            if(application_delete($username,$farm,$identity,$dateTime)==1)
+            if(@application_delete($username,$farm,$identity,$dateTime)==1)
             {
                 //新增權限成功
                 $result = '1';
@@ -330,11 +330,11 @@ function application_permit($username,$farm,$identity,$dateTime)
         else
         {
             $sql2 = "INSERT INTO `manage`(`username`, `farm#`) VALUES ('{$username}','{$farm}');";
-            $query2 = mysqli_query($_SESSION['link'],$sql2);
+            $query2 = @mysqli_query($_SESSION['link'],$sql2);
             if($query2)
             {
                 //成功將資料新增到manage資料表
-                if(application_delete($username,$farm,$identity,$dateTime)==1)
+                if(@application_delete($username,$farm,$identity,$dateTime)==1)
                 {
                     //新增權限成功
                     $result = '1';
@@ -347,7 +347,7 @@ function application_permit($username,$farm,$identity,$dateTime)
             }
             else
             {
-                if(mysqli_connect_errno()=='#1062')
+                if(@mysqli_connect_errno()=='#1062')
                 {
                     //語法執行失敗，權限已存在
                     $result = '1062';
@@ -355,7 +355,7 @@ function application_permit($username,$farm,$identity,$dateTime)
                 else
                 {
                     $result = '0';
-                    echo "語法執行失敗，錯誤訊息：" . mysqli_error($_SESSION['link']);
+                    //echo "語法執行失敗，錯誤訊息：" . mysqli_error($_SESSION['link']);
                 }
             }
         } 
@@ -364,7 +364,7 @@ function application_permit($username,$farm,$identity,$dateTime)
     {
         //users.identity更新失敗
         $result = '0';
-        echo "語法執行失敗，錯誤訊息：" . mysqli_error($_SESSION['link']);
+        //echo "語法執行失敗，錯誤訊息：" . mysqli_error($_SESSION['link']);
     }
     return $result;
 }
@@ -374,7 +374,7 @@ function application_delete($username,$farm,$identity,$dateTime)
 {
     $result = null;
     $sql = "DELETE FROM `application` WHERE `username` = '{$username}' AND `farm#` = '{$farm}' AND `identity` = '{$identity}'AND `applicationDateTime` = '{$dateTime}'";
-    $query = mysqli_query($_SESSION['link'],$sql);
+    $query = @mysqli_query($_SESSION['link'],$sql);
     if($query)
     {
         //刪除資料成功
@@ -383,7 +383,7 @@ function application_delete($username,$farm,$identity,$dateTime)
     else
     {
         $result = '0';
-        echo "語法執行失敗，錯誤訊息：" . mysqli_error($_SESSION['link']);
+        //echo "語法執行失敗，錯誤訊息：" . mysqli_error($_SESSION['link']);
     }
     return $result;
 }
@@ -391,8 +391,8 @@ function application_delete($username,$farm,$identity,$dateTime)
 function get_user_information()
 {
     $sql="SELECT * FROM `users` WHERE `username` LIKE '{$_SESSION['login_user_id']}'";
-    $query = mysqli_query($_SESSION['link'],$sql);
-    $row = mysqli_fetch_assoc($query);
+    $query = @mysqli_query($_SESSION['link'],$sql);
+    $row = @mysqli_fetch_assoc($query);
     if ($query)
     {
         $_SESSION['login_user_phone']=$row["phone"];
@@ -401,7 +401,7 @@ function get_user_information()
     }
     else
     {
-        echo "語法執行失敗，錯誤訊息：" . mysqli_error($_SESSION['link']);
+        //echo "語法執行失敗，錯誤訊息：" . mysqli_error($_SESSION['link']);
         return false;
     }
 }
@@ -411,19 +411,19 @@ function change_password($pw,$nupw)
     //比對目前密碼是否與資料庫的使用者密碼相同
     $result=null;
     $sql="SELECT `password` FROM `users` WHERE `username` LIKE '{$_SESSION['login_user_id']}'";
-    $query = mysqli_query($_SESSION['link'],$sql);
-    $row = mysqli_fetch_array($query);
+    $query = @mysqli_query($_SESSION['link'],$sql);
+    $row = @mysqli_fetch_array($query);
     if ($query)
     {
-        if(validate_password($pw,$row['password']))
+        if(@validate_password($pw,$row['password']))
         {
             //驗證成功，變更密碼
-            $nupw = create_hash($nupw);
+            $nupw = @create_hash($nupw);
             $sql="UPDATE `users` SET `password` = '{$nupw}' WHERE `username` LIKE '{$_SESSION['login_user_id']}'";
-            $query = mysqli_query($_SESSION['link'],$sql);
+            $query = @mysqli_query($_SESSION['link'],$sql);
             if ($query)
             {
-                if(mysqli_affected_rows($_SESSION['link'])==1)
+                if(@mysqli_affected_rows($_SESSION['link'])==1)
                 {
                     //變更密碼成功
                     $result = '1';
@@ -436,7 +436,8 @@ function change_password($pw,$nupw)
             }
             else
             {
-                echo "語法執行失敗，錯誤訊息：" . mysqli_error($_SESSION['link']);
+                //echo "語法執行失敗，錯誤訊息：" . mysqli_error($_SESSION['link']);
+                $result = 'Exception';
             }
         }
         else
@@ -447,7 +448,8 @@ function change_password($pw,$nupw)
     }
     else
     {
-        echo "語法執行失敗，錯誤訊息：" . mysqli_error($_SESSION['link']);
+        //echo "語法執行失敗，錯誤訊息：" . mysqli_error($_SESSION['link']);
+        $result = 'Exception';
     }
     return $result;
 }
@@ -456,10 +458,10 @@ function change_phone($nuphone)
 {
     $result = null;
     $sql = "UPDATE `users` SET `phone` = '{$nuphone}' WHERE `username` LIKE '{$_SESSION['login_user_id']}'";
-    $query = mysqli_query($_SESSION['link'],$sql);
+    $query = @mysqli_query($_SESSION['link'],$sql);
     if($query)
     {
-        if(mysqli_affected_rows($_SESSION['link'])==1)
+        if(@mysqli_affected_rows($_SESSION['link'])==1)
         {
             //變更電話號碼成功
             $result = '1';
@@ -472,7 +474,8 @@ function change_phone($nuphone)
     }
     else
     {
-        echo "語法執行失敗，錯誤訊息：" . mysqli_error($_SESSION['link']);
+        //echo "語法執行失敗，錯誤訊息：" . mysqli_error($_SESSION['link']);
+        $result = 'Exception';
     }
     return $result;
 }
@@ -481,10 +484,10 @@ function change_name($nuname)
 {
     $result = null;
     $sql = "UPDATE `users` SET `name` = '{$nuname}' WHERE `username` LIKE '{$_SESSION['login_user_id']}'";
-    $query = mysqli_query($_SESSION['link'],$sql);
+    $query = @mysqli_query($_SESSION['link'],$sql);
     if($query)
     {
-        if(mysqli_affected_rows($_SESSION['link'])==1)
+        if(@mysqli_affected_rows($_SESSION['link'])==1)
         {
             //姓名變更成功
             $result = '1';
@@ -497,7 +500,8 @@ function change_name($nuname)
     }
     else
     {
-        echo "語法執行失敗，錯誤訊息：" . mysqli_error($_SESSION['link']);
+        //echo "語法執行失敗，錯誤訊息：" . mysqli_error($_SESSION['link']);
+        $result = 'Exception';
     }
     return $result;
 }
@@ -506,10 +510,10 @@ function change_email($nuemail)
 {
     $result = null;
     $sql = "UPDATE `users` SET `email` = '{$nuemail}' WHERE `username` LIKE '{$_SESSION['login_user_id']}'";
-    $query = mysqli_query($_SESSION['link'],$sql);
+    $query = @mysqli_query($_SESSION['link'],$sql);
     if($query)
     {
-        if(mysqli_affected_rows($_SESSION['link'])==1)
+        if(@mysqli_affected_rows($_SESSION['link'])==1)
         {
             //Email變更成功
             $result = '1';
@@ -522,7 +526,8 @@ function change_email($nuemail)
     }
     else
     {
-        echo "語法執行失敗，錯誤訊息：" . mysqli_error($_SESSION['link']);
+        //echo "語法執行失敗，錯誤訊息：" . mysqli_error($_SESSION['link']);
+        $result = 'Exception';
     }
     return $result;
 }

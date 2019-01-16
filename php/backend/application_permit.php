@@ -1,14 +1,14 @@
 <?php
-require_once '../connect.php';
-require_once 'function.php';
+@require_once '../connect.php';
+@require_once 'function.php';
 
 if(!isset($_SESSION['is_login'])||$_SESSION['is_login']==FALSE)
 {
-    header("Location: ../../index.php");
+    @header("Location: /index.php");
 }
 else
 {
-    $check = application_permit($_POST['username'],$_POST['farm'],$_POST['identity'],$_POST['dateTime']);
+    $check = @application_permit($_POST['username'],$_POST['farm'],$_POST['identity'],$_POST['dateTime']);
     if($check=='1')
     {
         //新增權限成功

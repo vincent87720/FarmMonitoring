@@ -1,8 +1,8 @@
 <?php
-    require_once 'php/connect.php';
+    @require_once 'php/connect.php';
     if(isset($_SESSION['is_login']) && $_SESSION['is_login'])
     {
-        header("Location: monitor.php");
+        @header("Location: monitor.php");
     }
 ?>
 
@@ -140,7 +140,7 @@
                     }).fail(function(jqXHR,textStatus,errorThrown){
                         //ajax執行失敗
                         //alert("有錯誤產生，請看console log");
-                        console.log(jqXHR);console.log(textStatus);console.log(errorThrown);
+                        //console.log(jqXHR);console.log(textStatus);console.log(errorThrown);
                     });
                 return false;
                 });
