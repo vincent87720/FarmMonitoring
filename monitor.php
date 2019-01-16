@@ -365,13 +365,25 @@
                             var typeOfData = $('input[name=typeOfData]:checked').val();
                             var dateTime = [];
                             var sensorValue = [];
+                            var averageValue = [];
+                            var valueTotal = 0;
+                            var average = 0;
                             if(typeOfData=="溫度")
                             {
                                 for(var i=0;i<data.length;i++)
                                 {
                                     dateTime.push(data[i]["dateTime"].substring(5,7)+'/'+data[i]["dateTime"].substring(8,16));
                                     sensorValue.push(data[i]["data"].substring(0,2));
+                                    valueTotal=valueTotal+parseInt(sensorValue[i]);
                                 }
+                                average = valueTotal/data.length;
+                                for(var i=0;i<data.length;i++)
+                                {
+                                    averageValue[i]=average;
+                                }
+
+                                Chart.defaults.global.defaultFontSize = 14;
+                                Chart.defaults.global.defaultFontFamily = "'setofont'";
                                 var ctx = document.getElementById("Chart");
                                 var theChart = new Chart(ctx, {
                                     type: 'line',
@@ -395,6 +407,24 @@
                                             pointRadius: 2,//端點大小
                                             pointHitRadius: 10,
                                             data: sensorValue
+                                        },{
+                                            label: '平均',
+                                            fill:false,
+                                            lineTension: 0.1,
+                                            backgroundColor: "rgba(153, 153, 153, 1)",//標示屬性的方格的背景顏色
+                                            borderColor:"rgba(153, 153, 153, 1)",//線條顏色
+                                            borderCapStyle: 'round',//線條端點處風格為圓形
+                                            borderJoinStyle: 'round',//線段連接處風格為圓形
+                                            pointBorderColor: "rgba(153, 153, 153, 1)",//端點外圈顏色
+                                            pointBackgroundColor: "rgba(153, 153, 153, 1)",//端點內圈顏色
+                                            pointBorderWidth: 1,//端點外圈大小
+                                            pointHoverRadius: 1,//端點放大程度
+                                            pointHoverBorderColor: "rgba(153, 153, 153, 1)",//端點放後大外圈顏色
+                                            pointHoverBackgroundColor: "rgba(153, 153, 153, 1)",//端點放大後內圈顏色
+                                            pointHoverBorderWidth: 1,//端點放大後外圈大小
+                                            pointRadius: 1,//端點大小
+                                            pointHitRadius: 10,
+                                            data: averageValue
                                         }]
                                     },
                                     options: 
@@ -429,7 +459,14 @@
                                 {
                                     dateTime.push(data[i]["dateTime"].substring(5,7)+'/'+data[i]["dateTime"].substring(8,16));
                                     sensorValue.push(data[i]["data"].substring(0,2));
+                                    valueTotal=valueTotal+parseInt(sensorValue[i]);
                                 }
+                                average = valueTotal/data.length;
+                                for(var i=0;i<data.length;i++)
+                                {
+                                    averageValue[i]=average;
+                                }
+
                                 var ctx = document.getElementById("Chart");
                                 var theChart = new Chart(ctx, {
                                     type: 'line',
@@ -455,6 +492,24 @@
                                             pointRadius: 2,//端點大小
                                             pointHitRadius: 10,
                                             data: sensorValue
+                                        },{
+                                            label: '平均',
+                                            fill:false,
+                                            lineTension: 0.1,
+                                            backgroundColor: "rgba(153, 153, 153, 1)",//標示屬性的方格的背景顏色
+                                            borderColor:"rgba(153, 153, 153, 1)",//線條顏色
+                                            borderCapStyle: 'round',//線條端點處風格為圓形
+                                            borderJoinStyle: 'round',//線段連接處風格為圓形
+                                            pointBorderColor: "rgba(153, 153, 153, 1)",//端點外圈顏色
+                                            pointBackgroundColor: "rgba(153, 153, 153, 1)",//端點內圈顏色
+                                            pointBorderWidth: 1,//端點外圈大小
+                                            pointHoverRadius: 1,//端點放大程度
+                                            pointHoverBorderColor: "rgba(153, 153, 153, 1)",//端點放後大外圈顏色
+                                            pointHoverBackgroundColor: "rgba(153, 153, 153, 1)",//端點放大後內圈顏色
+                                            pointHoverBorderWidth: 1,//端點放大後外圈大小
+                                            pointRadius: 1,//端點大小
+                                            pointHitRadius: 10,
+                                            data: averageValue
                                         }]
                                     },
                                     options: 
@@ -489,6 +544,12 @@
                                 {
                                     dateTime.push(data[i]["dateTime"].substring(5,7)+'/'+data[i]["dateTime"].substring(8,16));
                                     sensorValue.push(data[i]["data"].substring(0,2));
+                                    valueTotal=valueTotal+parseInt(sensorValue[i]);
+                                }
+                                average = valueTotal/data.length;
+                                for(var i=0;i<data.length;i++)
+                                {
+                                    averageValue[i]=average;
                                 }
                                 var ctx = document.getElementById("Chart");
                                 var theChart = new Chart(ctx, {
@@ -515,6 +576,24 @@
                                             pointRadius: 2,//端點大小
                                             pointHitRadius: 10,
                                             data: sensorValue
+                                        },{
+                                            label: '平均',
+                                            fill:false,
+                                            lineTension: 0.1,
+                                            backgroundColor: "rgba(153, 153, 153, 1)",//標示屬性的方格的背景顏色
+                                            borderColor:"rgba(153, 153, 153, 1)",//線條顏色
+                                            borderCapStyle: 'round',//線條端點處風格為圓形
+                                            borderJoinStyle: 'round',//線段連接處風格為圓形
+                                            pointBorderColor: "rgba(153, 153, 153, 1)",//端點外圈顏色
+                                            pointBackgroundColor: "rgba(153, 153, 153, 1)",//端點內圈顏色
+                                            pointBorderWidth: 1,//端點外圈大小
+                                            pointHoverRadius: 1,//端點放大程度
+                                            pointHoverBorderColor: "rgba(153, 153, 153, 1)",//端點放後大外圈顏色
+                                            pointHoverBackgroundColor: "rgba(153, 153, 153, 1)",//端點放大後內圈顏色
+                                            pointHoverBorderWidth: 1,//端點放大後外圈大小
+                                            pointRadius: 1,//端點大小
+                                            pointHitRadius: 10,
+                                            data: averageValue
                                         }]
                                     },
                                     options: 
@@ -666,6 +745,8 @@
                                     console.log("ERROR");
                                 }
                             }
+                            Chart.defaults.global.defaultFontSize = 14;
+                            Chart.defaults.global.defaultFontFamily = "'setofont'";
                             var ctx = document.getElementById("Chart");
                             var theChart = new Chart(ctx, {
                                 type: 'line',
