@@ -1,1 +1,6 @@
-ErrorDocument 404 /pageNotFound.html
+#隱藏目錄下所有檔案
+Options -Indexes
+
+#Error Documents
+ErrorDocument 403 /errorPage/forbidden.html
+ErrorDocument 404 /errorPage/pageNotFound.html
