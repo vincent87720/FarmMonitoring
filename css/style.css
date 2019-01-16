@@ -3,8 +3,34 @@
 {
     font-family: 'setofont';
     src: url('./fonts/setofont.woff') format("woff"),
-        url('./fonts/setofont.ttf') format("truetype"),
-        url('./fonts/setofont.eot') format("embedded-opentype");
+    url('./fonts/setofont.ttf') format("truetype"),
+    url('./fonts/setofont.eot') format("embedded-opentype");
+}
+
+/*****ALL FILE*****/
+
+/*定義滾動條高寬及背景高寬分別對應橫豎滾動條的尺寸*/
+::-webkit-scrollbar 
+{
+    width: 0.5%;
+    height: 16px;
+    background-color: #F5F5F5;
+}
+
+/*定義滾動條軌道內陰影+圓角*/
+::-webkit-scrollbar-track 
+{
+    -webkit-box-shadow: inset 0 0 6px rgb(255, 255, 255);
+    border-radius: 20px;
+    background-color: #F5F5F5;
+}
+
+/*定義滑塊內陰影+圓角*/
+::-webkit-scrollbar-thumb 
+{
+    border-radius: 20px;
+    -webkit-box-shadow: inset 0 0 6px rgba(255, 255, 255, 0.3);
+    background-color: #555;
 }
 
 html 
@@ -12,12 +38,14 @@ html
     background-color: rgb(250, 250, 250);
     overflow-y:scroll;
 }
+
 div.background
 {
     height: 100vh;
     font-family: 'setofont';
     background-color: rgb(250, 250, 250);
 }
+
 div.topbar 
 {
     min-height: 20px;

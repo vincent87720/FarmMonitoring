@@ -1,8 +1,8 @@
 <?php
-    require_once 'php/connect.php';
+    @require_once 'php/connect.php';
     if(!isset($_SESSION['is_login'])||$_SESSION['is_login']==FALSE):
     {
-        header("Location: index.php");
+        @header("Location: index.php");
     }
     else:
 ?>
@@ -81,8 +81,8 @@
                         <div class="col-sm-2 text-center">
                             <!--顯示選擇農場按鈕-->
                             <?php
-                                require_once 'php/backend/function.php';
-                                get_farm();
+                                @require_once 'php/backend/function.php';
+                                @get_farm();
                                 ?>
                             <!--顯示選擇農場按鈕-->
                         </div>
@@ -604,7 +604,7 @@
                         }).fail(function(jqXHR,textStatus,errorThrown){
                             //ajax執行失敗
                             //alert("有錯誤產生，請看console log");
-                            console.log(jqXHR);console.log(textStatus);console.log(errorThrown);
+                            //console.log(jqXHR);console.log(textStatus);console.log(errorThrown);
                         });  
                         return false;  
                     }
@@ -755,7 +755,7 @@
                         }).fail(function(jqXHR,textStatus,errorThrown){
                             //ajax執行失敗
                             //alert("有錯誤產生，請看console log");
-                            console.log(jqXHR);console.log(textStatus);console.log(errorThrown);
+                            //console.log(jqXHR);console.log(textStatus);console.log(errorThrown);
                         });
                     }
 

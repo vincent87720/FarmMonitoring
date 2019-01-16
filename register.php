@@ -20,16 +20,6 @@
         <!--JavaScript-->
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
         <!--JavaScript-->
-
-        <script>
-            //系統暫停涵式
-            function sleep(delay) 
-            {
-                var start = new Date().getTime();
-                while (new Date().getTime() < start + delay);
-            }
-        </script>
-
     </head>
     <body>
         <div class="background">
@@ -168,7 +158,7 @@
                                     document.getElementById("demo").innerHTML = "帳號不得超過30個字元";
                                 }
                             }).fail(function(jqXHR,textStatus,errorThrown){
-                                console.log(jqXHR);console.log(textStatus);console.log(errorThrown);
+                                //console.log(jqXHR);console.log(textStatus);console.log(errorThrown);
                             });
                         }
                         else
@@ -314,7 +304,7 @@
                                 }
                             }).fail(function(jqXHR,textStatus,errorThrown){
                                 //ajax執行失敗
-                                console.log(jqXHR);console.log(textStatus);console.log(errorThrown);
+                                //console.log(jqXHR);console.log(textStatus);console.log(errorThrown);
                             });    
                         }
                         else

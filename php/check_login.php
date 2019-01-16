@@ -1,13 +1,13 @@
 <?php
-require_once 'connect.php';
-require_once 'function.php';
+@require_once 'connect.php';
+@require_once 'function.php';
 
 //檢查帳號密碼是否正確傳送
 if(isset($_POST['id']) && isset($_POST['pw']))
 {
     if(!empty($_POST['id']) && !empty($_POST['pw']))
     {
-        $check = verify_user($_POST['id'],$_POST['pw']);
+        $check = @verify_user($_POST['id'],$_POST['pw']);
 
         if($check=='1')
         {
@@ -41,7 +41,4 @@ else
     $_SESSION['is_login']=FALSE;
     echo 5;//帳號密碼未正確傳送 TransferFailed
 }
-// mysqli_free_result($result);
- 
-// mysqli_close($_SESSION['link']);
 ?>

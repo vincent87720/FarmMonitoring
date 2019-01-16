@@ -1,9 +1,9 @@
 <?php
-    require_once 'php/connect.php';
-    require_once 'php/backend/function.php';
+    @require_once 'php/connect.php';
+    @require_once 'php/backend/function.php';
     if(!isset($_SESSION['is_login'])||$_SESSION['is_login']==FALSE):
     {
-        header("Location: index.php");
+        @header("Location: index.php");
     }
     else:
 ?>
@@ -114,7 +114,7 @@
                                 <div class="container" id="permission_admin">
                                     <p id="edit_status" class="text-center"></p>     
                                     <?php 
-                                        get_application_list();
+                                        @get_application_list();
                                     ?>
                                 </div>
                                 <div class="col-sm-12 text-center">
@@ -156,9 +156,7 @@
                         }).done(function(dates){
                             $("#account_edit").html(dates);//要刷新的div
                         }).fail(function(jqXHR,textStatus,errorThrown){
-                            console.log(jqXHR);
-                            console.log(textStatus);
-                            console.log(errorThrown);
+                            //console.log(jqXHR);console.log(textStatus);console.log(errorThrown);
                         });
                     }
                     else if(this.id=="phoneList")
@@ -171,9 +169,7 @@
                         }).done(function(dates){
                             $("#account_edit").html(dates);//要刷新的div
                         }).fail(function(jqXHR,textStatus,errorThrown){
-                            console.log(jqXHR);
-                            console.log(textStatus);
-                            console.log(errorThrown);
+                            //console.log(jqXHR);console.log(textStatus);console.log(errorThrown);
                         });
                     }
                     else if(this.id=="nameList")
@@ -186,9 +182,7 @@
                         }).done(function(dates){
                             $("#account_edit").html(dates);//要刷新的div
                         }).fail(function(jqXHR,textStatus,errorThrown){
-                            console.log(jqXHR);
-                            console.log(textStatus);
-                            console.log(errorThrown);
+                            //console.log(jqXHR);console.log(textStatus);console.log(errorThrown);
                         });
                     }
                     else if(this.id=="emailList")
@@ -201,9 +195,7 @@
                         }).done(function(dates){
                             $("#account_edit").html(dates);//要刷新的div
                         }).fail(function(jqXHR,textStatus,errorThrown){
-                            console.log(jqXHR);
-                            console.log(textStatus);
-                            console.log(errorThrown);
+                            //console.log(jqXHR);console.log(textStatus);console.log(errorThrown);
                         });
                     }
                     else if(this.id=="identityList")
@@ -216,12 +208,9 @@
                         }).done(function(dates){
                             $("#account_edit").html(dates);//要刷新的div
                         }).fail(function(jqXHR,textStatus,errorThrown){
-                            console.log(jqXHR);
-                            console.log(textStatus);
-                            console.log(errorThrown);
+                            //console.log(jqXHR);console.log(textStatus);console.log(errorThrown);
                         });
                     }
-                    //console.log(this.id);
                     return false;
                 });
 
@@ -265,9 +254,7 @@
                     }).fail(function(jqXHR,textStatus,errorThrown){
                         //ajax執行失敗
                         //alert("有錯誤產生，請看console log");
-                        console.log(jqXHR);
-                        console.log(textStatus);
-                        console.log(errorThrown);
+                        //console.log(jqXHR);console.log(textStatus);console.log(errorThrown);
                     });
                     return false;
                 });
@@ -306,9 +293,7 @@
                     }).fail(function(jqXHR,textStatus,errorThrown){
                         //ajax執行失敗
                         //alert("有錯誤產生，請看console log");
-                        console.log(jqXHR);
-                        console.log(textStatus);
-                        console.log(errorThrown);
+                        //console.log(jqXHR);console.log(textStatus);console.log(errorThrown);
                     });
                     return false;
                 });

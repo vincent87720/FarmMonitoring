@@ -1,10 +1,10 @@
 <?php 
-require_once '../../connect.php';
-require_once '../function.php';
+@require_once '../../connect.php';
+@require_once '../function.php';
 
 if(!isset($_SESSION['is_login'])||$_SESSION['is_login']==FALSE):
 {
-    header("Location: ../../../index.php");
+    @header("Location: /index.php");
 }
 else:
 ?>
@@ -20,7 +20,7 @@ else:
 
                 <!--顯示選擇農場按鈕-->
                 <?php
-                    application_get_farm();
+                    @application_get_farm();
                 ?>
                 <!--顯示選擇農場按鈕-->
 
@@ -117,7 +117,7 @@ else:
                             console.log(data);
                         }
                     }).fail(function(jqXHR,textStatus,errorThrown){
-                        console.log(jqXHR);console.log(textStatus);console.log(errorThrown);
+                        //console.log(jqXHR);console.log(textStatus);console.log(errorThrown);
                     });
                     return false;
                 });

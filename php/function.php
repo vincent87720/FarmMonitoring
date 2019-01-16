@@ -1,17 +1,17 @@
 <?php
-require_once 'PasswordHash.php';
+@require_once 'PasswordHash.php';
 @session_start();
 function check_has_username($input)
 {
 
     $result=null;
     $sql = "SELECT * FROM `users` WHERE `username` LIKE '{$input}'";
-    $query = mysqli_query($_SESSION['link'],$sql);
+    $query = @mysqli_query($_SESSION['link'],$sql);
     
     if($query)
     {
         //若SQL成功執行
-        if(mysqli_num_rows($query)>=1)
+        if(@mysqli_num_rows($query)>=1)
         {
             //有一筆以上相同的資料
             $result=true;
@@ -25,7 +25,8 @@ function check_has_username($input)
     else
     {
         //若SQL執行失敗
-        echo "check_has_username()語法請求失敗:".mysqli_error($_SESSION['link']);
+        //echo "check_has_username()語法請求失敗:".mysqli_error($_SESSION['link']);
+        $result=false;
     }
     return $result;
 }
@@ -54,14 +55,15 @@ function add_user($id,$pw,$name,$phone,$email)
     else
     {
         //若SQL執行失敗
-        echo "add_user()語法請求失敗:".mysqli_error($_SESSION['link']);
+        //echo "add_user()語法請求失敗:".mysqli_error($_SESSION['link']);
+        $result=false;
     }
     return $result;
 }
 
 function verify_user($id,$pw)
 {
-    $checkhasuser = check_has_username($id);
+    $checkhasuser = @check_has_username($id);
     $result=null;
 
     //SQL參數化查詢---較能防止SQL injection攻擊
@@ -148,6 +150,9 @@ function verify_user($id,$pw)
     // {
     //     echo "語法執行失敗，錯誤訊息：" . mysqli_error($_SESSION['link']);
     // }
+
+    //改變SESSION ID的值
+    session_regenerate_id();
     return $result;
 }
 ?>
