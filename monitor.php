@@ -346,6 +346,17 @@
                         //參考資料：https://zhidao.baidu.com/question/1754670090672222588.html
                         $('#Chart').remove(); // this is my <canvas> element
                         $('#ChartParent').append('<canvas id="Chart"></canvas>');
+                        //判斷選擇農場的下拉式選單是否有值，若沒有，則指定第一個子標籤作為預設值
+                        var farmChoose = null;
+                        if($("#farmChoose:first-child").val().substring(0,10)=="")
+                        {
+                            farmChoose = $("#farmChoose1stChild li p").text().substring(0,10);
+                        }
+                        else
+                        {
+                            farmChoose = $("#farmChoose:first-child").val().substring(0,10);
+                        }
+
                         $.ajax({
                             type:"POST",//使用表單的方式傳送，同form的method
                             url:"php/backend/get_monitoring_data.php",
@@ -353,7 +364,7 @@
                             cache: false,
                             data:
                             {
-                                'farm':$("#farmChoose:first-child").val().substring(0,10),//因為是取整個<a>所以前面會空18格
+                                'farm':farmChoose,//因為是取整個<a>所以前面會空18格
                                 'typeOfData':$('input[name=typeOfData]:checked').val(),
                                 'startText':$("#startText").val(),
                                 'endText':$("#endText").val()
