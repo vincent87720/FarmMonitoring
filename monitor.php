@@ -55,7 +55,7 @@
                             <br>
                             <!--顯示登入中帳號的資訊與登出按鈕-->
                             <div class="btn-group" role="group" aria-label="Basic example">
-                                <button type="button" class="btn btn-info" onclick="location.href='account.php'"><?php echo $_SESSION['login_user_name']?></button>
+                                <button type="button" class="btn btn-info" onclick="location.href='account.php'"><?php echo $_SESSION['login_user_name']?>&nbsp<span class="glyphicon glyphicon-cog"></span></button>
                                 <button type="button" class="btn btn-info" onclick="location.href='php/logout.php'">登出</button>
                             </div>
                             <!--顯示登入中帳號的資訊與登出按鈕-->
