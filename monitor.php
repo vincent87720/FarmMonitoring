@@ -384,7 +384,7 @@
                                 for(var i=0;i<data.length;i++)
                                 {
                                     dateTime.push(data[i]["dateTime"].substring(5,7)+'/'+data[i]["dateTime"].substring(8,16));
-                                    sensorValue.push(data[i]["data"].substring(0,2));
+                                    sensorValue.push(data[i]["data"]);
                                     valueTotal=valueTotal+parseInt(sensorValue[i]);
                                 }
                                 average = valueTotal/data.length;
@@ -469,7 +469,7 @@
                                 for(var i=0;i<data.length;i++)
                                 {
                                     dateTime.push(data[i]["dateTime"].substring(5,7)+'/'+data[i]["dateTime"].substring(8,16));
-                                    sensorValue.push(data[i]["data"].substring(0,2));
+                                    sensorValue.push(data[i]["data"]);
                                     valueTotal=valueTotal+parseInt(sensorValue[i]);
                                 }
                                 average = valueTotal/data.length;
@@ -554,7 +554,7 @@
                                 for(var i=0;i<data.length;i++)
                                 {
                                     dateTime.push(data[i]["dateTime"].substring(5,7)+'/'+data[i]["dateTime"].substring(8,16));
-                                    sensorValue.push(data[i]["data"].substring(0,2));
+                                    sensorValue.push(data[i]["data"]);
                                     valueTotal=valueTotal+parseInt(sensorValue[i]);
                                 }
                                 average = valueTotal/data.length;
@@ -638,7 +638,7 @@
                                 for(var i=0;i<data.length;i++)
                                 {
                                     dateTime.push(data[i]["dateTime"].substring(5,7)+'/'+data[i]["dateTime"].substring(8,16));
-                                    sensorValue.push(data[i]["data"].substring(0,2));
+                                    sensorValue.push(data[i]["data"]);
                                 }
                                 var ctx = document.getElementById("Chart");
                                 var theChart = new Chart(ctx, {
@@ -730,26 +730,26 @@
                             var temperatureValue = [];//存放溫度數值
                             var humidityValue = [];//存放濕度數值
                             var sunshineValue = [];//存放照度數值
-                            var length = data.length/2;
+                            var length = data.length/3;
                             for(var i=0;i<data.length;i++)
                             {
                                 //只放入小於(總長度/感測器數量)=實際日期時間數量的值
-                                if(i<length)
+                                if(dateTime.indexOf(data[i]["dateTime"].substring(5,7)+'/'+data[i]["dateTime"].substring(8,16)) === -1)
                                 {
                                     dateTime.push(data[i]["dateTime"].substring(5,7)+'/'+data[i]["dateTime"].substring(8,16));
                                 }
                                 
                                 if(data[i]["dataType"]=="溫度")
                                 {
-                                    temperatureValue.push(data[i]["data"].substring(0,2));
+                                    temperatureValue.push(data[i]["data"]);
                                 }
                                 else if(data[i]["dataType"]=="濕度")
                                 {
-                                    humidityValue.push(data[i]["data"].substring(0,2));
+                                    humidityValue.push(data[i]["data"]);
                                 }
                                 else if(data[i]["dataType"]=="照度")
                                 {
-                                    sunshineValue.push(data[i]["data"].substring(0,2));
+                                    sunshineValue.push(data[i]["data"]);
                                 }
                                 else
                                 {
