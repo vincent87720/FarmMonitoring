@@ -404,16 +404,16 @@
                                             label: '溫度',
                                             fill:false,
                                             lineTension: 0.1,
-                                            backgroundColor: "rgba(75, 192, 192, 1)",//標示屬性的方格的背景顏色
-                                            borderColor:"rgba(75, 192, 192, 1)",//線條顏色
+                                            backgroundColor: "#F96C41",//標示屬性的方格的背景顏色
+                                            borderColor:"#F96C41",//線條顏色
                                             borderCapStyle: 'round',//線條端點處風格為圓形
                                             borderJoinStyle: 'round',//線段連接處風格為圓形
-                                            pointBorderColor: "rgba(75, 192, 192, 1)",//端點外圈顏色
-                                            pointBackgroundColor: "rgba(75, 192, 192, 1)",//端點內圈顏色
+                                            pointBorderColor: "#F96C41",//端點外圈顏色
+                                            pointBackgroundColor: "#F96C41",//端點內圈顏色
                                             pointBorderWidth: 3,//端點外圈大小
                                             pointHoverRadius: 4,//端點放大程度
-                                            pointHoverBorderColor: "rgba(75, 192, 192, 1)",//端點放後大外圈顏色
-                                            pointHoverBackgroundColor: "rgba(75, 192, 192, 1)",//端點放大後內圈顏色
+                                            pointHoverBorderColor: "#F96C41",//端點放後大外圈顏色
+                                            pointHoverBackgroundColor: "#F96C41",//端點放大後內圈顏色
                                             pointHoverBorderWidth: 2,//端點放大後外圈大小
                                             pointRadius: 2,//端點大小
                                             pointHitRadius: 10,
@@ -649,16 +649,16 @@
                                             label: 'NoData',
                                             fill:false,
                                             lineTension: 0.1,
-                                            backgroundColor: "rgba(75, 192, 192, 1)",//標示屬性的方格的背景顏色
-                                            borderColor:"rgba(75, 192, 192, 1)",//線條顏色
+                                            backgroundColor: "#F96C41",//標示屬性的方格的背景顏色
+                                            borderColor:"#F96C41",//線條顏色
                                             borderCapStyle: 'round',//線條端點處風格為圓形
                                             borderJoinStyle: 'round',//線段連接處風格為圓形
-                                            pointBorderColor: "rgba(75, 192, 192, 1)",//端點外圈顏色
-                                            pointBackgroundColor: "rgba(75, 192, 192, 1)",//端點內圈顏色
+                                            pointBorderColor: "#F96C41",//端點外圈顏色
+                                            pointBackgroundColor: "#F96C41",//端點內圈顏色
                                             pointBorderWidth: 3,//端點外圈大小
                                             pointHoverRadius: 4,//端點放大程度
-                                            pointHoverBorderColor: "rgba(75, 192, 192, 1)",//端點放後大外圈顏色
-                                            pointHoverBackgroundColor: "rgba(75, 192, 192, 1)",//端點放大後內圈顏色
+                                            pointHoverBorderColor: "#F96C41",//端點放後大外圈顏色
+                                            pointHoverBackgroundColor: "#F96C41",//端點放大後內圈顏色
                                             pointHoverBorderWidth: 2,//端點放大後外圈大小
                                             pointRadius: 2,//端點大小
                                             pointHitRadius: 10,
@@ -767,16 +767,16 @@
                                         label: '溫度',
                                         fill:false,
                                         lineTension: 0.1,
-                                        backgroundColor: "rgba(75, 192, 192, 1)",//標示屬性的方格的背景顏色
-                                        borderColor:"rgba(75, 192, 192, 1)",//線條顏色
+                                        backgroundColor: "#F96C41",//標示屬性的方格的背景顏色
+                                        borderColor:"#F96C41",//線條顏色
                                         borderCapStyle: 'round',//線條端點處風格為圓形
                                         borderJoinStyle: 'round',//線段連接處風格為圓形
-                                        pointBorderColor: "rgba(75, 192, 192, 1)",//端點外圈顏色
-                                        pointBackgroundColor: "rgba(75, 192, 192, 1)",//端點內圈顏色
+                                        pointBorderColor: "#F96C41",//端點外圈顏色
+                                        pointBackgroundColor: "#F96C41",//端點內圈顏色
                                         pointBorderWidth: 3,//端點外圈大小
                                         pointHoverRadius: 4,//端點放大程度
-                                        pointHoverBorderColor: "rgba(75, 192, 192, 1)",//端點放後大外圈顏色
-                                        pointHoverBackgroundColor: "rgba(75, 192, 192, 1)",//端點放大後內圈顏色
+                                        pointHoverBorderColor: "#F96C41",//端點放後大外圈顏色
+                                        pointHoverBackgroundColor: "#F96C41",//端點放大後內圈顏色
                                         pointHoverBorderWidth: 2,//端點放大後外圈大小
                                         pointRadius: 2,//端點大小
                                         pointHitRadius: 10,
@@ -863,16 +863,16 @@
                                     label: 'DataType',
                                     fill:false,
                                     lineTension: 0.1,
-                                    backgroundColor: "rgba(75, 192, 192, 1)",//標示屬性的方格的背景顏色
-                                    borderColor:"rgba(75, 192, 192, 1)",//線條顏色
+                                    backgroundColor: "#F96C41",//標示屬性的方格的背景顏色
+                                    borderColor:"#F96C41",//線條顏色
                                     borderCapStyle: 'round',//線條端點處風格為圓形
                                     borderJoinStyle: 'round',//線段連接處風格為圓形
-                                    pointBorderColor: "rgba(75, 192, 192, 1)",//端點外圈顏色
-                                    pointBackgroundColor: "rgba(75, 192, 192, 1)",//端點內圈顏色
+                                    pointBorderColor: "#F96C41",//端點外圈顏色
+                                    pointBackgroundColor: "#F96C41",//端點內圈顏色
                                     pointBorderWidth: 3,//端點外圈大小
                                     pointHoverRadius: 4,//端點放大程度
-                                    pointHoverBorderColor: "rgba(75, 192, 192, 1)",//端點放後大外圈顏色
-                                    pointHoverBackgroundColor: "rgba(75, 192, 192, 1)",//端點放大後內圈顏色
+                                    pointHoverBorderColor: "#F96C41",//端點放後大外圈顏色
+                                    pointHoverBackgroundColor: "#F96C41",//端點放大後內圈顏色
                                     pointHoverBorderWidth: 2,//端點放大後外圈大小
                                     pointRadius: 2,//端點大小
                                     pointHitRadius: 10,
