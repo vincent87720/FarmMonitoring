@@ -55,7 +55,7 @@
                             <br>
                             <!--顯示登入中帳號的資訊與登出按鈕-->
                             <div class="btn-group" role="group" aria-label="Basic example">
-                                <button type="button" class="btn btn-info" onclick="location.href='account.php'"><?php echo $_SESSION['login_user_name']?></button>
+                                <button type="button" class="btn btn-info" onclick="location.href='account.php'"><?php echo $_SESSION['login_user_name']?>&nbsp<span class="glyphicon glyphicon-cog"></span></button>
                                 <button type="button" class="btn btn-info" onclick="location.href='php/logout.php'">登出</button>
                             </div>
                             <!--顯示登入中帳號的資訊與登出按鈕-->
@@ -99,7 +99,7 @@
                                     <input type="radio" name="typeOfData" id="option3" value="濕度" autocomplete="off">濕度
                                 </label>
                                 <label class="btn btn-warning">
-                                    <input type="radio" name="typeOfData" id="option4" value="日照" autocomplete="off">日照
+                                    <input type="radio" name="typeOfData" id="option4" value="照度" autocomplete="off">照度
                                 </label>
                             </div>
                             <!--選擇要觀測數值種類的按鈕-->
@@ -346,6 +346,17 @@
                         //參考資料：https://zhidao.baidu.com/question/1754670090672222588.html
                         $('#Chart').remove(); // this is my <canvas> element
                         $('#ChartParent').append('<canvas id="Chart"></canvas>');
+                        //判斷選擇農場的下拉式選單是否有值，若沒有，則指定第一個子標籤作為預設值
+                        var farmChoose = null;
+                        if($("#farmChoose:first-child").val().substring(0,10)=="")
+                        {
+                            farmChoose = $("#farmChoose1stChild li p").text().substring(0,10);
+                        }
+                        else
+                        {
+                            farmChoose = $("#farmChoose:first-child").val().substring(0,10);
+                        }
+
                         $.ajax({
                             type:"POST",//使用表單的方式傳送，同form的method
                             url:"php/backend/get_monitoring_data.php",
@@ -353,7 +364,7 @@
                             cache: false,
                             data:
                             {
-                                'farm':$("#farmChoose:first-child").val().substring(0,10),//因為是取整個<a>所以前面會空18格
+                                'farm':farmChoose,//因為是取整個<a>所以前面會空18格
                                 'typeOfData':$('input[name=typeOfData]:checked').val(),
                                 'startText':$("#startText").val(),
                                 'endText':$("#endText").val()
@@ -393,16 +404,16 @@
                                             label: '溫度',
                                             fill:false,
                                             lineTension: 0.1,
-                                            backgroundColor: "rgba(75, 192, 192, 1)",//標示屬性的方格的背景顏色
-                                            borderColor:"rgba(75, 192, 192, 1)",//線條顏色
+                                            backgroundColor: "#F96C41",//標示屬性的方格的背景顏色
+                                            borderColor:"#F96C41",//線條顏色
                                             borderCapStyle: 'round',//線條端點處風格為圓形
                                             borderJoinStyle: 'round',//線段連接處風格為圓形
-                                            pointBorderColor: "rgba(75, 192, 192, 1)",//端點外圈顏色
-                                            pointBackgroundColor: "rgba(75, 192, 192, 1)",//端點內圈顏色
+                                            pointBorderColor: "#F96C41",//端點外圈顏色
+                                            pointBackgroundColor: "#F96C41",//端點內圈顏色
                                             pointBorderWidth: 3,//端點外圈大小
                                             pointHoverRadius: 4,//端點放大程度
-                                            pointHoverBorderColor: "rgba(75, 192, 192, 1)",//端點放後大外圈顏色
-                                            pointHoverBackgroundColor: "rgba(75, 192, 192, 1)",//端點放大後內圈顏色
+                                            pointHoverBorderColor: "#F96C41",//端點放後大外圈顏色
+                                            pointHoverBackgroundColor: "#F96C41",//端點放大後內圈顏色
                                             pointHoverBorderWidth: 2,//端點放大後外圈大小
                                             pointRadius: 2,//端點大小
                                             pointHitRadius: 10,
@@ -538,7 +549,7 @@
                                     }
                                 });
                             }
-                            else if(typeOfData=="日照")
+                            else if(typeOfData=="照度")
                             {
                                 for(var i=0;i<data.length;i++)
                                 {
@@ -559,7 +570,7 @@
                                         labels:dateTime,
                                         datasets: 
                                         [{
-                                            label: '日照',
+                                            label: '照度',
                                             fill:false,
                                             lineTension: 0.1,
                                             backgroundColor: "rgb(255, 205, 86)",//標示屬性的方格的背景顏色
@@ -615,7 +626,7 @@
                                                 scaleLabel: 
                                                 {
                                                     display: true,
-                                                    labelString: '日照'
+                                                    labelString: '照度(lx)'
                                                 }
                                             }]
                                         }
@@ -638,16 +649,16 @@
                                             label: 'NoData',
                                             fill:false,
                                             lineTension: 0.1,
-                                            backgroundColor: "rgba(75, 192, 192, 1)",//標示屬性的方格的背景顏色
-                                            borderColor:"rgba(75, 192, 192, 1)",//線條顏色
+                                            backgroundColor: "#F96C41",//標示屬性的方格的背景顏色
+                                            borderColor:"#F96C41",//線條顏色
                                             borderCapStyle: 'round',//線條端點處風格為圓形
                                             borderJoinStyle: 'round',//線段連接處風格為圓形
-                                            pointBorderColor: "rgba(75, 192, 192, 1)",//端點外圈顏色
-                                            pointBackgroundColor: "rgba(75, 192, 192, 1)",//端點內圈顏色
+                                            pointBorderColor: "#F96C41",//端點外圈顏色
+                                            pointBackgroundColor: "#F96C41",//端點內圈顏色
                                             pointBorderWidth: 3,//端點外圈大小
                                             pointHoverRadius: 4,//端點放大程度
-                                            pointHoverBorderColor: "rgba(75, 192, 192, 1)",//端點放後大外圈顏色
-                                            pointHoverBackgroundColor: "rgba(75, 192, 192, 1)",//端點放大後內圈顏色
+                                            pointHoverBorderColor: "#F96C41",//端點放後大外圈顏色
+                                            pointHoverBackgroundColor: "#F96C41",//端點放大後內圈顏色
                                             pointHoverBorderWidth: 2,//端點放大後外圈大小
                                             pointRadius: 2,//端點大小
                                             pointHitRadius: 10,
@@ -718,7 +729,7 @@
                             var dateTime = [];//存放日期時間
                             var temperatureValue = [];//存放溫度數值
                             var humidityValue = [];//存放濕度數值
-                            var sunshineValue = [];//存放日照數值
+                            var sunshineValue = [];//存放照度數值
                             var length = data.length/2;
                             for(var i=0;i<data.length;i++)
                             {
@@ -736,7 +747,7 @@
                                 {
                                     humidityValue.push(data[i]["data"].substring(0,2));
                                 }
-                                else if(data[i]["dataType"]=="日照")
+                                else if(data[i]["dataType"]=="照度")
                                 {
                                     sunshineValue.push(data[i]["data"].substring(0,2));
                                 }
@@ -756,16 +767,16 @@
                                         label: '溫度',
                                         fill:false,
                                         lineTension: 0.1,
-                                        backgroundColor: "rgba(75, 192, 192, 1)",//標示屬性的方格的背景顏色
-                                        borderColor:"rgba(75, 192, 192, 1)",//線條顏色
+                                        backgroundColor: "#F96C41",//標示屬性的方格的背景顏色
+                                        borderColor:"#F96C41",//線條顏色
                                         borderCapStyle: 'round',//線條端點處風格為圓形
                                         borderJoinStyle: 'round',//線段連接處風格為圓形
-                                        pointBorderColor: "rgba(75, 192, 192, 1)",//端點外圈顏色
-                                        pointBackgroundColor: "rgba(75, 192, 192, 1)",//端點內圈顏色
+                                        pointBorderColor: "#F96C41",//端點外圈顏色
+                                        pointBackgroundColor: "#F96C41",//端點內圈顏色
                                         pointBorderWidth: 3,//端點外圈大小
                                         pointHoverRadius: 4,//端點放大程度
-                                        pointHoverBorderColor: "rgba(75, 192, 192, 1)",//端點放後大外圈顏色
-                                        pointHoverBackgroundColor: "rgba(75, 192, 192, 1)",//端點放大後內圈顏色
+                                        pointHoverBorderColor: "#F96C41",//端點放後大外圈顏色
+                                        pointHoverBackgroundColor: "#F96C41",//端點放大後內圈顏色
                                         pointHoverBorderWidth: 2,//端點放大後外圈大小
                                         pointRadius: 2,//端點大小
                                         pointHitRadius: 10,
@@ -789,7 +800,7 @@
                                         pointHitRadius: 10,
                                         data: humidityValue
                                     },{
-                                        label: '日照',
+                                        label: '照度',
                                         fill:false,
                                         lineTension: 0.1,
                                         backgroundColor: "rgb(255, 205, 86)",//標示屬性的方格的背景顏色
@@ -852,16 +863,16 @@
                                     label: 'DataType',
                                     fill:false,
                                     lineTension: 0.1,
-                                    backgroundColor: "rgba(75, 192, 192, 1)",//標示屬性的方格的背景顏色
-                                    borderColor:"rgba(75, 192, 192, 1)",//線條顏色
+                                    backgroundColor: "#F96C41",//標示屬性的方格的背景顏色
+                                    borderColor:"#F96C41",//線條顏色
                                     borderCapStyle: 'round',//線條端點處風格為圓形
                                     borderJoinStyle: 'round',//線段連接處風格為圓形
-                                    pointBorderColor: "rgba(75, 192, 192, 1)",//端點外圈顏色
-                                    pointBackgroundColor: "rgba(75, 192, 192, 1)",//端點內圈顏色
+                                    pointBorderColor: "#F96C41",//端點外圈顏色
+                                    pointBackgroundColor: "#F96C41",//端點內圈顏色
                                     pointBorderWidth: 3,//端點外圈大小
                                     pointHoverRadius: 4,//端點放大程度
-                                    pointHoverBorderColor: "rgba(75, 192, 192, 1)",//端點放後大外圈顏色
-                                    pointHoverBackgroundColor: "rgba(75, 192, 192, 1)",//端點放大後內圈顏色
+                                    pointHoverBorderColor: "#F96C41",//端點放後大外圈顏色
+                                    pointHoverBackgroundColor: "#F96C41",//端點放大後內圈顏色
                                     pointHoverBorderWidth: 2,//端點放大後外圈大小
                                     pointRadius: 2,//端點大小
                                     pointHitRadius: 10,
