@@ -99,7 +99,7 @@
                                     <input type="radio" name="typeOfData" id="option3" value="濕度" autocomplete="off">濕度
                                 </label>
                                 <label class="btn btn-warning">
-                                    <input type="radio" name="typeOfData" id="option4" value="日照" autocomplete="off">日照
+                                    <input type="radio" name="typeOfData" id="option4" value="照度" autocomplete="off">照度
                                 </label>
                             </div>
                             <!--選擇要觀測數值種類的按鈕-->
@@ -549,7 +549,7 @@
                                     }
                                 });
                             }
-                            else if(typeOfData=="日照")
+                            else if(typeOfData=="照度")
                             {
                                 for(var i=0;i<data.length;i++)
                                 {
@@ -570,7 +570,7 @@
                                         labels:dateTime,
                                         datasets: 
                                         [{
-                                            label: '日照',
+                                            label: '照度',
                                             fill:false,
                                             lineTension: 0.1,
                                             backgroundColor: "rgb(255, 205, 86)",//標示屬性的方格的背景顏色
@@ -626,7 +626,7 @@
                                                 scaleLabel: 
                                                 {
                                                     display: true,
-                                                    labelString: '日照'
+                                                    labelString: '照度(lx)'
                                                 }
                                             }]
                                         }
@@ -729,7 +729,7 @@
                             var dateTime = [];//存放日期時間
                             var temperatureValue = [];//存放溫度數值
                             var humidityValue = [];//存放濕度數值
-                            var sunshineValue = [];//存放日照數值
+                            var sunshineValue = [];//存放照度數值
                             var length = data.length/2;
                             for(var i=0;i<data.length;i++)
                             {
@@ -747,7 +747,7 @@
                                 {
                                     humidityValue.push(data[i]["data"].substring(0,2));
                                 }
-                                else if(data[i]["dataType"]=="日照")
+                                else if(data[i]["dataType"]=="照度")
                                 {
                                     sunshineValue.push(data[i]["data"].substring(0,2));
                                 }
@@ -800,7 +800,7 @@
                                         pointHitRadius: 10,
                                         data: humidityValue
                                     },{
-                                        label: '日照',
+                                        label: '照度',
                                         fill:false,
                                         lineTension: 0.1,
                                         backgroundColor: "rgb(255, 205, 86)",//標示屬性的方格的背景顏色
