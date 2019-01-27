@@ -78,15 +78,21 @@
             <div class="main">
                 <div class="container-fluid">
                     <div class="row">
-                        <div class="col-sm-2 text-center">
+                        <div class="col-sm-4 text-center">
                             <!--顯示選擇農場按鈕-->
                             <?php
                                 @require_once 'php/backend/function.php';
                                 @get_farm();
                                 ?>
                             <!--顯示選擇農場按鈕-->
+
+                            <!--顯示選擇Arduino按鈕-->
+                            <div id="get_arduino" style="display:inline;"></div>
+                            <!--顯示選擇Arduino按鈕-->
+                            <br/>
+                            <br/>
                         </div>
-                        <div class="col-sm-10 text-center">
+                        <div class="col-sm-8 text-center">
                             <!--選擇要觀測數值種類的按鈕-->
                             <div class="btn-group btn-group-toggle" id="dataType" data-toggle="buttons">
                                 <label class="btn btn-warning">
@@ -203,27 +209,34 @@
                     //預設顯示所有資料總覽
                     drawChart_All();
                     
+                    
                     //當觸發選擇農場下拉式選單時
-                    $(".dropdown-menu").on('click', 'li a', function(){
+                    $("#farmChoose1stChild").on('click', 'li a', function(){
                         //將下拉式選單按鈕改為選擇的農場編號
-                        $("#farmChoose:first-child").text($(this).text().substring(17,28));
-                        $("#farmChoose:first-child").val($(this).text().substring(17,28));
+                        var farmChoose = $(this).text().substring(29,39);
+                        $("#farmChoose:first-child").text(farmChoose);
+                        $("#farmChoose:first-child").val(farmChoose);
                         
                         //在圖表下方顯示農場位置描述
                         //$('#showFarmDescription').val()
                         document.getElementById("showFarmDescription").innerHTML = '<div class="btn-group" role="group" aria-label="Basic example"><button type="button" class="btn btn-warning">'+$(this).text().substring(96,150)+'</button></div>';
                         
-                        if($('input[name=typeOfData]:checked').val()=="總覽")
-                        {
-                            //呼叫drawChart_All()函式繪製圖表
-                            drawChart_All();
-                        }
-                        else
-                        {
-                            //呼叫drawChart()函式繪製圖表
-                            drawChart();
-                        }
-                        
+                        //連動下拉式選單-顯示Arduino
+                        $.ajax({
+                            type:"POST",//使用表單的方式傳送，同form的method
+                            url:"php/backend/get_arduino.php",
+                            cache: false,
+                            data:
+                            {
+                                'farm':farmChoose
+                            }
+                        }).done(function(data){
+                            $('#get_arduino').html(data);
+                        }).fail(function(jqXHR,textStatus,errorThrown){
+                            //ajax執行失敗
+                            //alert("有錯誤產生，請看console log");
+                            //console.log(jqXHR);console.log(textStatus);console.log(errorThrown);
+                        });
                     });
 
                     //點選按鈕選擇監測數值的種類
@@ -337,425 +350,88 @@
                             drawChart();
                         }
                     });
+                });
+
+                //當按下選擇Arduino按鈕時觸發
+                function arduinoChoose(en)
+                {
+                    $("#arduinoChoose:first-child").text(en);
+                    $("#arduinoChoose:first-child").val(en);
                     
-                    function drawChart()
+                    if($('input[name=typeOfData]:checked').val()=="總覽")
                     {
-                        //乾他媽的下面這兩行方法我找超久
-                        //問題：使用新數據在canvas上繪圖時，之前查詢的圖表依然存在，滑鼠在圖表上移動時，兩張圖表會來回閃動
-                        //解決方法：先將上次查詢的canvas移除掉，再加入新的canvas到他的父div中
-                        //參考資料：https://zhidao.baidu.com/question/1754670090672222588.html
-                        $('#Chart').remove(); // this is my <canvas> element
-                        $('#ChartParent').append('<canvas id="Chart"></canvas>');
-                        //判斷選擇農場的下拉式選單是否有值，若沒有，則指定第一個子標籤作為預設值
-                        var farmChoose = null;
-                        if($("#farmChoose:first-child").val().substring(0,10)=="")
-                        {
-                            farmChoose = $("#farmChoose1stChild li p").text().substring(0,10);
-                        }
-                        else
-                        {
-                            farmChoose = $("#farmChoose:first-child").val().substring(0,10);
-                        }
-
-                        $.ajax({
-                            type:"POST",//使用表單的方式傳送，同form的method
-                            url:"php/backend/get_monitoring_data.php",
-                            async: true,
-                            cache: false,
-                            data:
-                            {
-                                'farm':farmChoose,//因為是取整個<a>所以前面會空18格
-                                'typeOfData':$('input[name=typeOfData]:checked').val(),
-                                'startText':$("#startText").val(),
-                                'endText':$("#endText").val()
-                            },
-                            dataType:'json'
-
-                        }).done(function(data){
-                            //console.log(JSON.stringify(data));
-                            var typeOfData = $('input[name=typeOfData]:checked').val();
-                            var dateTime = [];
-                            var sensorValue = [];
-                            var averageValue = [];
-                            var valueTotal = 0;
-                            var average = 0;
-                            if(typeOfData=="溫度")
-                            {
-                                for(var i=0;i<data.length;i++)
-                                {
-                                    dateTime.push(data[i]["dateTime"].substring(5,7)+'/'+data[i]["dateTime"].substring(8,16));
-                                    sensorValue.push(data[i]["data"]);
-                                    valueTotal=valueTotal+parseInt(sensorValue[i]);
-                                }
-                                average = valueTotal/data.length;
-                                for(var i=0;i<data.length;i++)
-                                {
-                                    averageValue[i]=average;
-                                }
-
-                                Chart.defaults.global.defaultFontSize = 14;
-                                Chart.defaults.global.defaultFontFamily = "'setofont'";
-                                var ctx = document.getElementById("Chart");
-                                var theChart = new Chart(ctx, {
-                                    type: 'line',
-                                    data:{
-                                        labels:dateTime,
-                                        datasets: [{
-                                            label: '溫度',
-                                            fill:false,
-                                            lineTension: 0.1,
-                                            backgroundColor: "#F96C41",//標示屬性的方格的背景顏色
-                                            borderColor:"#F96C41",//線條顏色
-                                            borderCapStyle: 'round',//線條端點處風格為圓形
-                                            borderJoinStyle: 'round',//線段連接處風格為圓形
-                                            pointBorderColor: "#F96C41",//端點外圈顏色
-                                            pointBackgroundColor: "#F96C41",//端點內圈顏色
-                                            pointBorderWidth: 3,//端點外圈大小
-                                            pointHoverRadius: 4,//端點放大程度
-                                            pointHoverBorderColor: "#F96C41",//端點放後大外圈顏色
-                                            pointHoverBackgroundColor: "#F96C41",//端點放大後內圈顏色
-                                            pointHoverBorderWidth: 2,//端點放大後外圈大小
-                                            pointRadius: 2,//端點大小
-                                            pointHitRadius: 10,
-                                            data: sensorValue
-                                        },{
-                                            label: '平均',
-                                            fill:false,
-                                            lineTension: 0.1,
-                                            backgroundColor: "rgba(153, 153, 153, 1)",//標示屬性的方格的背景顏色
-                                            borderColor:"rgba(153, 153, 153, 1)",//線條顏色
-                                            borderCapStyle: 'round',//線條端點處風格為圓形
-                                            borderJoinStyle: 'round',//線段連接處風格為圓形
-                                            pointBorderColor: "rgba(153, 153, 153, 1)",//端點外圈顏色
-                                            pointBackgroundColor: "rgba(153, 153, 153, 1)",//端點內圈顏色
-                                            pointBorderWidth: 1,//端點外圈大小
-                                            pointHoverRadius: 1,//端點放大程度
-                                            pointHoverBorderColor: "rgba(153, 153, 153, 1)",//端點放後大外圈顏色
-                                            pointHoverBackgroundColor: "rgba(153, 153, 153, 1)",//端點放大後內圈顏色
-                                            pointHoverBorderWidth: 1,//端點放大後外圈大小
-                                            pointRadius: 1,//端點大小
-                                            pointHitRadius: 10,
-                                            data: averageValue
-                                        }]
-                                    },
-                                    options: 
-                                    {
-                                        scales: 
-                                        {
-                                            xAxes: 
-                                            [{
-                                                display: true,
-                                                scaleLabel: 
-                                                {
-                                                    display: true,
-                                                    labelString: '日期時間'
-                                                }
-                                            }],
-                                            yAxes: 
-                                            [{
-                                                display: true,
-                                                scaleLabel: 
-                                                {
-                                                    display: true,
-                                                    labelString: '溫度(℃)'
-                                                }
-                                            }]
-                                        }
-                                    }
-                                });
-                            }
-                            else if(typeOfData=="濕度")
-                            {
-                                for(var i=0;i<data.length;i++)
-                                {
-                                    dateTime.push(data[i]["dateTime"].substring(5,7)+'/'+data[i]["dateTime"].substring(8,16));
-                                    sensorValue.push(data[i]["data"]);
-                                    valueTotal=valueTotal+parseInt(sensorValue[i]);
-                                }
-                                average = valueTotal/data.length;
-                                for(var i=0;i<data.length;i++)
-                                {
-                                    averageValue[i]=average;
-                                }
-
-                                var ctx = document.getElementById("Chart");
-                                var theChart = new Chart(ctx, {
-                                    type: 'line',
-                                    data:
-                                    {
-                                        labels:dateTime,
-                                        datasets: 
-                                        [{
-                                            label: '濕度',
-                                            fill:false,
-                                            lineTension: 0.1,
-                                            backgroundColor: "rgb(54, 162, 235)",//標示屬性的方格的背景顏色
-                                            borderColor:"rgb(54, 162, 235)",//線條顏色
-                                            borderCapStyle: 'round',//線條端點處風格為圓形
-                                            borderJoinStyle: 'round',//線段連接處風格為圓形
-                                            pointBorderColor: "rgb(54, 162, 235)",//端點外圈顏色
-                                            pointBackgroundColor: "rgb(54, 162, 235)",//端點內圈顏色
-                                            pointBorderWidth: 3,//端點外圈大小
-                                            pointHoverRadius: 4,//端點放大程度
-                                            pointHoverBorderColor: "rgb(54, 162, 235)",//端點放後大外圈顏色
-                                            pointHoverBackgroundColor: "rgb(54, 162, 235)",//端點放大後內圈顏色
-                                            pointHoverBorderWidth: 2,//端點放大後外圈大小
-                                            pointRadius: 2,//端點大小
-                                            pointHitRadius: 10,
-                                            data: sensorValue
-                                        },{
-                                            label: '平均',
-                                            fill:false,
-                                            lineTension: 0.1,
-                                            backgroundColor: "rgba(153, 153, 153, 1)",//標示屬性的方格的背景顏色
-                                            borderColor:"rgba(153, 153, 153, 1)",//線條顏色
-                                            borderCapStyle: 'round',//線條端點處風格為圓形
-                                            borderJoinStyle: 'round',//線段連接處風格為圓形
-                                            pointBorderColor: "rgba(153, 153, 153, 1)",//端點外圈顏色
-                                            pointBackgroundColor: "rgba(153, 153, 153, 1)",//端點內圈顏色
-                                            pointBorderWidth: 1,//端點外圈大小
-                                            pointHoverRadius: 1,//端點放大程度
-                                            pointHoverBorderColor: "rgba(153, 153, 153, 1)",//端點放後大外圈顏色
-                                            pointHoverBackgroundColor: "rgba(153, 153, 153, 1)",//端點放大後內圈顏色
-                                            pointHoverBorderWidth: 1,//端點放大後外圈大小
-                                            pointRadius: 1,//端點大小
-                                            pointHitRadius: 10,
-                                            data: averageValue
-                                        }]
-                                    },
-                                    options: 
-                                    {
-                                        scales: 
-                                        {
-                                            xAxes: 
-                                            [{
-                                                display: true,
-                                                scaleLabel: 
-                                                {
-                                                    display: true,
-                                                    labelString: '日期時間'
-                                                }
-                                            }],
-                                            yAxes: 
-                                            [{
-                                                display: true,
-                                                scaleLabel: 
-                                                {
-                                                    display: true,
-                                                    labelString: '濕度(%RH)'
-                                                }
-                                            }]
-                                        }
-                                    }
-                                });
-                            }
-                            else if(typeOfData=="照度")
-                            {
-                                for(var i=0;i<data.length;i++)
-                                {
-                                    dateTime.push(data[i]["dateTime"].substring(5,7)+'/'+data[i]["dateTime"].substring(8,16));
-                                    sensorValue.push(data[i]["data"]);
-                                    valueTotal=valueTotal+parseInt(sensorValue[i]);
-                                }
-                                average = valueTotal/data.length;
-                                for(var i=0;i<data.length;i++)
-                                {
-                                    averageValue[i]=average;
-                                }
-                                var ctx = document.getElementById("Chart");
-                                var theChart = new Chart(ctx, {
-                                    type: 'line',
-                                    data:
-                                    {
-                                        labels:dateTime,
-                                        datasets: 
-                                        [{
-                                            label: '照度',
-                                            fill:false,
-                                            lineTension: 0.1,
-                                            backgroundColor: "rgb(255, 205, 86)",//標示屬性的方格的背景顏色
-                                            borderColor:"rgb(255, 205, 86)",//線條顏色
-                                            borderCapStyle: 'round',//線條端點處風格為圓形
-                                            borderJoinStyle: 'round',//線段連接處風格為圓形
-                                            pointBorderColor: "rgb(255, 205, 86)",//端點外圈顏色
-                                            pointBackgroundColor: "rgb(255, 205, 86)",//端點內圈顏色
-                                            pointBorderWidth: 3,//端點外圈大小
-                                            pointHoverRadius: 4,//端點放大程度
-                                            pointHoverBorderColor: "rgb(255, 205, 86)",//端點放後大外圈顏色
-                                            pointHoverBackgroundColor: "rgb(255, 205, 86)",//端點放大後內圈顏色
-                                            pointHoverBorderWidth: 2,//端點放大後外圈大小
-                                            pointRadius: 2,//端點大小
-                                            pointHitRadius: 10,
-                                            data: sensorValue
-                                        },{
-                                            label: '平均',
-                                            fill:false,
-                                            lineTension: 0.1,
-                                            backgroundColor: "rgba(153, 153, 153, 1)",//標示屬性的方格的背景顏色
-                                            borderColor:"rgba(153, 153, 153, 1)",//線條顏色
-                                            borderCapStyle: 'round',//線條端點處風格為圓形
-                                            borderJoinStyle: 'round',//線段連接處風格為圓形
-                                            pointBorderColor: "rgba(153, 153, 153, 1)",//端點外圈顏色
-                                            pointBackgroundColor: "rgba(153, 153, 153, 1)",//端點內圈顏色
-                                            pointBorderWidth: 1,//端點外圈大小
-                                            pointHoverRadius: 1,//端點放大程度
-                                            pointHoverBorderColor: "rgba(153, 153, 153, 1)",//端點放後大外圈顏色
-                                            pointHoverBackgroundColor: "rgba(153, 153, 153, 1)",//端點放大後內圈顏色
-                                            pointHoverBorderWidth: 1,//端點放大後外圈大小
-                                            pointRadius: 1,//端點大小
-                                            pointHitRadius: 10,
-                                            data: averageValue
-                                        }]
-                                    },
-                                    options: 
-                                    {
-                                        scales: 
-                                        {
-                                            xAxes: 
-                                            [{
-                                                display: true,
-                                                scaleLabel: 
-                                                {
-                                                    display: true,
-                                                    labelString: '日期時間'
-                                                }
-                                            }],
-                                            yAxes: 
-                                            [{
-                                                display: true,
-                                                scaleLabel: 
-                                                {
-                                                    display: true,
-                                                    labelString: '照度(lx)'
-                                                }
-                                            }]
-                                        }
-                                    }
-                                });
-                            }
-                            else
-                            {
-                                for(var i=0;i<data.length;i++)
-                                {
-                                    dateTime.push(data[i]["dateTime"].substring(5,7)+'/'+data[i]["dateTime"].substring(8,16));
-                                    sensorValue.push(data[i]["data"]);
-                                }
-                                var ctx = document.getElementById("Chart");
-                                var theChart = new Chart(ctx, {
-                                    type: 'line',
-                                    data:{
-                                        labels:dateTime,
-                                        datasets: [{
-                                            label: 'NoData',
-                                            fill:false,
-                                            lineTension: 0.1,
-                                            backgroundColor: "#F96C41",//標示屬性的方格的背景顏色
-                                            borderColor:"#F96C41",//線條顏色
-                                            borderCapStyle: 'round',//線條端點處風格為圓形
-                                            borderJoinStyle: 'round',//線段連接處風格為圓形
-                                            pointBorderColor: "#F96C41",//端點外圈顏色
-                                            pointBackgroundColor: "#F96C41",//端點內圈顏色
-                                            pointBorderWidth: 3,//端點外圈大小
-                                            pointHoverRadius: 4,//端點放大程度
-                                            pointHoverBorderColor: "#F96C41",//端點放後大外圈顏色
-                                            pointHoverBackgroundColor: "#F96C41",//端點放大後內圈顏色
-                                            pointHoverBorderWidth: 2,//端點放大後外圈大小
-                                            pointRadius: 2,//端點大小
-                                            pointHitRadius: 10,
-                                            data: sensorValue
-                                        }]
-                                    },
-                                    options: 
-                                    {
-                                        scales: 
-                                        {
-                                            xAxes: 
-                                            [{
-                                                display: true,
-                                                scaleLabel: 
-                                                {
-                                                    display: true,
-                                                    labelString: 'NoData'
-                                                }
-                                            }],
-                                            yAxes: 
-                                            [{
-                                                display: true,
-                                                scaleLabel: 
-                                                {
-                                                    display: true,
-                                                    labelString: 'NoData'
-                                                }
-                                            }]
-                                        }
-                                    }
-                                });
-                            }
-                        }).fail(function(jqXHR,textStatus,errorThrown){
-                            //ajax執行失敗
-                            //alert("有錯誤產生，請看console log");
-                            //console.log(jqXHR);console.log(textStatus);console.log(errorThrown);
-                        });  
-                        return false;  
+                        //呼叫drawChart_All()函式繪製圖表
+                        drawChart_All();
                     }
-                    
-                    function drawChart_All()
+                    else
                     {
-                        $('#Chart').remove(); // this is my <canvas> element
-                        $('#ChartParent').append('<canvas id="Chart"></canvas>');
-                        //判斷選擇農場的下拉式選單是否有值，若沒有，則指定第一個子標籤作為預設值
-                        var farmChoose = null;
-                        if($("#farmChoose:first-child").val().substring(0,10)=="")
-                        {
-                            farmChoose = $("#farmChoose1stChild li p").text().substring(0,10);
-                        }
-                        else
-                        {
-                            farmChoose = $("#farmChoose:first-child").val().substring(0,10);
-                        }
+                        //呼叫drawChart()函式繪製圖表
+                        drawChart();
+                    }
                         
-                        $.ajax({
-                            type:"POST",//使用表單的方式傳送，同form的method
-                            url:"php/backend/get_all_monitoring_data.php",
-                            cache: false,
-                            data:{
-                                'farm':farmChoose,//因為是取整個<a>所以前面會空18格
-                                'startText':$("#startText").val(),
-                                'endText':$("#endText").val()
-                            },
-                            dataType:'json'
-                        }).done(function(data){
-                            //console.log(JSON.stringify(data));
-                            var dateTime = [];//存放日期時間
-                            var temperatureValue = [];//存放溫度數值
-                            var humidityValue = [];//存放濕度數值
-                            var sunshineValue = [];//存放照度數值
-                            var length = data.length/3;
+                }
+
+                //繪製已選擇種類的圖表
+                function drawChart()
+                {
+                    //乾他媽的下面這兩行方法我找超久
+                    //問題：使用新數據在canvas上繪圖時，之前查詢的圖表依然存在，滑鼠在圖表上移動時，兩張圖表會來回閃動
+                    //解決方法：先將上次查詢的canvas移除掉，再加入新的canvas到他的父div中
+                    //參考資料：https://zhidao.baidu.com/question/1754670090672222588.html
+                    $('#Chart').remove(); // this is my <canvas> element
+                    $('#ChartParent').append('<canvas id="Chart"></canvas>');
+
+                    //判斷選擇農場及Arduino的下拉式選單是否有值，若沒有，則指定第一個子標籤作為預設值
+                    var farmChoose = null;
+                    var arduinoChoose = null;
+                    if($("#farmChoose:first-child").val().substring(0,10)=="" || $("#arduinoChoose:first-child").val()=="")
+                    {
+                        farmChoose = $("#farmChoose1stChild li p").text();
+                        arduinoChoose = $("#arduinoChoose1stChild li p").text();
+                    }
+                    else
+                    {
+                        farmChoose = $("#farmChoose:first-child").val();
+                        arduinoChoose = $("#arduinoChoose:first-child").val();
+                    }
+
+                    $.ajax({
+                        type:"POST",//使用表單的方式傳送，同form的method
+                        url:"php/backend/get_monitoring_data.php",
+                        async: true,
+                        cache: false,
+                        data:
+                        {
+                            'farm':farmChoose,
+                            'arduino':arduinoChoose,
+                            'typeOfData':$('input[name=typeOfData]:checked').val(),
+                            'startText':$("#startText").val(),
+                            'endText':$("#endText").val()
+                        },
+                        dataType:'json'
+
+                    }).done(function(data){
+                        //console.log(JSON.stringify(data));
+                        var typeOfData = $('input[name=typeOfData]:checked').val();
+                        var dateTime = [];
+                        var sensorValue = [];
+                        var averageValue = [];
+                        var valueTotal = 0;
+                        var average = 0;
+                        if(typeOfData=="溫度")
+                        {
                             for(var i=0;i<data.length;i++)
                             {
-                                //只放入小於(總長度/感測器數量)=實際日期時間數量的值
-                                if(dateTime.indexOf(data[i]["dateTime"].substring(5,7)+'/'+data[i]["dateTime"].substring(8,16)) === -1)
-                                {
-                                    dateTime.push(data[i]["dateTime"].substring(5,7)+'/'+data[i]["dateTime"].substring(8,16));
-                                }
-                                
-                                if(data[i]["dataType"]=="溫度")
-                                {
-                                    temperatureValue.push(data[i]["data"]);
-                                }
-                                else if(data[i]["dataType"]=="濕度")
-                                {
-                                    humidityValue.push(data[i]["data"]);
-                                }
-                                else if(data[i]["dataType"]=="照度")
-                                {
-                                    sunshineValue.push(data[i]["data"]);
-                                }
-                                else
-                                {
-                                    console.log("ERROR");
-                                }
+                                dateTime.push(data[i]["dateTime"].substring(5,7)+'/'+data[i]["dateTime"].substring(8,16));
+                                sensorValue.push(data[i]["data"]);
+                                valueTotal=valueTotal+parseInt(sensorValue[i]);
                             }
+                            average = valueTotal/data.length;
+                            for(var i=0;i<data.length;i++)
+                            {
+                                averageValue[i]=average;
+                            }
+
                             Chart.defaults.global.defaultFontSize = 14;
                             Chart.defaults.global.defaultFontFamily = "'setofont'";
                             var ctx = document.getElementById("Chart");
@@ -780,43 +456,25 @@
                                         pointHoverBorderWidth: 2,//端點放大後外圈大小
                                         pointRadius: 2,//端點大小
                                         pointHitRadius: 10,
-                                        data: temperatureValue
+                                        data: sensorValue
                                     },{
-                                        label: '濕度',
+                                        label: '平均',
                                         fill:false,
                                         lineTension: 0.1,
-                                        backgroundColor: "rgb(54, 162, 235)",//標示屬性的方格的背景顏色
-                                        borderColor:"rgb(54, 162, 235)",//線條顏色
+                                        backgroundColor: "rgba(153, 153, 153, 1)",//標示屬性的方格的背景顏色
+                                        borderColor:"rgba(153, 153, 153, 1)",//線條顏色
                                         borderCapStyle: 'round',//線條端點處風格為圓形
                                         borderJoinStyle: 'round',//線段連接處風格為圓形
-                                        pointBorderColor: "rgb(54, 162, 235)",//端點外圈顏色
-                                        pointBackgroundColor: "rgb(54, 162, 235)",//端點內圈顏色
-                                        pointBorderWidth: 3,//端點外圈大小
-                                        pointHoverRadius: 4,//端點放大程度
-                                        pointHoverBorderColor: "rgb(54, 162, 235)",//端點放後大外圈顏色
-                                        pointHoverBackgroundColor: "rgb(54, 162, 235)",//端點放大後內圈顏色
-                                        pointHoverBorderWidth: 2,//端點放大後外圈大小
-                                        pointRadius: 2,//端點大小
+                                        pointBorderColor: "rgba(153, 153, 153, 1)",//端點外圈顏色
+                                        pointBackgroundColor: "rgba(153, 153, 153, 1)",//端點內圈顏色
+                                        pointBorderWidth: 1,//端點外圈大小
+                                        pointHoverRadius: 1,//端點放大程度
+                                        pointHoverBorderColor: "rgba(153, 153, 153, 1)",//端點放後大外圈顏色
+                                        pointHoverBackgroundColor: "rgba(153, 153, 153, 1)",//端點放大後內圈顏色
+                                        pointHoverBorderWidth: 1,//端點放大後外圈大小
+                                        pointRadius: 1,//端點大小
                                         pointHitRadius: 10,
-                                        data: humidityValue
-                                    },{
-                                        label: '照度',
-                                        fill:false,
-                                        lineTension: 0.1,
-                                        backgroundColor: "rgb(255, 205, 86)",//標示屬性的方格的背景顏色
-                                        borderColor:"rgb(255, 205, 86)",//線條顏色
-                                        borderCapStyle: 'round',//線條端點處風格為圓形
-                                        borderJoinStyle: 'round',//線段連接處風格為圓形
-                                        pointBorderColor: "rgb(255, 205, 86)",//端點外圈顏色
-                                        pointBackgroundColor: "rgb(255, 205, 86)",//端點內圈顏色
-                                        pointBorderWidth: 3,//端點外圈大小
-                                        pointHoverRadius: 4,//端點放大程度
-                                        pointHoverBorderColor: "rgb(255, 205, 86)",//端點放後大外圈顏色
-                                        pointHoverBackgroundColor: "rgb(255, 205, 86)",//端點放大後內圈顏色
-                                        pointHoverBorderWidth: 2,//端點放大後外圈大小
-                                        pointRadius: 2,//端點大小
-                                        pointHitRadius: 10,
-                                        data: sunshineValue
+                                        data: averageValue
                                     }]
                                 },
                                 options: 
@@ -838,29 +496,320 @@
                                             scaleLabel: 
                                             {
                                                 display: true,
-                                                labelString: 'Value'
+                                                labelString: '溫度(℃)'
                                             }
                                         }]
                                     }
                                 }
                             });
-                        }).fail(function(jqXHR,textStatus,errorThrown){
-                            //ajax執行失敗
-                            //alert("有錯誤產生，請看console log");
-                            //console.log(jqXHR);console.log(textStatus);console.log(errorThrown);
-                        });
-                    }
+                        }
+                        else if(typeOfData=="濕度")
+                        {
+                            for(var i=0;i<data.length;i++)
+                            {
+                                dateTime.push(data[i]["dateTime"].substring(5,7)+'/'+data[i]["dateTime"].substring(8,16));
+                                sensorValue.push(data[i]["data"]);
+                                valueTotal=valueTotal+parseInt(sensorValue[i]);
+                            }
+                            average = valueTotal/data.length;
+                            for(var i=0;i<data.length;i++)
+                            {
+                                averageValue[i]=average;
+                            }
 
-                    function drawChart_Basic()
+                            var ctx = document.getElementById("Chart");
+                            var theChart = new Chart(ctx, {
+                                type: 'line',
+                                data:
+                                {
+                                    labels:dateTime,
+                                    datasets: 
+                                    [{
+                                        label: '濕度',
+                                        fill:false,
+                                        lineTension: 0.1,
+                                        backgroundColor: "rgb(54, 162, 235)",//標示屬性的方格的背景顏色
+                                        borderColor:"rgb(54, 162, 235)",//線條顏色
+                                        borderCapStyle: 'round',//線條端點處風格為圓形
+                                        borderJoinStyle: 'round',//線段連接處風格為圓形
+                                        pointBorderColor: "rgb(54, 162, 235)",//端點外圈顏色
+                                        pointBackgroundColor: "rgb(54, 162, 235)",//端點內圈顏色
+                                        pointBorderWidth: 3,//端點外圈大小
+                                        pointHoverRadius: 4,//端點放大程度
+                                        pointHoverBorderColor: "rgb(54, 162, 235)",//端點放後大外圈顏色
+                                        pointHoverBackgroundColor: "rgb(54, 162, 235)",//端點放大後內圈顏色
+                                        pointHoverBorderWidth: 2,//端點放大後外圈大小
+                                        pointRadius: 2,//端點大小
+                                        pointHitRadius: 10,
+                                        data: sensorValue
+                                    },{
+                                        label: '平均',
+                                        fill:false,
+                                        lineTension: 0.1,
+                                        backgroundColor: "rgba(153, 153, 153, 1)",//標示屬性的方格的背景顏色
+                                        borderColor:"rgba(153, 153, 153, 1)",//線條顏色
+                                        borderCapStyle: 'round',//線條端點處風格為圓形
+                                        borderJoinStyle: 'round',//線段連接處風格為圓形
+                                        pointBorderColor: "rgba(153, 153, 153, 1)",//端點外圈顏色
+                                        pointBackgroundColor: "rgba(153, 153, 153, 1)",//端點內圈顏色
+                                        pointBorderWidth: 1,//端點外圈大小
+                                        pointHoverRadius: 1,//端點放大程度
+                                        pointHoverBorderColor: "rgba(153, 153, 153, 1)",//端點放後大外圈顏色
+                                        pointHoverBackgroundColor: "rgba(153, 153, 153, 1)",//端點放大後內圈顏色
+                                        pointHoverBorderWidth: 1,//端點放大後外圈大小
+                                        pointRadius: 1,//端點大小
+                                        pointHitRadius: 10,
+                                        data: averageValue
+                                    }]
+                                },
+                                options: 
+                                {
+                                    scales: 
+                                    {
+                                        xAxes: 
+                                        [{
+                                            display: true,
+                                            scaleLabel: 
+                                            {
+                                                display: true,
+                                                labelString: '日期時間'
+                                            }
+                                        }],
+                                        yAxes: 
+                                        [{
+                                            display: true,
+                                            scaleLabel: 
+                                            {
+                                                display: true,
+                                                labelString: '濕度(%RH)'
+                                            }
+                                        }]
+                                    }
+                                }
+                            });
+                        }
+                        else if(typeOfData=="照度")
+                        {
+                            for(var i=0;i<data.length;i++)
+                            {
+                                dateTime.push(data[i]["dateTime"].substring(5,7)+'/'+data[i]["dateTime"].substring(8,16));
+                                sensorValue.push(data[i]["data"]);
+                                valueTotal=valueTotal+parseInt(sensorValue[i]);
+                            }
+                            average = valueTotal/data.length;
+                            for(var i=0;i<data.length;i++)
+                            {
+                                averageValue[i]=average;
+                            }
+                            var ctx = document.getElementById("Chart");
+                            var theChart = new Chart(ctx, {
+                                type: 'line',
+                                data:
+                                {
+                                    labels:dateTime,
+                                    datasets: 
+                                    [{
+                                        label: '照度',
+                                        fill:false,
+                                        lineTension: 0.1,
+                                        backgroundColor: "rgb(255, 205, 86)",//標示屬性的方格的背景顏色
+                                        borderColor:"rgb(255, 205, 86)",//線條顏色
+                                        borderCapStyle: 'round',//線條端點處風格為圓形
+                                        borderJoinStyle: 'round',//線段連接處風格為圓形
+                                        pointBorderColor: "rgb(255, 205, 86)",//端點外圈顏色
+                                        pointBackgroundColor: "rgb(255, 205, 86)",//端點內圈顏色
+                                        pointBorderWidth: 3,//端點外圈大小
+                                        pointHoverRadius: 4,//端點放大程度
+                                        pointHoverBorderColor: "rgb(255, 205, 86)",//端點放後大外圈顏色
+                                        pointHoverBackgroundColor: "rgb(255, 205, 86)",//端點放大後內圈顏色
+                                        pointHoverBorderWidth: 2,//端點放大後外圈大小
+                                        pointRadius: 2,//端點大小
+                                        pointHitRadius: 10,
+                                        data: sensorValue
+                                    },{
+                                        label: '平均',
+                                        fill:false,
+                                        lineTension: 0.1,
+                                        backgroundColor: "rgba(153, 153, 153, 1)",//標示屬性的方格的背景顏色
+                                        borderColor:"rgba(153, 153, 153, 1)",//線條顏色
+                                        borderCapStyle: 'round',//線條端點處風格為圓形
+                                        borderJoinStyle: 'round',//線段連接處風格為圓形
+                                        pointBorderColor: "rgba(153, 153, 153, 1)",//端點外圈顏色
+                                        pointBackgroundColor: "rgba(153, 153, 153, 1)",//端點內圈顏色
+                                        pointBorderWidth: 1,//端點外圈大小
+                                        pointHoverRadius: 1,//端點放大程度
+                                        pointHoverBorderColor: "rgba(153, 153, 153, 1)",//端點放後大外圈顏色
+                                        pointHoverBackgroundColor: "rgba(153, 153, 153, 1)",//端點放大後內圈顏色
+                                        pointHoverBorderWidth: 1,//端點放大後外圈大小
+                                        pointRadius: 1,//端點大小
+                                        pointHitRadius: 10,
+                                        data: averageValue
+                                    }]
+                                },
+                                options: 
+                                {
+                                    scales: 
+                                    {
+                                        xAxes: 
+                                        [{
+                                            display: true,
+                                            scaleLabel: 
+                                            {
+                                                display: true,
+                                                labelString: '日期時間'
+                                            }
+                                        }],
+                                        yAxes: 
+                                        [{
+                                            display: true,
+                                            scaleLabel: 
+                                            {
+                                                display: true,
+                                                labelString: '照度(lx)'
+                                            }
+                                        }]
+                                    }
+                                }
+                            });
+                        }
+                        else
+                        {
+                            for(var i=0;i<data.length;i++)
+                            {
+                                dateTime.push(data[i]["dateTime"].substring(5,7)+'/'+data[i]["dateTime"].substring(8,16));
+                                sensorValue.push(data[i]["data"]);
+                            }
+                            var ctx = document.getElementById("Chart");
+                            var theChart = new Chart(ctx, {
+                                type: 'line',
+                                data:{
+                                    labels:dateTime,
+                                    datasets: [{
+                                        label: 'NoData',
+                                        fill:false,
+                                        lineTension: 0.1,
+                                        backgroundColor: "#F96C41",//標示屬性的方格的背景顏色
+                                        borderColor:"#F96C41",//線條顏色
+                                        borderCapStyle: 'round',//線條端點處風格為圓形
+                                        borderJoinStyle: 'round',//線段連接處風格為圓形
+                                        pointBorderColor: "#F96C41",//端點外圈顏色
+                                        pointBackgroundColor: "#F96C41",//端點內圈顏色
+                                        pointBorderWidth: 3,//端點外圈大小
+                                        pointHoverRadius: 4,//端點放大程度
+                                        pointHoverBorderColor: "#F96C41",//端點放後大外圈顏色
+                                        pointHoverBackgroundColor: "#F96C41",//端點放大後內圈顏色
+                                        pointHoverBorderWidth: 2,//端點放大後外圈大小
+                                        pointRadius: 2,//端點大小
+                                        pointHitRadius: 10,
+                                        data: sensorValue
+                                    }]
+                                },
+                                options: 
+                                {
+                                    scales: 
+                                    {
+                                        xAxes: 
+                                        [{
+                                            display: true,
+                                            scaleLabel: 
+                                            {
+                                                display: true,
+                                                labelString: 'NoData'
+                                            }
+                                        }],
+                                        yAxes: 
+                                        [{
+                                            display: true,
+                                            scaleLabel: 
+                                            {
+                                                display: true,
+                                                labelString: 'NoData'
+                                            }
+                                        }]
+                                    }
+                                }
+                            });
+                        }
+                    }).fail(function(jqXHR,textStatus,errorThrown){
+                        //ajax執行失敗
+                        //alert("有錯誤產生，請看console log");
+                        //console.log(jqXHR);console.log(textStatus);console.log(errorThrown);
+                    });  
+                    return false;  
+                }
+
+                //繪製總覽圖表
+                function drawChart_All()
+                {
+                    $('#Chart').remove(); // this is my <canvas> element
+                    $('#ChartParent').append('<canvas id="Chart"></canvas>');
+                    
+                    //判斷選擇農場及Arduino的下拉式選單是否有值，若沒有，則指定第一個子標籤作為預設值
+                    var farmChoose = null;
+                    var arduinoChoose = null;
+                    if($("#farmChoose").val()=="" || $("#arduinoChoose").val()=="")
                     {
+                        farmChoose = $("#farmChoose1stChild li p").text().substring(0,10);
+                        arduinoChoose = $("#arduinoChoose1stChild li p").text().substring(0,10);
+                    }
+                    else
+                    {
+                        farmChoose = $("#farmChoose:first-child").val();
+                        arduinoChoose = $("#arduinoChoose:first-child").val();
+                    }
+                    
+                    $.ajax({
+                        type:"POST",//使用表單的方式傳送，同form的method
+                        url:"php/backend/get_all_monitoring_data.php",
+                        cache: false,
+                        data:{
+                            'farm':farmChoose,
+                            'arduino':arduinoChoose,
+                            'startText':$("#startText").val(),
+                            'endText':$("#endText").val()
+                        },
+                        dataType:'json'
+                    }).done(function(data){
+                        //console.log(JSON.stringify(data));
+                        var dateTime = [];//存放日期時間
+                        var temperatureValue = [];//存放溫度數值
+                        var humidityValue = [];//存放濕度數值
+                        var sunshineValue = [];//存放照度數值
+                        var length = data.length/3;
+                        for(var i=0;i<data.length;i++)
+                        {
+                            //只放入小於(總長度/感測器數量)=實際日期時間數量的值
+                            if(dateTime.indexOf(data[i]["dateTime"].substring(5,7)+'/'+data[i]["dateTime"].substring(8,16)) === -1)
+                            {
+                                dateTime.push(data[i]["dateTime"].substring(5,7)+'/'+data[i]["dateTime"].substring(8,16));
+                            }
+                            
+                            if(data[i]["dataType"]=="溫度")
+                            {
+                                temperatureValue.push(data[i]["data"]);
+                            }
+                            else if(data[i]["dataType"]=="濕度")
+                            {
+                                humidityValue.push(data[i]["data"]);
+                            }
+                            else if(data[i]["dataType"]=="照度")
+                            {
+                                sunshineValue.push(data[i]["data"]);
+                            }
+                            else
+                            {
+                                console.log("ERROR");
+                            }
+                        }
+                        Chart.defaults.global.defaultFontSize = 14;
+                        Chart.defaults.global.defaultFontFamily = "'setofont'";
                         var ctx = document.getElementById("Chart");
                         var theChart = new Chart(ctx, {
                             type: 'line',
-                            
                             data:{
-                                labels:[1,2,3,4,5,6],
+                                labels:dateTime,
                                 datasets: [{
-                                    label: 'DataType',
+                                    label: '溫度',
                                     fill:false,
                                     lineTension: 0.1,
                                     backgroundColor: "#F96C41",//標示屬性的方格的背景顏色
@@ -876,12 +825,108 @@
                                     pointHoverBorderWidth: 2,//端點放大後外圈大小
                                     pointRadius: 2,//端點大小
                                     pointHitRadius: 10,
-                                    data: [0,1,4,5,8,9]
+                                    data: temperatureValue
+                                },{
+                                    label: '濕度',
+                                    fill:false,
+                                    lineTension: 0.1,
+                                    backgroundColor: "rgb(54, 162, 235)",//標示屬性的方格的背景顏色
+                                    borderColor:"rgb(54, 162, 235)",//線條顏色
+                                    borderCapStyle: 'round',//線條端點處風格為圓形
+                                    borderJoinStyle: 'round',//線段連接處風格為圓形
+                                    pointBorderColor: "rgb(54, 162, 235)",//端點外圈顏色
+                                    pointBackgroundColor: "rgb(54, 162, 235)",//端點內圈顏色
+                                    pointBorderWidth: 3,//端點外圈大小
+                                    pointHoverRadius: 4,//端點放大程度
+                                    pointHoverBorderColor: "rgb(54, 162, 235)",//端點放後大外圈顏色
+                                    pointHoverBackgroundColor: "rgb(54, 162, 235)",//端點放大後內圈顏色
+                                    pointHoverBorderWidth: 2,//端點放大後外圈大小
+                                    pointRadius: 2,//端點大小
+                                    pointHitRadius: 10,
+                                    data: humidityValue
+                                },{
+                                    label: '照度',
+                                    fill:false,
+                                    lineTension: 0.1,
+                                    backgroundColor: "rgb(255, 205, 86)",//標示屬性的方格的背景顏色
+                                    borderColor:"rgb(255, 205, 86)",//線條顏色
+                                    borderCapStyle: 'round',//線條端點處風格為圓形
+                                    borderJoinStyle: 'round',//線段連接處風格為圓形
+                                    pointBorderColor: "rgb(255, 205, 86)",//端點外圈顏色
+                                    pointBackgroundColor: "rgb(255, 205, 86)",//端點內圈顏色
+                                    pointBorderWidth: 3,//端點外圈大小
+                                    pointHoverRadius: 4,//端點放大程度
+                                    pointHoverBorderColor: "rgb(255, 205, 86)",//端點放後大外圈顏色
+                                    pointHoverBackgroundColor: "rgb(255, 205, 86)",//端點放大後內圈顏色
+                                    pointHoverBorderWidth: 2,//端點放大後外圈大小
+                                    pointRadius: 2,//端點大小
+                                    pointHitRadius: 10,
+                                    data: sunshineValue
                                 }]
+                            },
+                            options: 
+                            {
+                                scales: 
+                                {
+                                    xAxes: 
+                                    [{
+                                        display: true,
+                                        scaleLabel: 
+                                        {
+                                            display: true,
+                                            labelString: '日期時間'
+                                        }
+                                    }],
+                                    yAxes: 
+                                    [{
+                                        display: true,
+                                        scaleLabel: 
+                                        {
+                                            display: true,
+                                            labelString: 'Value'
+                                        }
+                                    }]
+                                }
                             }
                         });
-                    }
-                });
+                    }).fail(function(jqXHR,textStatus,errorThrown){
+                        //ajax執行失敗
+                        //alert("有錯誤產生，請看console log");
+                        //console.log(jqXHR);console.log(textStatus);console.log(errorThrown);
+                    });
+                }
+
+                //繪製無數據基本圖表
+                function drawChart_Basic()
+                {
+                    var ctx = document.getElementById("Chart");
+                    var theChart = new Chart(ctx, {
+                        type: 'line',
+                        
+                        data:{
+                            labels:[1,2,3,4,5,6],
+                            datasets: [{
+                                label: 'DataType',
+                                fill:false,
+                                lineTension: 0.1,
+                                backgroundColor: "#F96C41",//標示屬性的方格的背景顏色
+                                borderColor:"#F96C41",//線條顏色
+                                borderCapStyle: 'round',//線條端點處風格為圓形
+                                borderJoinStyle: 'round',//線段連接處風格為圓形
+                                pointBorderColor: "#F96C41",//端點外圈顏色
+                                pointBackgroundColor: "#F96C41",//端點內圈顏色
+                                pointBorderWidth: 3,//端點外圈大小
+                                pointHoverRadius: 4,//端點放大程度
+                                pointHoverBorderColor: "#F96C41",//端點放後大外圈顏色
+                                pointHoverBackgroundColor: "#F96C41",//端點放大後內圈顏色
+                                pointHoverBorderWidth: 2,//端點放大後外圈大小
+                                pointRadius: 2,//端點大小
+                                pointHitRadius: 10,
+                                data: [0,1,4,5,8,9]
+                            }]
+                        }
+                    });
+                }
             </script>
 
         </div>
