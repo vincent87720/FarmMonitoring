@@ -9,12 +9,13 @@ if(!isset($_SESSION['is_login'])||$_SESSION['is_login']==FALSE):
 else:
 
 //取得單一種類感測器資料
-function get_data($farm,$typeOfData,$start,$end)
+function get_data($farm,$arduino,$typeOfData,$start,$end)
 {
 
     $sql="SELECT d.`dateTime`,d.`data` 
           FROM (`data` d INNER JOIN `arduino` a ON d.`arduino#` = a.`arduino#`) INNER JOIN `farm` f ON a.`farm#` = f.`farm#`
           WHERE f.`farm#` = '{$farm}'
+          AND a.`arduino#` = '{$arduino}'
           AND d.`dataType` = '{$typeOfData}'
           AND d.`dateTime` >= '{$start}'
           AND d.`dateTime` <= '{$end}'";
@@ -38,11 +39,12 @@ function get_data($farm,$typeOfData,$start,$end)
 }
 
 //取得所有種類感測器資料
-function get_all_data($farm,$start,$end)
+function get_all_data($farm,$arduino,$start,$end)
 {
     $sql="SELECT d.`dateTime`,d.`data`,d.`dataType`
           FROM (`data` d INNER JOIN `arduino` a ON d.`arduino#` = a.`arduino#`) INNER JOIN `farm` f ON a.`farm#` = f.`farm#`
           WHERE f.`farm#` = '{$farm}'
+          AND a.`arduino#` = '{$arduino}'
           AND d.`dateTime` >= '{$start}'
           AND d.`dateTime` <= '{$end}'";
     $test="SELECT t1.`dateTime`,t1.`typeOfSensor` as '溫度',t1.`sensorValue` as t1s,t2.`typeOfSensor` as t2t,t2.`sensorValue` as t2s
@@ -87,58 +89,91 @@ function get_farm()
                 FROM `farm` f INNER JOIN `manage` m ON f.`farm#` = m.`farm#`
                 WHERE `username` LIKE '{$_SESSION['login_user_id']}'";
     }
-    
+    $html = "";
     $query = @mysqli_query($_SESSION['link'],$sql);
     if ($query)
     {
-        echo <<< EOT
-        <div class="dropdown">
-            <button class="btn btn-warning dropdown-toggle" type="button" id="farmChoose" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                農場
-                <span class="caret"></span>
-            </button>
-            <ul class="dropdown-menu" aria-labelledby="farmChoose" id="farmChoose1stChild">
-EOT;
+        $html.='<div class="dropdown" style="display:inline;">
+                <button class="btn btn-warning dropdown-toggle" type="button" id="farmChoose" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                    農場
+                    <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu" aria-labelledby="farmChoose" id="farmChoose1stChild">';
         $i = 1;
         while($row = @mysqli_fetch_assoc($query))
         {
-            echo <<< EOT
-            <li>
-                <a href="#" data-value=$i>
-                <p>
-EOT;
-                echo $row['farm#'];   
-            echo <<< EOT
-                </p>
-                <h4> 
-                <span class="glyphicon glyphicon-leaf"></span> 
-                <span>
-EOT;
-            echo $row['positionDescription'];
-            echo <<< EOT
-            </span>  
-                </h4>
-                </a>
-            </li>
-EOT;
+            $html.='<li>
+                        <a>
+                            <p>'.$row["farm#"].'</p>
+                            <h4> 
+                                <span class="glyphicon glyphicon-leaf"></span> 
+                                <span>'.$row['positionDescription'].'</span>
+                            </h4>
+                        </a>
+                    </li>';
             //若不是最後一行，要輸出分隔線
             if($i!=@mysqli_num_rows($query))
             {
-                echo '<li class="divider"></li>';
+                $html.='<li class="divider"></li>';
             }
             $i++;
         }
-        echo <<< EOT
-            </ul>
-        </div>
-        <br />
-EOT;
+        $html.='</ul>
+                </div>';
+    echo $html;
     }
     else
     {
         //echo "語法執行失敗，錯誤訊息：" . mysqli_error($_SESSION['link']);
         return false;
     }
+}
+
+//查詢該農場的所有Arduino
+function get_arduino($farm)
+{
+    $sql="SELECT * FROM `arduino` WHERE `farm#` = '{$farm}'";
+    $query = @mysqli_query($_SESSION['link'],$sql);
+    $res = "";
+    if ($query)
+    {
+        $res .='<div class="dropdown" style="display:inline;">
+                    <button class="btn btn-warning dropdown-toggle" type="button" id="arduinoChoose" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                        Arduino
+                        <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu" aria-labelledby="arduinoChoose" id="arduinoChoose1stChild">';
+
+        $i = 1;
+        while($row = @mysqli_fetch_assoc($query))
+        {
+            $res .='    <li onclick="arduinoChoose('.'\''.$row["arduino#"].'\''.');">
+                            <a>
+                                <p>'.$row["arduino#"].'</p>
+                                <h4>
+                                    <span class="glyphicon glyphicon-leaf"></span>
+                                    <span>'.$row["positionDescription"].'</span>
+                                </h4>
+                            </a>
+                        </li>';
+            //若不是最後一行，要輸出分隔線
+            if($i!=@mysqli_num_rows($query))
+            {
+                $res .= '<li class="divider"></li>';
+            }
+            $i++;
+        }
+        $res .='    </ul>
+                </div>';
+    echo $res;
+    return true;
+    }
+    else
+    {
+        //echo "語法執行失敗，錯誤訊息：" . mysqli_error($_SESSION['link']);
+        return false;
+    }
+    
 }
 
 //申請農場功能選擇農場的下拉式選單

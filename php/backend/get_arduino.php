@@ -8,11 +8,11 @@ if(!isset($_SESSION['is_login'])||$_SESSION['is_login']==FALSE)
 }
 else
 {
-    $check = @get_all_data($_POST['farm'],$_POST['arduino'],$_POST['startText'],$_POST['endText']);
-
+    $check = @get_arduino($_POST['farm']);
+    
     if($check)
     {
-        echo $check;
+        
     }
     else
     {

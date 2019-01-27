@@ -8,7 +8,7 @@ if(!isset($_SESSION['is_login'])||$_SESSION['is_login']==FALSE)
 }
 else
 {
-    $check = @get_data($_POST['farm'],$_POST['typeOfData'],$_POST['startText'],$_POST['endText']);
+    $check = @get_data($_POST['farm'],$_POST['arduino'],$_POST['typeOfData'],$_POST['startText'],$_POST['endText']);
     
     if($check)
     {
