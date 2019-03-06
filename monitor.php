@@ -161,6 +161,12 @@
                                 </div>
                             </div>
                             <!--選擇開始與結束日期-->
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h3 class="panel-title">總平均Average</h3>
+                                </div>
+                                <div class="panel-body" id="average"></div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -383,9 +389,9 @@
                         //將日期時間放入dateTime陣列
                         for(var i=0;i<data.data.length;i++)
                         {
-                            if(dateTime.indexOf(data.data[i]["dateTime"].substring(5,7)+'/'+data.data[i]["dateTime"].substring(8,16)) === -1)
+                            if(dateTime.indexOf(data.data[i]["dateTime"].substring(5,7)+'/'+data.data[i]["dateTime"].substring(8,19)) === -1)
                             {
-                                dateTime.push(data.data[i]["dateTime"].substring(5,7)+'/'+data.data[i]["dateTime"].substring(8,16));
+                                dateTime.push(data.data[i]["dateTime"].substring(5,7)+'/'+data.data[i]["dateTime"].substring(8,19));
                             }
                         }
 
@@ -401,7 +407,7 @@
                                     for(var k=0;k<dateTime.length;k++)
                                     {
                                         //若日期時間跟dateTime陣列的值相同
-                                        if(data.data[i]["dateTime"].substring(5,7)+'/'+data.data[i]["dateTime"].substring(8,16) == dateTime[k])
+                                        if(data.data[i]["dateTime"].substring(5,7)+'/'+data.data[i]["dateTime"].substring(8,19) == dateTime[k])
                                         {
                                             //把數值放入對應的arduino陣列裡
                                             arduino[j][k] = data.data[i]["data"];
@@ -411,11 +417,42 @@
                             }
                         }
 
-                        //計算平均
-                        var totalValue = 0;
-                        var averageValue = 0;
+                        //計算單一時間點所有Arduino的平均
                         var averageArray = [];
+                        var maxLength = 0;//紀錄最多筆資料的Arduino的筆數
+
+                        //找尋最多筆資料的Arduino的筆數
+                        for(let i=0;i<arduino.length;i++)
+                        {
+                            if(arduino[i].length>maxLength)
+                                maxLength = arduino[i].length;
+                        }
+
+                        //從0到最多筆資料的Arduino的筆數
+                        for(let i=0;i<maxLength;i++)
+                        {
+                            var total = 0;
+                            var num = 0;
+                            //走訪所有該農場的arduino
+                            for(let j=0;j<arduino.length;j++)
+                            {
+                                //若該時間點的arduino的數值是數字
+                                if(!isNaN(parseInt(arduino[j][i])))
+                                {
+                                    //則將該時間點的所有arduino的值加起來
+                                    total = total + parseInt(arduino[j][i]);
+                                    num++;
+                                }
+                                
+                            }
+                            //取平均
+                            averageArray[i] = total/num;
+                        }
+                        
+                        //計算時間範圍內所有點的總平均
+                        var totalValue = 0;
                         var num = 0;
+                        var averageValue = 0;
                         for(let i=0;i<arduino.length;i++)
                         {
                             for(let j=0;j<arduino[i].length;j++)
@@ -424,13 +461,12 @@
                                 num++;
                             }
                         }
-                        averageValue = totalValue/num
-                        for(var i=0;i<dateTime.length;i++)
-                            averageArray[i] = averageValue;
-                        
+                        averageValue = totalValue/num;
 
                         if(typeOfData=="溫度")
                         {
+                            document.getElementById("average").innerHTML = averageValue+"(℃)";
+
                             var dataset = [];
                             var colorset = ["#F96C41","#CE1D24","#9C1E23","#F11C24","#F12422","#F12422","#CA131F","#AA1018","#E91223","#EF4137"];
                             
@@ -514,6 +550,8 @@
                         }
                         else if(typeOfData=="濕度")
                         {
+                            document.getElementById("average").innerHTML = averageValue+"(%RH)";
+
                             var dataset = [];
                             var colorset = ["rgb(54, 162, 235)","#5F9EA0","#2A9F9F","#2B3C46","#64A6A4","#598E8A","#7FBEB9","#96C9C4","#468DA3","#679A9A"];
                             
@@ -597,6 +635,8 @@
                         }
                         else if(typeOfData=="照度")
                         {
+                            document.getElementById("average").innerHTML = averageValue+"(lx)";
+
                             var dataset = [];
                             var colorset = ["rgb(255, 205, 86)","#FBD255","#FAAA2D","#F06C0F","#FCB619","#FEB718","#F7A731","#F2A749","#FAA524","#FFB228"];
                             

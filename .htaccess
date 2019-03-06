@@ -1,6 +1,10 @@
-#隱藏目錄下所有檔案
+﻿#隱藏目錄下所有檔案
 Options -Indexes
 
 #Error Documents
 ErrorDocument 403 /errorPage/forbidden.html
 ErrorDocument 404 /errorPage/pageNotFound.html
+
+RewriteEngine On
+RewriteCond %{HTTPS} !=on
+RewriteRule ^(.*) https://farmmonitoring.tk/$1 [R,L]
