@@ -457,8 +457,12 @@
                         {
                             for(let j=0;j<arduino[i].length;j++)
                             {
-                                totalValue = totalValue+parseInt(arduino[i][j]);
-                                num++;
+                                //若該時間點的arduino的數值是數字
+                                if(!isNaN(parseInt(arduino[i][j])))
+                                {
+                                    totalValue = totalValue+parseInt(arduino[i][j]);
+                                    num++;
+                                }
                             }
                         }
                         averageValue = totalValue/num;
