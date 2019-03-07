@@ -38,7 +38,8 @@ function get_data($farm,$typeOfData,$start,$end)
           WHERE f.`farm#` = '{$farm}'
           AND d.`dataType` = '{$typeOfData}'
           AND d.`dateTime` >= '{$start}'
-          AND d.`dateTime` <= '{$end}'";
+          AND d.`dateTime` <= '{$end}'
+          ORDER BY d.`dateTime` ASC";
     $query = @mysqli_query($_SESSION['link'],$sql);
     $data_array = array();
     if ($query)
