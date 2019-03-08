@@ -89,6 +89,7 @@
                             <!--顯示選擇Arduino按鈕-->
                             <div id="get_arduino" style="display:inline;"></div>
                             <!--顯示選擇Arduino按鈕-->
+                            <button type="button" class="btn btn-warning" id="refreshChart"><span class="glyphicon glyphicon-refresh"></span></button>
                             <br/>
                             <br/>
                         </div>
@@ -224,6 +225,11 @@
                         //$('#showFarmDescription').val()
                         document.getElementById("showFarmDescription").innerHTML = '<div class="btn-group" role="group" aria-label="Basic example"><button type="button" class="btn btn-warning">'+$(this).text().substring(96,150)+'</button></div>';
                         
+                        drawChart();
+                    });
+
+                    //當觸發重新整理按鈕時
+                    $("#refreshChart").on('click', function(){
                         drawChart();
                     });
 
