@@ -61,6 +61,10 @@ div.account_topbar
 {
     min-height: 200px;
 }
+div.jumbotronSet
+{
+    min-height: 550px;
+}
 div.jumbotron
 {
     background-color:white;
