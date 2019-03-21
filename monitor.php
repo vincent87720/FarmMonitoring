@@ -501,7 +501,7 @@
                             for(var i=0;i<arduinoNum;i++)
                             {
                                 dataset[i] = {
-                                    label: data.arduino[i]["arduino#"],
+                                    label: data.arduino[i]["positionDescription"],
                                     fill:false,
                                     lineTension: 0.1,
                                     backgroundColor: colorset[i],//標示屬性的方格的背景顏色
@@ -586,7 +586,7 @@
                             for(var i=0;i<arduinoNum;i++)
                             {
                                 dataset[i] = {
-                                    label: data.arduino[i]["arduino#"],
+                                    label: data.arduino[i]["positionDescription"],
                                     fill:false,
                                     lineTension: 0.1,
                                     backgroundColor: colorset[i],//標示屬性的方格的背景顏色
@@ -671,7 +671,7 @@
                             for(var i=0;i<arduinoNum;i++)
                             {
                                 dataset[i] = {
-                                    label: data.arduino[i]["arduino#"],
+                                    label: data.arduino[i]["positionDescription"],
                                     fill:false,
                                     lineTension: 0.1,
                                     backgroundColor: colorset[i],//標示屬性的方格的背景顏色

@@ -14,7 +14,7 @@ function get_data($farm,$typeOfData,$start,$end)
     $json_array = @array();
 
     //查詢該農場有哪些ARDUINO
-    $sql="SELECT a.`arduino#`
+    $sql="SELECT a.`arduino#`,a.`positionDescription`
           FROM `arduino` a
           WHERE a.`farm#` = '{$farm}'";
     $query = @mysqli_query($_SESSION['link'],$sql);
