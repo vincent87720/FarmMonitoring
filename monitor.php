@@ -138,7 +138,8 @@
                                 <button type="button" class="btn btn-warning" id="inThePastYear">年</button>
                                 <button type="button" class="btn btn-warning" id="inThePastMonth">月</button>
                                 <button type="button" class="btn btn-warning" id="inThreeDays">三天</button>
-                                <button type="button" class="btn btn-warning" id="inADay">一天</button>
+                                <button type="button" class="btn btn-warning" id="inADay">日</button>
+                                <button type="button" class="btn btn-warning" id="inOneHour">時</button>
                             </div>
                             <!--預設開始與結束日期區間按鈕-->
 
@@ -332,6 +333,22 @@
                     //當觸發過去一天內按鈕，把日期時間設定為從現在往前推一天
                     $("#inADay").on('click', function(){
                         $("#startDateTime").datetimepicker("setDate", new Date(new Date()-1*24*60*60*1000));
+                        $("#endDateTime").datetimepicker("setDate", new Date());
+                        if($('input[name=typeOfData]:checked').val()=="總覽")
+                        {
+                            //呼叫drawChart_All()函式繪製圖表
+                            drawChart_All();
+                        }
+                        else
+                        {
+                            //呼叫drawChart()函式繪製圖表
+                            drawChart();
+                        }
+                    });
+
+                    //當觸發過去一小時內按鈕，把日期時間設定為從現在往前推一小時
+                    $("#inOneHour").on('click', function(){
+                        $("#startDateTime").datetimepicker("setDate", new Date(new Date()-60*60*1000));
                         $("#endDateTime").datetimepicker("setDate", new Date());
                         if($('input[name=typeOfData]:checked').val()=="總覽")
                         {
