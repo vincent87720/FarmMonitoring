@@ -118,39 +118,32 @@ function get_farm()
 function application_get_farm()
 {
     $sql="SELECT * FROM `farm`";
-    
+    $html = "";
     $query = @mysqli_query($_SESSION['link'],$sql);
     if ($query)
     {
-        echo <<< EOT
-        <div class="dropdown">
-            <button class="btn btn-secondary dropdown-toggle" type="button" id="farmChoose" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                農場
-                <span class="caret"></span>
-            </button>
-            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton" id="farmChoose1stChild">
-            <a class="dropdown-item" href="#">FARM000000 總公司</a>
-            <div class="dropdown-divider"></div>
-EOT;
+        $html.='<div class="dropdown">
+                    <button class="btn btn-secondary dropdown-toggle" type="button" id="farmChoose" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                        農場
+                        <span class="caret"></span>
+                    </button>
+                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton" id="farmChoose1stChild">
+                    <a class="dropdown-item" href="#">FARM000000 總公司</a>
+                    <div class="dropdown-divider"></div>';
         $i = 1;
         while($row = @mysqli_fetch_assoc($query))
         {
-            echo '<a class="dropdown-item" href="#">';
-            echo $row['farm#'];
-            echo ' ';
-            echo $row['positionDescription'];
-            echo '</a>';
+            $html.='<a class="dropdown-item" href="#">'.$row['farm#'].' '.$row['positionDescription'].'</a>';
             if($i!=@mysqli_num_rows($query))
             {
-                echo '<div class="dropdown-divider"></div>';
+                $html.='<div class="dropdown-divider"></div>';
             }
             $i++;
         }
-        echo <<< EOT
-            </div>
-        </div>
-        <br />
-EOT;
+            $html.='</div>
+                </div>
+                <br />';
+    echo $html;
     }
     else
     {
@@ -159,73 +152,132 @@ EOT;
     }
 }
 
+//查詢該使用者管理的所有農場(account.php)
+function get_admin_farm()
+{
+    //若為管理員，取得所有農場
+    if($_SESSION['login_user_identity']=='ADMIN'||$_SESSION['login_user_identity']=='MIS')
+    {
+        $sql="SELECT * FROM `farm`";
+    }
+    else
+    {
+        //若非管理員，取得該使用者權限可觀看的農場
+        $sql = "SELECT * 
+                FROM `farm` f INNER JOIN `manage` m ON f.`farm#` = m.`farm#`
+                WHERE `username` LIKE '{$_SESSION['login_user_id']}'";
+    }
+    $query = @mysqli_query($_SESSION['link'],$sql);
+    $html = "";
+    if ($query)
+    {
+        $html.='<div class="dropdown text-center">
+                    <button class="btn btn-secondary dropdown-toggle" type="button" id="arduinoChoose" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                        農場
+                        <span class="caret"></span>
+                    </button>
+                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton" id="arduinoChoose1stChild">';
+        $i = 1;
+        while($row = @mysqli_fetch_assoc($query))
+        {
+            $html.='<a class="dropdown-item" href="#">'.$row['farm#'].' '.$row['positionDescription'].'</a>';
+            if($i!=@mysqli_num_rows($query))
+            {
+                $html.='<div class="dropdown-divider"></div>';
+            }
+            $i++;
+        }
+            $html.='</div>
+                </div>
+                <br />';
+    echo $html;
+    }
+    else
+    {
+        //echo "語法執行失敗，錯誤訊息：" . mysqli_error($_SESSION['link']);
+        return false;
+    }
+}
+
+//查詢該使用者管理的所有農場的所有ARDUINO(account.php)
+function get_admin_arduino($farm)
+{
+    $json_array = @array();
+
+    //查詢該農場有哪些ARDUINO
+    $sql="SELECT a.`arduino#`,a.`positionDescription`,a.`gps`
+          FROM `arduino` a
+          WHERE a.`farm#` = '{$farm}'";
+    $query = @mysqli_query($_SESSION['link'],$sql);
+    $arduino_array = @array();
+    if ($query)
+    {
+        while($row = @mysqli_fetch_assoc($query))
+        {
+            $arduino_array[] = $row;
+        }
+    }
+    else
+    {
+        //echo "語法執行失敗，錯誤訊息：" . mysqli_error($_SESSION['link']);
+        return false;
+    }
+    $json_array = @array("arduino" => $arduino_array);
+    return @json_encode($json_array);
+}
+
 //列出所有權限申請清單
 function get_application_list()
 {
     $sql="SELECT * FROM `application`";
     $query = @mysqli_query($_SESSION['link'],$sql);
+    $html="";
     if($query)
     {
-        echo <<< EOT
-        <div id="carouselControls" class="carousel slide" data-ride="carousel">
-            <div class="carousel-inner">
-EOT;
+        $html.='<div id="carouselControls" class="carousel slide" data-ride="carousel">
+                    <div class="carousel-inner">';
         $i=1;
         while($row = @mysqli_fetch_assoc($query))
         {
             if($i==1)
             {
-                echo '<div class="carousel-item active">';
+                $html.='<div class="carousel-item active">';
             }
             else
             {
-                echo '<div class="carousel-item">';
+                $html.='<div class="carousel-item">';
             }
-            echo '<div class="permission-list-group">';
-            
-            echo '<ul class="list-group permission-list-group">';
-            echo '<li class="list-group-item list-group-item-action borderless" id="application_username">';
-            echo '&nbsp申請人&nbsp　　&nbsp';
-            echo '<strong>';
-            echo $row['username'];
-            echo '</strong></li>';
-
-            echo '<li class="list-group-item list-group-item-action borderless" id="application_farm">';
-            echo '申請農場　　&nbsp';
-            echo '<strong>';
-            echo $row['farm#'];
-            echo '</strong></li>';
-
-            echo '<li class="list-group-item list-group-item-action borderless" id="application_identity">';
-            echo '申請權限　　&nbsp';
-            echo '<strong>';
-            echo $row['identity'];
-            echo '</strong></li>';
-
-            echo '<li class="list-group-item list-group-item-action borderless" id="application_dateTime">';
-            echo '申請時間　　&nbsp';
-            echo '<strong>';
-            echo $row['applicationDateTime'];
-            echo '</strong></li>';
-
-            echo '</ul>';
-            echo '</div>';
-            echo '</div>';
+            $html.='<div class="permission-list-group">
+                        <ul class="list-group permission-list-group">
+                            <li class="list-group-item list-group-item-action borderless" id="application_username">
+                                <strong>'.$row['username'].'</strong>
+                            </li>
+                            <li class="list-group-item list-group-item-action borderless" id="application_farm">
+                                申請農場　　&nbsp<strong>'.$row['farm#'].'</strong>
+                            </li>
+                            <li class="list-group-item list-group-item-action borderless" id="application_identity">
+                                申請權限　　&nbsp<strong>'.$row['identity'].'</strong>
+                            </li>
+                            <li class="list-group-item list-group-item-action borderless" id="application_dateTime">
+                                申請時間　　&nbsp<strong>'.$row['applicationDateTime'].'</strong>
+                            </li>
+                        </ul>
+                    </div>
+                </div>';
             $i++;
         }
 
-        echo <<< EOT
-            </div>
-            <a class="carousel-control-prev" href="#carouselControls" role="button" data-slide="prev">
-                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                <span class="sr-only">Previous</span>
-            </a>
-            <a class="carousel-control-next" href="#carouselControls" role="button" data-slide="next">
-                <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                <span class="sr-only">Next</span>
-            </a>                                           
-        </div>
-EOT;
+        $html.='</div>
+                    <a class="carousel-control-prev" href="#carouselControls" role="button" data-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="sr-only">Previous</span>
+                    </a>
+                    <a class="carousel-control-next" href="#carouselControls" role="button" data-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="sr-only">Next</span>
+                    </a>                                           
+                </div>';
+    echo $html;
     }
     else
     {
@@ -494,6 +546,32 @@ function change_email($nuemail)
         else
         {
             //Email變更成功
+            $result = '0';
+        }
+    }
+    else
+    {
+        //echo "語法執行失敗，錯誤訊息：" . mysqli_error($_SESSION['link']);
+        $result = 'Exception';
+    }
+    return $result;
+}
+
+function change_arduino($oldarduino,$arduino,$positionDescription,$GPS)
+{
+    $result = null;
+    $sql = "UPDATE `arduino` SET `arduino#` = '{$arduino}',`positionDescription` = '{$positionDescription}',`gps` = '{$gps}' WHERE `arduino#` LIKE '{$_POST['oldarduino']}'";
+    $query = @mysqli_query($_SESSION['link'],$sql);
+    if($query)
+    {
+        if(@mysqli_affected_rows($_SESSION['link'])==1)
+        {
+            //arduino變更成功
+            $result = '1';
+        }
+        else
+        {
+            //arduino變更成功
             $result = '0';
         }
     }

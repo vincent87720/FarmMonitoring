@@ -69,7 +69,7 @@
                                 <div class="container" id="account_edit">
                                     <ul class="list-group account-list-group">
                                         <?php
-                                            get_user_information();
+                                            @get_user_information();
                                         ?>
                                         <li class="list-group-item list-group-item-action borderless" id="usernameList">
                                             Username&nbsp&nbsp&nbsp&nbsp&nbsp
@@ -108,7 +108,12 @@
                             <h2 class="text-center">Arduino</h2>
                             <div class="jumbotron jumbotron-fluid border">
                                 <div class="container" id="arduinoInfo_edit">
-                                    
+                                    <!--顯示選擇農場按鈕-->
+                                    <?php
+                                        @get_admin_farm();
+                                    ?>
+                                    <!--顯示選擇農場按鈕-->
+                                    <div id="choose_arduino"></div>
                                 </div>
                             </div>
                         </div>
@@ -219,6 +224,10 @@
                             //console.log(jqXHR);console.log(textStatus);console.log(errorThrown);
                         });
                     }
+                    else if(this.id=="ARDINO003")
+                    {
+                        console.log("hi");
+                    }
                     return false;
                 });
 
@@ -310,7 +319,61 @@
                 $('.carousel').carousel({
                     interval: false
                 }); 
+
+                //當觸發選擇農場下拉式選單時
+                $("#arduinoChoose1stChild").on('click', 'a', function(e){
+                    //console.log($(this).text().substring(0,10));
+                    
+                    //將下拉式選單按鈕改為選擇的農場編號
+                    $("#arduinoChoose:first-child").text($(this).text().substring(0,10));
+                    $("#arduinoChoose:first-child").val($(this).text().substring(0,10));
+                    
+
+                    $.ajax({
+                        type:"POST",//使用表單的方式傳送，同form的method
+                        url:"php/backend/get_arduino.php",
+                        async: true,
+                        cache: false,
+                        data:
+                        {
+                            'farm':$("#arduinoChoose:first-child").val()
+                        },
+                        dataType:'json'
+                    }).done(function(data){
+                        var html = "";
+                        html=html+'<ul class="list-group arduino-list-group">';
+                        for(var i=0;i<data.arduino.length;i++)
+                        {
+                            html=html+'<li class="list-group-item list-group-item-action borderless" id="'+data.arduino[i]['arduino#']+'">';
+                            html=html+'<div style="float:right;"><embed class="edit" src="image/edit.svg" style="display:inline; vertical-align:middle; width:17px; height:17px; margin:right;"></div>';
+                            html=html+data.arduino[i]['arduino#']+'&nbsp';
+                            html=html+'<strong>'+data.arduino[i]['positionDescription']+'</strong>';
+                            html=html+'</li>';
+                        }
+                        html=html+'</ul>';
+                        document.getElementById("choose_arduino").innerHTML = html;
+                    }).fail(function(jqXHR,textStatus,errorThrown){
+                        //ajax執行失敗
+                        //alert("有錯誤產生，請看console log");
+                        //console.log(jqXHR);console.log(textStatus);console.log(errorThrown);
+                    });  
+                    return false;  
+                });
             });
+
+            //當觸發變更Arduino列表時
+            $(document).on("click",".arduino-list-group li",function(e){
+                var data = {type:1,oldarduino:this.id};
+                $.ajax({
+                    type : "POST",
+                    url : "php/backend/arduino_edit/arduino.php",
+                    data : data
+                }).done(function(dates){
+                    $("#choose_arduino").html(dates);//要刷新的div
+                }).fail(function(jqXHR,textStatus,errorThrown){
+                    //console.log(jqXHR);console.log(textStatus);console.log(errorThrown);
+                });
+            }); 
         </script>
 
     </body>
