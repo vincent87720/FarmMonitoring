@@ -56,6 +56,26 @@ div.footer
     min-height: 50px;
 }
 
+/*****monitor.php*****/
+input.dateTimePicker:read-only
+{
+    background-color: rgb(255, 255, 255);
+}
+span.input-group-addon
+{
+    background-color: #fff;
+}
+.panel-custom
+{
+    border-color: #ddd;
+}
+.panel-heading 
+{
+    color: #fff;
+    background-color: #f0ad4e;
+    border-color: #eea236;
+}
+
 /*****account.php*****/
 div.account_topbar
 {

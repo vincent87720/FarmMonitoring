@@ -151,7 +151,7 @@
                             <!--選擇開始與結束日期-->
                             <div class="form-group">
                                 <div class="input-group date" id="startDateTime">
-                                    <input type="text" class="form-control" id="startText" readonly>
+                                    <input type="text" class="form-control dateTimePicker" id="startText" readonly>
                                     <span class="input-group-addon">
                                         <span class="glyphicon glyphicon-th"></span>
                                     </span>
@@ -159,14 +159,14 @@
                             </div>
                             <div class="form-group">
                                 <div class="input-group date" id="endDateTime">
-                                    <input type="text" class="form-control" id="endText" readonly>
+                                    <input type="text" class="form-control dateTimePicker" id="endText" readonly>
                                     <span class="input-group-addon">
                                         <span class="glyphicon glyphicon-th"></span>
                                     </span>
                                 </div>
                             </div>
                             <!--選擇開始與結束日期-->
-                            <div class="panel panel-default">
+                            <div class="panel panel-custom">
                                 <div class="panel-heading">
                                     <h3 class="panel-title">總平均Average</h3>
                                 </div>
@@ -208,8 +208,8 @@
 
                     //預設日期時間為從十天前到目前
                     //$("#startDateTime").datetimepicker("setDate", new Date(new Date()-10*24*60*60*1000));
-                    //預設日期時間為從一年前到目前
-                    $("#startDateTime").datetimepicker("setDate", new Date(new Date()-365*24*60*60*1000));
+                    //預設日期時間為從一天前到目前
+                    $("#startDateTime").datetimepicker("setDate", new Date(new Date()-24*60*60*1000));
                     $("#endDateTime").datetimepicker("setDate", new Date());
                     
                 });
@@ -513,7 +513,7 @@
                         }
                         else if(typeOfData=="CO2")
                         {
-                            var typeString = "CO2濃度度(ppm)";
+                            var typeString = "CO2濃度(ppm)";
                             document.getElementById("average").innerHTML = averageValue+"(ppm)";
                             var colorset = ["#A7A59C","#D5D0C9","#EAE0D8","#C1CFC8","#F4EADC","#9E8E87","#FAF6F3","#EAE7DC","#F2F2F4","#BABBBD"];
                         }
