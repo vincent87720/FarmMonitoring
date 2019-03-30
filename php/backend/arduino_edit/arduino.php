@@ -31,13 +31,13 @@ else:
                         ARDUINO名稱不得超過40個字元
                     </div>
                 </div>
-                <div class="form-group">
+                <!-- <div class="form-group">
                     <label for="GPS">GPS</label>
                     <input type="text" class="form-control" id="GPS" placeholder="24.000531, 120.598504" required>
                     <div class="invalid-feedback">
                         GPS名稱不得超過30個字元
                     </div>
-                </div>
+                </div> -->
                 <div class="col-sm-12 text-center">
                     <a href="../../../account.php" class="btn btn-info" role="button" aria-pressed="true" id="backbutton">返回</a>
                     <button type="submit" class="btn btn-info">確認修改</button>
