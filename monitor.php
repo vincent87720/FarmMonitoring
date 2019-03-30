@@ -503,6 +503,7 @@
                                 dataset[i] = {
                                     label: data.arduino[i]["positionDescription"],
                                     fill:false,
+                                    spanGaps:true,//如果為true，則將在沒有數據或空數據的點之間繪製線條，若為false則中斷線條
                                     lineTension: 0.1,
                                     backgroundColor: colorset[i],//標示屬性的方格的背景顏色
                                     borderColor:colorset[i],//線條顏色
@@ -523,6 +524,7 @@
                             dataset[arduinoNum] = {
                                 label: '平均',
                                 fill:false,
+                                spanGaps:true,//如果為true，則將在沒有數據或空數據的點之間繪製線條，若為false則中斷線條
                                 lineTension: 0.1,
                                 backgroundColor: "rgba(153, 153, 153, 1)",//標示屬性的方格的背景顏色
                                 borderColor:"rgba(153, 153, 153, 1)",//線條顏色
@@ -547,7 +549,7 @@
                                 type: 'line',
                                 data:{
                                     labels:dateTime,
-                                    datasets: dataset
+                                    datasets:dataset
                                 },
                                 options: 
                                 {
@@ -588,6 +590,7 @@
                                 dataset[i] = {
                                     label: data.arduino[i]["positionDescription"],
                                     fill:false,
+                                    spanGaps:true,//如果為true，則將在沒有數據或空數據的點之間繪製線條，若為false則中斷線條
                                     lineTension: 0.1,
                                     backgroundColor: colorset[i],//標示屬性的方格的背景顏色
                                     borderColor:colorset[i],//線條顏色
@@ -608,6 +611,7 @@
                             dataset[arduinoNum] = {
                                 label: '平均',
                                 fill:false,
+                                spanGaps:true,//如果為true，則將在沒有數據或空數據的點之間繪製線條，若為false則中斷線條
                                 lineTension: 0.1,
                                 backgroundColor: "rgba(153, 153, 153, 1)",//標示屬性的方格的背景顏色
                                 borderColor:"rgba(153, 153, 153, 1)",//線條顏色
@@ -673,6 +677,7 @@
                                 dataset[i] = {
                                     label: data.arduino[i]["positionDescription"],
                                     fill:false,
+                                    spanGaps:true,//如果為true，則將在沒有數據或空數據的點之間繪製線條，若為false則中斷線條
                                     lineTension: 0.1,
                                     backgroundColor: colorset[i],//標示屬性的方格的背景顏色
                                     borderColor:colorset[i],//線條顏色
@@ -693,6 +698,7 @@
                             dataset[arduinoNum] = {
                                 label: '平均',
                                 fill:false,
+                                spanGaps:true,//如果為true，則將在沒有數據或空數據的點之間繪製線條，若為false則中斷線條
                                 lineTension: 0.1,
                                 backgroundColor: "rgba(153, 153, 153, 1)",//標示屬性的方格的背景顏色
                                 borderColor:"rgba(153, 153, 153, 1)",//線條顏色
