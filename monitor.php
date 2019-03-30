@@ -105,6 +105,9 @@
                                 <label class="btn btn-warning">
                                     <input type="radio" name="typeOfData" id="option4" value="照度" autocomplete="off">照度
                                 </label>
+                                <label class="btn btn-warning">
+                                    <input type="radio" name="typeOfData" id="option5" value="CO2" autocomplete="off">CO2
+                                </label>
                             </div>
                             <!--選擇要觀測數值種類的按鈕-->
                         </div>
@@ -507,6 +510,12 @@
                             var typeString = "照度(lx)";
                             document.getElementById("average").innerHTML = averageValue+"(lx)";
                             var colorset = ["rgb(255, 205, 86)","#FBD255","#FAAA2D","#F06C0F","#FCB619","#FEB718","#F7A731","#F2A749","#FAA524","#FFB228"];
+                        }
+                        else if(typeOfData=="CO2")
+                        {
+                            var typeString = "CO2濃度度(ppm)";
+                            document.getElementById("average").innerHTML = averageValue+"(ppm)";
+                            var colorset = ["#A7A59C","#D5D0C9","#EAE0D8","#C1CFC8","#F4EADC","#9E8E87","#FAF6F3","#EAE7DC","#F2F2F4","#BABBBD"];
                         }
 
                         //將各個arduino加入dataset裡
