@@ -444,36 +444,36 @@
                         }
 
                         //計算單一時間點所有Arduino的平均
-                        var averageArray = [];
-                        var maxLength = 0;//紀錄最多筆資料的Arduino的筆數
+                        // var averageArray = [];
+                        // var maxLength = 0;//紀錄最多筆資料的Arduino的筆數
 
-                        //找尋最多筆資料的Arduino的筆數
-                        for(let i=0;i<arduino.length;i++)
-                        {
-                            if(arduino[i].length>maxLength)
-                                maxLength = arduino[i].length;
-                        }
+                        // //找尋最多筆資料的Arduino的筆數
+                        // for(let i=0;i<arduino.length;i++)
+                        // {
+                        //     if(arduino[i].length>maxLength)
+                        //         maxLength = arduino[i].length;
+                        // }
 
-                        //從0到最多筆資料的Arduino的筆數
-                        for(let i=0;i<maxLength;i++)
-                        {
-                            var total = 0;
-                            var num = 0;
-                            //走訪所有該農場的arduino
-                            for(let j=0;j<arduino.length;j++)
-                            {
-                                //若該時間點的arduino的數值是數字
-                                if(!isNaN(parseInt(arduino[j][i])))
-                                {
-                                    //則將該時間點的所有arduino的值加起來
-                                    total = total + parseInt(arduino[j][i]);
-                                    num++;
-                                }
+                        // //從0到最多筆資料的Arduino的筆數
+                        // for(let i=0;i<maxLength;i++)
+                        // {
+                        //     var total = 0;
+                        //     var num = 0;
+                        //     //走訪所有該農場的arduino
+                        //     for(let j=0;j<arduino.length;j++)
+                        //     {
+                        //         //若該時間點的arduino的數值是數字
+                        //         if(!isNaN(parseInt(arduino[j][i])))
+                        //         {
+                        //             //則將該時間點的所有arduino的值加起來
+                        //             total = total + parseInt(arduino[j][i]);
+                        //             num++;
+                        //         }
                                 
-                            }
-                            //取平均
-                            averageArray[i] = total/num;
-                        }
+                        //     }
+                        //     //取平均
+                        //     averageArray[i] = total/num;
+                        // }
                         
                         //計算時間範圍內所有點的總平均
                         var totalValue = 0;
@@ -545,26 +545,26 @@
                         }
 
                         //加入平均圖表
-                        dataset[arduinoNum] = {
-                            label: '平均',
-                            fill:false,
-                            spanGaps:true,//如果為true，則將在沒有數據或空數據的點之間繪製線條，若為false則中斷線條
-                            lineTension: 0.1,
-                            backgroundColor: "rgba(153, 153, 153, 1)",//標示屬性的方格的背景顏色
-                            borderColor:"rgba(153, 153, 153, 1)",//線條顏色
-                            borderCapStyle: 'round',//線條端點處風格為圓形
-                            borderJoinStyle: 'round',//線段連接處風格為圓形
-                            pointBorderColor: "rgba(153, 153, 153, 1)",//端點外圈顏色
-                            pointBackgroundColor: "rgba(153, 153, 153, 1)",//端點內圈顏色
-                            pointBorderWidth: 1,//端點外圈大小
-                            pointHoverRadius: 1,//端點放大程度
-                            pointHoverBorderColor: "rgba(153, 153, 153, 1)",//端點放後大外圈顏色
-                            pointHoverBackgroundColor: "rgba(153, 153, 153, 1)",//端點放大後內圈顏色
-                            pointHoverBorderWidth: 1,//端點放大後外圈大小
-                            pointRadius: 1,//端點大小
-                            pointHitRadius: 10,
-                            data: averageArray
-                        };
+                        // dataset[arduinoNum] = {
+                        //     label: '平均',
+                        //     fill:false,
+                        //     spanGaps:true,//如果為true，則將在沒有數據或空數據的點之間繪製線條，若為false則中斷線條
+                        //     lineTension: 0.1,
+                        //     backgroundColor: "rgba(153, 153, 153, 1)",//標示屬性的方格的背景顏色
+                        //     borderColor:"rgba(153, 153, 153, 1)",//線條顏色
+                        //     borderCapStyle: 'round',//線條端點處風格為圓形
+                        //     borderJoinStyle: 'round',//線段連接處風格為圓形
+                        //     pointBorderColor: "rgba(153, 153, 153, 1)",//端點外圈顏色
+                        //     pointBackgroundColor: "rgba(153, 153, 153, 1)",//端點內圈顏色
+                        //     pointBorderWidth: 1,//端點外圈大小
+                        //     pointHoverRadius: 1,//端點放大程度
+                        //     pointHoverBorderColor: "rgba(153, 153, 153, 1)",//端點放後大外圈顏色
+                        //     pointHoverBackgroundColor: "rgba(153, 153, 153, 1)",//端點放大後內圈顏色
+                        //     pointHoverBorderWidth: 1,//端點放大後外圈大小
+                        //     pointRadius: 1,//端點大小
+                        //     pointHitRadius: 10,
+                        //     data: averageArray
+                        // };
                     
                     
                         Chart.defaults.global.defaultFontSize = 14;
