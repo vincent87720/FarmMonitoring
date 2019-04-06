@@ -241,135 +241,78 @@
                     $('#dataType').on('change',function(){
                         //若用onclick會發生值還沒改變就先被傳送的狀況
                         //必須用onchange等值改變後再呼叫drawChart函式
-                        if($('input[name=typeOfData]:checked').val()=="總覽")
-                        {
-                            //呼叫drawChart_All()函式繪製圖表
-                            drawChart_All();
-                        }
-                        else
-                        {
-                            //呼叫drawChart()函式繪製圖表
-                            drawChart();
-                        }
+                        
+                        //呼叫drawChart()函式繪製圖表
+                        drawChart();
                     });
                     
                     //當觸發datetimepicker的開始日期時
                     $('#startDateTime').datetimepicker().on('changeDate', function(ev){
                         //隱藏日期時間選擇器
                         $('#startDateTime').datetimepicker('hide');
-                        if($('input[name=typeOfData]:checked').val()=="總覽")
-                        {
-                            //呼叫drawChart_All()函式繪製圖表
-                            drawChart_All();
-                        }
-                        else
-                        {
-                            //呼叫drawChart()函式繪製圖表
-                            drawChart();
-                        }
+                        
+                        //呼叫drawChart()函式繪製圖表
+                        drawChart();
                     });
 
                     //當觸發datetimepicker的結束日期時
                     $('#endDateTime').datetimepicker().on('changeDate', function(ev){
                         //隱藏日期時間選擇器
                         $('#endDateTime').datetimepicker('hide');
-                        if($('input[name=typeOfData]:checked').val()=="總覽")
-                        {
-                            //呼叫drawChart_All()函式繪製圖表
-                            drawChart_All();
-                        }
-                        else
-                        {
-                            //呼叫drawChart()函式繪製圖表
-                            drawChart();
-                        }
+                        
+                        //呼叫drawChart()函式繪製圖表
+                        drawChart();
                     });
 
                     //當觸發過去一年內按鈕，把日期時間設定為從現在往前推一年
                     $("#inThePastYear").on('click', function(){
                         $("#startDateTime").datetimepicker("setDate", new Date(new Date()-365*24*60*60*1000));
                         $("#endDateTime").datetimepicker("setDate", new Date());
-                        if($('input[name=typeOfData]:checked').val()=="總覽")
-                        {
-                            //呼叫drawChart_All()函式繪製圖表
-                            drawChart_All();
-                        }
-                        else
-                        {
-                            //呼叫drawChart()函式繪製圖表
-                            drawChart();
-                        }
+                        
+                        //呼叫drawChart()函式繪製圖表
+                        drawChart();
                     });
 
                     //當觸發過去一個月內按鈕，把日期時間設定為從現在往前推一個月
                     $("#inThePastMonth").on('click', function(){
                         $("#startDateTime").datetimepicker("setDate", new Date(new Date()-31*24*60*60*1000));
                         $("#endDateTime").datetimepicker("setDate", new Date());
-                        if($('input[name=typeOfData]:checked').val()=="總覽")
-                        {
-                            //呼叫drawChart_All()函式繪製圖表
-                            drawChart_All();
-                        }
-                        else
-                        {
-                            //呼叫drawChart()函式繪製圖表
-                            drawChart();
-                        }
+                        
+                        //呼叫drawChart()函式繪製圖表
+                        drawChart();
                     });
 
                     //當觸發過去三天內按鈕，把日期時間設定為從現在往前推三天
                     $("#inThreeDays").on('click', function(){
                         $("#startDateTime").datetimepicker("setDate", new Date(new Date()-3*24*60*60*1000));
                         $("#endDateTime").datetimepicker("setDate", new Date());
-                        if($('input[name=typeOfData]:checked').val()=="總覽")
-                        {
-                            //呼叫drawChart_All()函式繪製圖表
-                            drawChart_All();
-                        }
-                        else
-                        {
-                            //呼叫drawChart()函式繪製圖表
-                            drawChart();
-                        }
+                        
+                        //呼叫drawChart()函式繪製圖表
+                        drawChart();
                     });
 
                     //當觸發過去一天內按鈕，把日期時間設定為從現在往前推一天
                     $("#inADay").on('click', function(){
                         $("#startDateTime").datetimepicker("setDate", new Date(new Date()-1*24*60*60*1000));
                         $("#endDateTime").datetimepicker("setDate", new Date());
-                        if($('input[name=typeOfData]:checked').val()=="總覽")
-                        {
-                            //呼叫drawChart_All()函式繪製圖表
-                            drawChart_All();
-                        }
-                        else
-                        {
-                            //呼叫drawChart()函式繪製圖表
-                            drawChart();
-                        }
+                        
+                        //呼叫drawChart()函式繪製圖表
+                        drawChart();
                     });
 
                     //當觸發過去一小時內按鈕，把日期時間設定為從現在往前推一小時
                     $("#inOneHour").on('click', function(){
                         $("#startDateTime").datetimepicker("setDate", new Date(new Date()-60*60*1000));
                         $("#endDateTime").datetimepicker("setDate", new Date());
-                        if($('input[name=typeOfData]:checked').val()=="總覽")
-                        {
-                            //呼叫drawChart_All()函式繪製圖表
-                            drawChart_All();
-                        }
-                        else
-                        {
-                            //呼叫drawChart()函式繪製圖表
-                            drawChart();
-                        }
+                        
+                        //呼叫drawChart()函式繪製圖表
+                        drawChart();
                     });
                 });
 
                 //繪製已選擇種類的圖表
                 function drawChart()
                 {
-                    //乾他媽的下面這兩行方法我找超久
                     //問題：使用新數據在canvas上繪圖時，之前查詢的圖表依然存在，滑鼠在圖表上移動時，兩張圖表會來回閃動
                     //解決方法：先將上次查詢的canvas移除掉，再加入新的canvas到他的父div中
                     //參考資料：https://zhidao.baidu.com/question/1754670090672222588.html

@@ -6,9 +6,9 @@
 @session_start();
 //設定連線資訊，建立與bbqandvenuerental資料庫的連線
 $host='127.0.0.1';
-$username='webuser';
-$password='iamwebuser';
-$database='farmmonitoring';
+$username='';
+$password='';
+$database='';
 
 //宣告一個Link變數，連結結果會帶入link中
 //$link=mysqli_connect($host,$username,$password,$database);
