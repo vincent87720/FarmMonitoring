@@ -16,7 +16,7 @@ else:
     <body>
         <div class="row">
             <div class="col-sm-10 text-center ml-auto mr-auto">
-                <p id="edit_status" class="text-center"></p>
+                <p id="application_status" class="text-center"></p>
 
                 <!--顯示選擇農場按鈕-->
                 <?php
@@ -81,7 +81,7 @@ else:
                     if($("#farmChoose:first-child").val()==""||$("#identityChoose:first-child").val()=="")
                     {
                         //欄位不可為空值
-                        document.getElementById("edit_status").innerHTML = '<div class="alert alert-danger alert-dismissible fade show" role="alert"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>請選擇欲申請的農場及權限</div>';
+                        document.getElementById("application_status").innerHTML = '<div class="alert alert-danger alert-dismissible fade show" role="alert"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>請選擇欲申請的農場及權限</div>';
                         return false;
                     }
                     $.ajax({
@@ -99,18 +99,18 @@ else:
                         if(data=='identityApplicationSuccessfully')
                         {
                             //identity申請成功
-                            document.getElementById("edit_status").innerHTML = '<div class="alert alert-success alert-dismissible fade show" role="alert"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>申請成功，請等待管理員審核</div>';
+                            document.getElementById("application_status").innerHTML = '<div class="alert alert-success alert-dismissible fade show" role="alert"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>申請成功，請等待管理員審核</div>';
                             setTimeout('window.location.href = "account.php";',5000);
                         }
                         else if(data=='identityApplicationFailed')
                         {
                             //identity申請失敗
-                            document.getElementById("edit_status").innerHTML = '<div class="alert alert-danger alert-dismissible fade show" role="alert"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>Identity申請失敗</div>';
+                            document.getElementById("application_status").innerHTML = '<div class="alert alert-danger alert-dismissible fade show" role="alert"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>Identity申請失敗</div>';
                         }
                         else if(data=='duplicatePrimaryKey')
                         {
                             //申請資料已存在
-                            document.getElementById("edit_status").innerHTML = '<div class="alert alert-danger alert-dismissible fade show" role="alert"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>Identity申請資料已存在，請靜候管理員審核</div>';
+                            document.getElementById("application_status").innerHTML = '<div class="alert alert-danger alert-dismissible fade show" role="alert"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>Identity申請資料已存在，請靜候管理員審核</div>';
                         }
                         else
                         {
