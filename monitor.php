@@ -192,7 +192,7 @@
                 //設定DateTimePicker相關參數
                 $(function () { 
                     $('#startDateTime').datetimepicker({
-                        format: 'yyyy-mm-dd hh:ii',
+                        format: 'yyyy-mm-dd hh:ii:ss',
                         defaultDate:new Date(),
                         todayHighlight: true,
                         autoclose: true
@@ -200,7 +200,7 @@
                     });
 
                     $('#endDateTime').datetimepicker({
-                        format: 'yyyy-mm-dd hh:ii',
+                        format: 'yyyy-mm-dd hh:ii:ss',
                         defaultDate:new Date(),
                         todayHighlight: true,
                         autoclose: true
