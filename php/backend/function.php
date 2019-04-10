@@ -583,5 +583,31 @@ function change_arduino($oldarduino,$arduino,$positionDescription,$GPS)
     return $result;
 }
 
+function add_arduino($arduino,$positionDescription,$farm)
+{
+    $result = null;
+    $sql = "INSERT INTO `arduino`(`arduino#`,`positionDescription`,`farm#`) VALUES('{$arduino}','{$positionDescription}','{$farm}')";
+    $query = @mysqli_query($_SESSION['link'],$sql);
+    if($query)
+    {
+        if(@mysqli_affected_rows($_SESSION['link'])>=1)
+        {
+            //arduino新增成功
+            $result = '1';
+        }
+        else
+        {
+            //arduino新增失敗
+            $result = '0';
+        }
+    }
+    else
+    {
+        //echo "語法執行失敗，錯誤訊息：" . mysqli_error($_SESSION['link']);
+        $result = 'Exception';
+    }
+    return $result;
+}
+
 endif;
 ?>

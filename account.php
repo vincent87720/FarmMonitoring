@@ -350,6 +350,10 @@
                             html=html+'<strong>'+data.arduino[i]['positionDescription']+'</strong>';
                             html=html+'</li>';
                         }
+                        html=html+'<li class="list-group-item list-group-item-action borderless" id="newArduino">';
+                        html=html+'<div style="float:right;"><embed class="edit" src="image/edit.svg" style="display:inline; vertical-align:middle; width:17px; height:17px; margin:right;"></div>';
+                        html=html+' + 加入新的Arduino'+'&nbsp';
+                        html=html+'</li>';
                         html=html+'</ul>';
                         document.getElementById("choose_arduino").innerHTML = html;
                     }).fail(function(jqXHR,textStatus,errorThrown){
@@ -363,16 +367,35 @@
 
             //當觸發變更Arduino列表時
             $(document).on("click",".arduino-list-group li",function(e){
-                var data = {type:1,oldarduino:this.id};
-                $.ajax({
-                    type : "POST",
-                    url : "php/backend/arduino_edit/arduino.php",
-                    data : data
-                }).done(function(dates){
-                    $("#choose_arduino").html(dates);//要刷新的div
-                }).fail(function(jqXHR,textStatus,errorThrown){
-                    //console.log(jqXHR);console.log(textStatus);console.log(errorThrown);
-                });
+
+                //若點選新增Arduino按鈕
+                if(this.id == "newArduino")
+                {
+                    var data = {type:1,farm:$("#arduinoChoose:first-child").val()};
+                    $.ajax({
+                        type : "POST",
+                        url : "php/backend/arduino_edit/arduino_add.php",
+                        data : data
+                    }).done(function(dates){
+                        $("#choose_arduino").html(dates);//要刷新的div
+                    }).fail(function(jqXHR,textStatus,errorThrown){
+                        //console.log(jqXHR);console.log(textStatus);console.log(errorThrown);
+                    });
+                }
+                else
+                {
+                    var data = {type:1,oldarduino:this.id};
+                    $.ajax({
+                        type : "POST",
+                        url : "php/backend/arduino_edit/arduino.php",
+                        data : data
+                    }).done(function(dates){
+                        $("#choose_arduino").html(dates);//要刷新的div
+                    }).fail(function(jqXHR,textStatus,errorThrown){
+                        //console.log(jqXHR);console.log(textStatus);console.log(errorThrown);
+                    });
+                }
+                
             }); 
         </script>
 
