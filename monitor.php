@@ -208,8 +208,8 @@
 
                     //預設日期時間為從十天前到目前
                     //$("#startDateTime").datetimepicker("setDate", new Date(new Date()-10*24*60*60*1000));
-                    //預設日期時間為從一天前到目前
-                    $("#startDateTime").datetimepicker("setDate", new Date(new Date()-24*60*60*1000));
+                    //預設日期時間為從一小時前到目前
+                    $("#startDateTime").datetimepicker("setDate", new Date(new Date()-60*60*1000));
                     $("#endDateTime").datetimepicker("setDate", new Date());
                     
                 });
