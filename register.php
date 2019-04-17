@@ -300,7 +300,7 @@
                                 }
                                 else
                                 {
-                                    console.log(data);
+                                    //console.log(data);
                                 }
                             }).fail(function(jqXHR,textStatus,errorThrown){
                                 //ajax執行失敗

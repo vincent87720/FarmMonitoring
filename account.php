@@ -224,10 +224,6 @@
                             //console.log(jqXHR);console.log(textStatus);console.log(errorThrown);
                         });
                     }
-                    else if(this.id=="ARDINO003")
-                    {
-                        console.log("hi");
-                    }
                     return false;
                 });
 
@@ -324,6 +320,10 @@
                 $("#arduinoChoose1stChild").on('click', 'a', function(e){
                     //console.log($(this).text().substring(0,10));
                     
+                    //選擇農場後收合下拉式選單
+                    $('#arduinoChoose').removeClass("show");
+                    $('#arduinoChoose1stChild').removeClass("show");
+                    
                     //將下拉式選單按鈕改為選擇的農場編號
                     $("#arduinoChoose:first-child").text($(this).text().substring(0,10));
                     $("#arduinoChoose:first-child").val($(this).text().substring(0,10));
@@ -367,7 +367,7 @@
 
             //當觸發變更Arduino列表時
             $(document).on("click",".arduino-list-group li",function(e){
-
+                
                 //若點選新增Arduino按鈕
                 if(this.id == "newArduino")
                 {
