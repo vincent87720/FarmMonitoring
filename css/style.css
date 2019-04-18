@@ -77,6 +77,13 @@ span.input-group-addon
 }
 
 /*****account.php*****/
+rect.btn 
+{
+    stroke:#fff;
+    fill:#fff;
+    fill-opacity:0;
+    stroke-opacity:0;
+  }
 div.account_topbar
 {
     min-height: 200px;

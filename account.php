@@ -76,27 +76,67 @@
                                             <strong id="username"><?php echo $_SESSION["login_user_id"]; ?></strong>
                                         </li>
                                         <li class="list-group-item list-group-item-action borderless" id="passwordList">
-                                            <div style="float:right;"><embed src="image/edit.svg" style="display:inline; vertical-align:middle; width:17px; height:17px; margin:right;"></div>
+                                            <div style="float:right;">
+                                                <svg xmlns="http://www.w3.org/2000/svg" height="17" viewBox="0 0 48 48" width="17">
+                                                    <g>
+                                                        <path d="M6 34.5v7.5h7.5l22.13-22.13-7.5-7.5-22.13 22.13zm35.41-20.41c.78-.78.78-2.05 0-2.83l-4.67-4.67c-.78-.78-2.05-.78-2.83 0l-3.66 3.66 7.5 7.5 3.66-3.66z"/>
+                                                        <path d="M0 0h48v48h-48z" fill="none"/>
+                                                        <rect class="btn" x="0" y="0" width="50" height="50" onclick="editClick('passwordEdit')" />
+                                                    </g>
+                                                </svg>
+                                            </div>
                                             Password&nbsp&nbsp&nbsp&nbsp&nbsp
                                             <strong id="password">***************</strong>
                                         </li>
                                         <li class="list-group-item list-group-item-action borderless" id="phoneList">
-                                            <div style="float:right;"><embed src="image/edit.svg" style="display:inline; vertical-align:middle; width:17px; height:17px; margin:right;"></div>
+                                            <div style="float:right;">
+                                                <svg xmlns="http://www.w3.org/2000/svg" height="17" viewBox="0 0 48 48" width="17">
+                                                    <g>
+                                                        <path d="M6 34.5v7.5h7.5l22.13-22.13-7.5-7.5-22.13 22.13zm35.41-20.41c.78-.78.78-2.05 0-2.83l-4.67-4.67c-.78-.78-2.05-.78-2.83 0l-3.66 3.66 7.5 7.5 3.66-3.66z"/>
+                                                        <path d="M0 0h48v48h-48z" fill="none"/>
+                                                        <rect class="btn" x="0" y="0" width="50" height="50" onclick="editClick('phoneEdit')" />
+                                                    </g>
+                                                </svg>
+                                            </div>
                                             Phone&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
                                             <strong id="phone"><?php echo $_SESSION["login_user_phone"]; ?></strong>
                                         </li>
                                         <li class="list-group-item list-group-item-action borderless" id="nameList">
-                                            <div style="float:right;"><embed src="image/edit.svg" style="display:inline; vertical-align:middle; width:17px; height:17px; margin:right;"></div>
+                                            <div style="float:right;">
+                                                <svg xmlns="http://www.w3.org/2000/svg" height="17" viewBox="0 0 48 48" width="17">
+                                                    <g>
+                                                        <path d="M6 34.5v7.5h7.5l22.13-22.13-7.5-7.5-22.13 22.13zm35.41-20.41c.78-.78.78-2.05 0-2.83l-4.67-4.67c-.78-.78-2.05-.78-2.83 0l-3.66 3.66 7.5 7.5 3.66-3.66z"/>
+                                                        <path d="M0 0h48v48h-48z" fill="none"/>
+                                                        <rect class="btn" x="0" y="0" width="50" height="50" onclick="editClick('nameEdit')" />
+                                                    </g>
+                                                </svg>
+                                            </div>
                                             Name&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
                                             <strong id="name"><?php echo $_SESSION["login_user_name"]; ?></strong>
                                         </li>
                                         <li class="list-group-item list-group-item-action borderless" id="emailList">
-                                            <div style="float:right;"><embed src="image/edit.svg" style="display:inline; vertical-align:middle; width:17px; height:17px; margin:right;"></div>
+                                            <div style="float:right;">
+                                                <svg xmlns="http://www.w3.org/2000/svg" height="17" viewBox="0 0 48 48" width="17">
+                                                    <g>
+                                                        <path d="M6 34.5v7.5h7.5l22.13-22.13-7.5-7.5-22.13 22.13zm35.41-20.41c.78-.78.78-2.05 0-2.83l-4.67-4.67c-.78-.78-2.05-.78-2.83 0l-3.66 3.66 7.5 7.5 3.66-3.66z"/>
+                                                        <path d="M0 0h48v48h-48z" fill="none"/>
+                                                        <rect class="btn" x="0" y="0" width="50" height="50" onclick="editClick('emailEdit')" />
+                                                    </g>
+                                                </svg>
+                                            </div>
                                             Email&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
                                             <strong id="email"><?php echo $_SESSION["login_user_email"]; ?></strong>
                                         </li>
                                         <li class="list-group-item list-group-item-action borderless" id="identityList">
-                                            <div style="float:right;"><embed src="image/edit.svg" style="display:inline; vertical-align:middle; width:17px; height:17px; margin:right;"></div>
+                                            <div style="float:right;">
+                                                <svg xmlns="http://www.w3.org/2000/svg" height="17" viewBox="0 0 48 48" width="17">
+                                                    <g>
+                                                        <path d="M6 34.5v7.5h7.5l22.13-22.13-7.5-7.5-22.13 22.13zm35.41-20.41c.78-.78.78-2.05 0-2.83l-4.67-4.67c-.78-.78-2.05-.78-2.83 0l-3.66 3.66 7.5 7.5 3.66-3.66z"/>
+                                                        <path d="M0 0h48v48h-48z" fill="none"/>
+                                                        <rect class="btn" x="0" y="0" width="50" height="50" onclick="editClick('identityEdit')" />
+                                                    </g>
+                                                </svg>
+                                            </div>
                                             Identity&nbsp&nbsp&nbsp&nbsp&nbsp
                                             <strong id="identity"><?php echo $_SESSION["login_user_identity"]; ?></strong>
                                         </li>
@@ -152,81 +192,97 @@
         </div>
 
         <script>
+            //點擊Account區塊編輯圖示觸發
+            function editClick(editType)
+            {
+                if(editType=="usernameEdit")
+                {
+
+                }
+                else if(editType=="passwordEdit")
+                {
+                    var data = {type:1};
+                    $.ajax({
+                        type : "post",
+                        url : "php/backend/account_edit/password.php",
+                        data : data
+                    }).done(function(dates){
+                        $("#account_edit").html(dates);//要刷新的div
+                    }).fail(function(jqXHR,textStatus,errorThrown){
+                        //console.log(jqXHR);console.log(textStatus);console.log(errorThrown);
+                    });
+                }
+                else if(editType=="phoneEdit")
+                {
+                    var data = {type:1};
+                    $.ajax({
+                        type : "post",
+                        url : "php/backend/account_edit/phone.php",
+                        data : data
+                    }).done(function(dates){
+                        $("#account_edit").html(dates);//要刷新的div
+                    }).fail(function(jqXHR,textStatus,errorThrown){
+                        //console.log(jqXHR);console.log(textStatus);console.log(errorThrown);
+                    });
+                }
+                else if(editType=="nameEdit")
+                {
+                    var data = {type:1};
+                    $.ajax({
+                        type : "post",
+                        url : "php/backend/account_edit/name.php",
+                        data : data
+                    }).done(function(dates){
+                        $("#account_edit").html(dates);//要刷新的div
+                    }).fail(function(jqXHR,textStatus,errorThrown){
+                        //console.log(jqXHR);console.log(textStatus);console.log(errorThrown);
+                    });
+                }
+                else if(editType=="emailEdit")
+                {
+                    var data = {type:1};
+                    $.ajax({
+                        type : "post",
+                        url : "php/backend/account_edit/email.php",
+                        data : data
+                    }).done(function(dates){
+                        $("#account_edit").html(dates);//要刷新的div
+                    }).fail(function(jqXHR,textStatus,errorThrown){
+                        //console.log(jqXHR);console.log(textStatus);console.log(errorThrown);
+                    });
+                }
+                else if(editType=="identityEdit")
+                {
+                    var data = {type:1};
+                    $.ajax({
+                        type : "post",
+                        url : "php/backend/account_edit/identity.php",
+                        data : data
+                    }).done(function(dates){
+                        $("#account_edit").html(dates);//要刷新的div
+                    }).fail(function(jqXHR,textStatus,errorThrown){
+                        //console.log(jqXHR);console.log(textStatus);console.log(errorThrown);
+                    });
+                }
+                return false;
+            }
+
+            function arduinoEditClick(arduino)
+            {
+                var data = {type:1,oldarduino:arduino};
+                    $.ajax({
+                        type : "POST",
+                        url : "php/backend/arduino_edit/arduino.php",
+                        data : data
+                    }).done(function(dates){
+                        $("#choose_arduino").html(dates);//要刷新的div
+                    }).fail(function(jqXHR,textStatus,errorThrown){
+                        //console.log(jqXHR);console.log(textStatus);console.log(errorThrown);
+                    });
+            }
+
             $(document).ready(function(){
-                //點擊Account區塊觸發
-                $('.list-group li').click(function() {
-                    if(this.id=="usernameList")
-                    {
-
-                    }
-                    else if(this.id=="passwordList")
-                    {
-                        var data = {type:1};
-                        $.ajax({
-                            type : "post",
-                            url : "php/backend/account_edit/password.php",
-                            data : data
-                        }).done(function(dates){
-                            $("#account_edit").html(dates);//要刷新的div
-                        }).fail(function(jqXHR,textStatus,errorThrown){
-                            //console.log(jqXHR);console.log(textStatus);console.log(errorThrown);
-                        });
-                    }
-                    else if(this.id=="phoneList")
-                    {
-                        var data = {type:1};
-                        $.ajax({
-                            type : "post",
-                            url : "php/backend/account_edit/phone.php",
-                            data : data
-                        }).done(function(dates){
-                            $("#account_edit").html(dates);//要刷新的div
-                        }).fail(function(jqXHR,textStatus,errorThrown){
-                            //console.log(jqXHR);console.log(textStatus);console.log(errorThrown);
-                        });
-                    }
-                    else if(this.id=="nameList")
-                    {
-                        var data = {type:1};
-                        $.ajax({
-                            type : "post",
-                            url : "php/backend/account_edit/name.php",
-                            data : data
-                        }).done(function(dates){
-                            $("#account_edit").html(dates);//要刷新的div
-                        }).fail(function(jqXHR,textStatus,errorThrown){
-                            //console.log(jqXHR);console.log(textStatus);console.log(errorThrown);
-                        });
-                    }
-                    else if(this.id=="emailList")
-                    {
-                        var data = {type:1};
-                        $.ajax({
-                            type : "post",
-                            url : "php/backend/account_edit/email.php",
-                            data : data
-                        }).done(function(dates){
-                            $("#account_edit").html(dates);//要刷新的div
-                        }).fail(function(jqXHR,textStatus,errorThrown){
-                            //console.log(jqXHR);console.log(textStatus);console.log(errorThrown);
-                        });
-                    }
-                    else if(this.id=="identityList")
-                    {
-                        var data = {type:1};
-                        $.ajax({
-                            type : "post",
-                            url : "php/backend/account_edit/identity.php",
-                            data : data
-                        }).done(function(dates){
-                            $("#account_edit").html(dates);//要刷新的div
-                        }).fail(function(jqXHR,textStatus,errorThrown){
-                            //console.log(jqXHR);console.log(textStatus);console.log(errorThrown);
-                        });
-                    }
-                    return false;
-                });
-
+                
                 //點擊Permission區塊觸發新增權限功能
                 $('#application_permit').click(function() {
                     $.ajax({
@@ -345,13 +401,16 @@
                         for(var i=0;i<data.arduino.length;i++)
                         {
                             html=html+'<li class="list-group-item list-group-item-action borderless" id="'+data.arduino[i]['arduino#']+'">';
-                            html=html+'<div style="float:right;"><embed class="edit" src="image/edit.svg" style="display:inline; vertical-align:middle; width:17px; height:17px; margin:right;"></div>';
+                            html=html+'<div style="float:right;">';
+                            html=html+'<svg xmlns="http://www.w3.org/2000/svg" height="17" viewBox="0 0 48 48" width="17">';
+                            html=html+'<g><path d="M6 34.5v7.5h7.5l22.13-22.13-7.5-7.5-22.13 22.13zm35.41-20.41c.78-.78.78-2.05 0-2.83l-4.67-4.67c-.78-.78-2.05-.78-2.83 0l-3.66 3.66 7.5 7.5 3.66-3.66z"/><path d="M0 0h48v48h-48z" fill="none"/><rect class="btn" x="0" y="0" width="50" height="50" onclick="arduinoEditClick(\''+data.arduino[i]['arduino#']+'\')" /></g>';
+                            html=html+'</svg>';
+                            html=html+'</div>';
                             html=html+data.arduino[i]['arduino#']+'&nbsp';
                             html=html+'<strong>'+data.arduino[i]['positionDescription']+'</strong>';
                             html=html+'</li>';
                         }
                         html=html+'<li class="list-group-item list-group-item-action borderless" id="newArduino">';
-                        html=html+'<div style="float:right;"><embed class="edit" src="image/edit.svg" style="display:inline; vertical-align:middle; width:17px; height:17px; margin:right;"></div>';
                         html=html+' + 加入新的Arduino'+'&nbsp';
                         html=html+'</li>';
                         html=html+'</ul>';
@@ -382,20 +441,6 @@
                         //console.log(jqXHR);console.log(textStatus);console.log(errorThrown);
                     });
                 }
-                else
-                {
-                    var data = {type:1,oldarduino:this.id};
-                    $.ajax({
-                        type : "POST",
-                        url : "php/backend/arduino_edit/arduino.php",
-                        data : data
-                    }).done(function(dates){
-                        $("#choose_arduino").html(dates);//要刷新的div
-                    }).fail(function(jqXHR,textStatus,errorThrown){
-                        //console.log(jqXHR);console.log(textStatus);console.log(errorThrown);
-                    });
-                }
-                
             }); 
         </script>
 
