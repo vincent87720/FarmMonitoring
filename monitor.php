@@ -450,8 +450,8 @@
                         }
                         else if(typeOfData=="照度")
                         {
-                            var typeString = "照度(lx)";
-                            document.getElementById("average").innerHTML = averageValue+"(lx)";
+                            var typeString = "照度(lm)";
+                            document.getElementById("average").innerHTML = averageValue+"(lm)";
                             var colorset = ["rgb(255, 205, 86)","#FBD255","#FAAA2D","#F06C0F","#FCB619","#FEB718","#F7A731","#F2A749","#FAA524","#FFB228"];
                         }
                         else if(typeOfData=="CO2")
