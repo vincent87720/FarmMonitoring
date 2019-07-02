@@ -1,17 +1,20 @@
 <?php
 @require_once 'PasswordHash.php';
 @session_start();
+
+//檢查帳號是否存在
+//check_username.php
 function check_has_username($input)
 {
 
     $result=null;
     $sql = "SELECT * FROM `users` WHERE `username` LIKE '{$input}'";
-    $query = @mysqli_query($_SESSION['link'],$sql);
+    $query = mysqli_query($_SESSION['link'],$sql);
     
     if($query)
     {
         //若SQL成功執行
-        if(@mysqli_num_rows($query)>=1)
+        if(mysqli_num_rows($query)>=1)
         {
             //有一筆以上相同的資料
             $result=true;
@@ -31,11 +34,13 @@ function check_has_username($input)
     return $result;
 }
 
+//將使用者資料加入到資料庫
+//add_user.php
 function add_user($id,$pw,$name,$phone,$email)
 {
     $result=null;
     $pw = create_hash($pw);
-    $sql="INSERT INTO `users` (`username`,`password`,`name`,`phone`,`email`,`identity`) VALUES('{$id}','{$pw}','{$name}','{$phone}','{$email}','default')";
+    $sql="INSERT INTO `users` (`username`,`password`,`name`,`phone`,`email`) VALUES('{$id}','{$pw}','{$name}','{$phone}','{$email}')";
     $query = mysqli_query($_SESSION['link'],$sql);
     
     if($query)
@@ -61,13 +66,15 @@ function add_user($id,$pw,$name,$phone,$email)
     return $result;
 }
 
+//驗證使用者身分是否合法
+//check_login.php
 function verify_user($id,$pw)
 {
-    $checkhasuser = @check_has_username($id);
+    $checkhasuser = check_has_username($id);
     $result=null;
 
     //SQL參數化查詢---較能防止SQL injection攻擊
-    $sql="SELECT `password`,`identity`,`name` FROM `users` WHERE `username` = ?";
+    $sql="SELECT `password`,`name` FROM `users` WHERE `username` = ?";
 
     $stmt = $_SESSION['link']->stmt_init();
     if ($stmt->prepare($sql)) 
@@ -82,16 +89,18 @@ function verify_user($id,$pw)
         if($checkhasuser)
         {
             //綁定查詢結果到變數
-            $stmt->bind_result($loginUserPassword,$loginUserIdentity,$loginUserName);
+            $stmt->bind_result($loginUserPassword,$loginUserName);
             
             //把取得的數值fetch進去
             $stmt->fetch();
+            
+            $stmt->close();
             if(validate_password($pw,$loginUserPassword))
             {
                 $_SESSION['is_login'] = TRUE;
                 $_SESSION['login_user_id'] = $id;
                 $_SESSION['login_user_name'] = $loginUserName;
-                $_SESSION['login_user_identity'] = $loginUserIdentity;
+                setIdentity($id);//設定$_SESSION['login_user_identity']
                 $result = '1';//VerifySuccess
             }
             else
@@ -115,7 +124,6 @@ function verify_user($id,$pw)
         //echo "語法執行失敗，錯誤訊息：" . mysqli_error($_SESSION['link']);
         $result = '0';//VerifyFailed
     }
-    $stmt->close();
 
 
     //變數帶入查詢法---較不安全，可能引發SQL injection
@@ -154,5 +162,25 @@ function verify_user($id,$pw)
     //改變SESSION ID的值
     session_regenerate_id();
     return $result;
+}
+
+//設定權限資訊
+//verify_user()
+function setIdentity($loginUserName)
+{
+    $sql = "SELECT *
+            FROM `manage`
+            WHERE `username` = '{$loginUserName}' AND `auditStatus` = 1";
+    $query = mysqli_query($_SESSION['link'],$sql);
+    $_SESSION['login_user_identity'] = array();
+    if ($query)
+    {
+        while($row = mysqli_fetch_assoc($query))
+        {
+            $row_array = array();
+            array_push($row_array,$row['farm#'],$row['identity'],$row['username'],$row['applicationDateTime'],$row['auditDateTime'],$row['auditor'],$row['auditStatus']);
+            array_push($_SESSION['login_user_identity'],$row_array);
+        }
+    }
 }
 ?>

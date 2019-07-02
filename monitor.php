@@ -1,8 +1,8 @@
 <?php
-    @require_once 'php/connect.php';
+    require_once $_SERVER['DOCUMENT_ROOT']. '/php/connect.php';//$_SERVER['DOCUMENT_ROOT']為根目錄
     if(!isset($_SESSION['is_login'])||$_SESSION['is_login']==FALSE):
     {
-        @header("Location: index.php");
+        header("Location: index.php");
     }
     else:
 ?>
@@ -81,9 +81,9 @@
                         <div class="col-sm-4 text-center">
                             <!--顯示選擇農場按鈕-->
                             <?php
-                                @require_once 'php/backend/function.php';
-                                @get_farm();
-                                ?>
+                                require_once 'php/backend/function.php';
+                                monitor_get_farm();
+                            ?>
                             <!--顯示選擇農場按鈕-->
 
                             <!--顯示選擇Arduino按鈕-->
@@ -221,7 +221,7 @@
                     //當觸發選擇農場下拉式選單時
                     $("#farmChoose1stChild").on('click', 'li a', function(){
                         //將下拉式選單按鈕改為選擇的農場編號
-                        var farmChoose = $(this).text().substring(29,39);
+                        var farmChoose = $(this).text().trim().substring(0,10);
                         $("#farmChoose:first-child").text(farmChoose);
                         $("#farmChoose:first-child").val(farmChoose);
                         

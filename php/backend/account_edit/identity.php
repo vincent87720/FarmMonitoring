@@ -68,9 +68,9 @@ else:
                                 '<span class="caret"></span>'+
                             '</button>'+
                             '<div class="dropdown-menu" aria-labelledby="dropdownMenuButton" id="identityChooseChild">'+
-                                '<a class="dropdown-item" href="#" onclick="identityChoose('+'\'FARMADMIN\','+'\'農場管理員\''+');">FARMADMIN&nbsp農場管理員</a>'+
+                                '<a class="dropdown-item" href="#" onclick="identityChoose('+'\'ADMIN\','+'\'農場管理員\''+');">ADMIN&nbsp農場管理員</a>'+
                                 '<div class="dropdown-divider"></div>'+
-                                '<a class="dropdown-item" href="#" onclick="identityChoose('+'\'FARMSTAFF\','+'\'農場員工\''+');">FARMSTAFF&nbsp農場員工</a>'+
+                                '<a class="dropdown-item" href="#" onclick="identityChoose('+'\'STAFF\','+'\'農場員工\''+');">STAFF&nbsp農場員工</a>'+
                             '</div>'+
                         '</div>';
                     }
@@ -114,7 +114,7 @@ else:
                         }
                         else
                         {
-                            console.log(data);
+                            //console.log(data);
                         }
                     }).fail(function(jqXHR,textStatus,errorThrown){
                         //console.log(jqXHR);console.log(textStatus);console.log(errorThrown);

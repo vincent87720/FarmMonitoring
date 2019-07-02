@@ -138,7 +138,23 @@
                                                 </svg>
                                             </div>
                                             Identity&nbsp&nbsp&nbsp&nbsp&nbsp
-                                            <strong id="identity"><?php echo $_SESSION["login_user_identity"]; ?></strong>
+                                            <strong id="identity">
+                                                <?php
+                                                    $i = 0; 
+                                                    foreach($_SESSION["login_user_identity"] as $row)
+                                                    {
+                                                        if($i == 0)
+                                                        {
+                                                            echo $row[0]." ".$row[1];
+                                                        }
+                                                        else
+                                                        {
+                                                            echo "</br>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp".$row[0]." ".$row[1];
+                                                        }
+                                                        $i++;
+                                                    } 
+                                                ?>
+                                            </strong>
                                         </li>
                                     </ul>
                                 </div>
@@ -150,7 +166,7 @@
                                 <div class="container" id="arduinoInfo_edit">
                                     <!--顯示選擇農場按鈕-->
                                     <?php
-                                        @get_admin_farm();
+                                        @account_get_farm();
                                     ?>
                                     <!--顯示選擇農場按鈕-->
                                     <div id="choose_arduino"></div>
@@ -159,10 +175,19 @@
                         </div>
                         <?php 
                             //若身分為管理員，顯示權限管理區塊
-                            if($_SESSION['login_user_identity']=='ADMIN'||$_SESSION['login_user_identity']=='MIS'):
+                            $status=0;
+                            foreach($_SESSION['login_user_identity'] as $row)
+                            {
+                                if($row[1] == "ADMIN" || $row[1] == "MIS")
+                                {
+                                    $status = 1;
+                                    break;
+                                }
+                            }
+                            if($status == 1):
                         ?>
                         <div class="col-sm-5 ml-auto mr-auto jumbotronSet">
-                            <h2 class="text-center">Permission</h2>
+                            <h2 class="text-center">PermissionAudit</h2>
                             <div class="jumbotron jumbotron-fluid border">
                                 <div class="container" id="permission_admin">
                                     <p id="edit_status" class="text-center"></p>     
@@ -173,6 +198,16 @@
                                 <div class="col-sm-12 text-center">
                                     <button class="btn btn-info" id="application_delete">刪除申請</button>
                                     <button class="btn btn-info" id="application_permit">允許權限</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-5 ml-auto mr-auto jumbotronSet">
+                            <h2 class="text-center">PermissionList</h2>
+                            <div class="jumbotron jumbotron-fluid border">
+                                <div class="container" id="permission_list">
+                                    <?php 
+                                        get_manage_list();
+                                    ?>
                                 </div>
                             </div>
                         </div>
@@ -276,6 +311,23 @@
                         data : data
                     }).done(function(dates){
                         $("#choose_arduino").html(dates);//要刷新的div
+                    }).fail(function(jqXHR,textStatus,errorThrown){
+                        //console.log(jqXHR);console.log(textStatus);console.log(errorThrown);
+                    });
+            }
+
+            function editPeopleClick(input)
+            {
+                var identity_array = new Array();
+
+                identity_array = input.split(",");
+                var data = {type:1,permissionInfo:identity_array};
+                    $.ajax({
+                        type : "POST",
+                        url : "php/backend/permission_edit/permission_edit.php",
+                        data : data
+                    }).done(function(dates){
+                        $("#permission_list").html(dates);//要刷新的div
                     }).fail(function(jqXHR,textStatus,errorThrown){
                         //console.log(jqXHR);console.log(textStatus);console.log(errorThrown);
                     });

@@ -110,6 +110,10 @@ div.jumbotron
     word-wrap:break-word;/*依單字換行*/
     word-break: keep-all;/*不允許CJK(Chinese/Japanese/Korean)文本中的單辭換行，只能在半角空格或連字符處換行。非CJK文本的行為實際上和normal一致*/
 }
+input.form-control:read-only
+{
+    background-color: rgb(255, 255, 255);
+}
 
 /*隱藏list-group外框線*/
 li.borderless

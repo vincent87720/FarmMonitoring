@@ -14,11 +14,6 @@ else
         //新增權限成功
         echo 'success';
     }
-    else if($check=='2')
-    {
-        //新增權限成功，申請資料尚未刪除
-        echo 'applicationDataNotDelete';
-    }
     else if($check=='1062')
     {
         //語法執行失敗，權限已存在
