@@ -206,7 +206,7 @@
                             <div class="jumbotron jumbotron-fluid border">
                                 <div class="container" id="permission_list">
                                     <?php 
-                                        get_manage_list();
+                                        @get_manage_list();
                                     ?>
                                 </div>
                             </div>

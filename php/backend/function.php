@@ -184,7 +184,7 @@ function monitor_get_farm()
                             </a>
                         </li>';
                 //若不是最後一行且數量不等於一個，要輸出分隔線
-                if($i!=count($result)-1 && count($result)-1 != 0)
+                if($i!=count($result)-2 && count($result)-1 != 0)
                 {
                     $html.='<li class="divider"></li>';
                 }
