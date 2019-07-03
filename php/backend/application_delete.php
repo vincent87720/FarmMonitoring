@@ -8,7 +8,7 @@ if(!isset($_SESSION['is_login'])||$_SESSION['is_login']==FALSE)
 }
 else
 {
-    $check = @application_delete($_POST['username'],$_POST['farm'],$_POST['identity'],$_POST['dateTime']);
+    $check = @delete_permission($_POST['username'],$_POST['farm'],$_POST['identity']);
     if($check=='1')
     {
         //申請資料刪除成功

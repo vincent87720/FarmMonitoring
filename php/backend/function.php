@@ -35,13 +35,13 @@ function get_farm()
                 FROM `farm` f INNER JOIN `manage` m ON f.`farm#` = m.`farm#`
                 WHERE `username` LIKE '{$_SESSION['login_user_id']}' AND `auditStatus` = 1";
     }
-    $query = mysqli_query($_SESSION['link'],$sql);
+    $query = @mysqli_query($_SESSION['link'],$sql);
     if ($query)
     {
-        $farm_array = array();
-        while($row = mysqli_fetch_assoc($query))
+        $farm_array = @array();
+        while($row = @mysqli_fetch_assoc($query))
         {
-            array_push($farm_array,$row);
+            @array_push($farm_array,$row);
         }
         return $farm_array;
     }
@@ -67,16 +67,16 @@ function get_manage()
     }
     if($isFarmZero == 1)
     {
-        $sql="SELECT `farm#`,`identity`,`username`,`applicationDateTime`,`auditDateTime`,`auditor`
+        $sql="SELECT DISTINCT `farm#`,`identity`,`username`,`applicationDateTime`,`auditDateTime`,`auditor`
               FROM `manage`
               WHERE `auditStatus` = 1
               ORDER BY `farm#`";
     }
     else
     {
-        $sql="SELECT b.`farm#`,b.`identity`,b.`username`,b.`applicationDateTime`,b.`auditDateTime`,b.`auditor`
+        $sql="SELECT DISTINCT b.`farm#`,b.`identity`,b.`username`,b.`applicationDateTime`,b.`auditDateTime`,b.`auditor`
               FROM `manage` a INNER JOIN `manage` b ON a.`farm#` = b.`farm#`
-              WHERE a.`username` = '{$_SESSION['login_user_id']}' AND a.`auditStatus` = 1 AND b.`auditStatus` = 1
+              WHERE a.`username` = '{$_SESSION['login_user_id']}' AND a.`auditStatus` = 1 AND b.`auditStatus` = 1 AND (a.`identity` = 'ADMIN' OR a.`identity` = 'MIS')
               ORDER BY b.`farm#`";
     }
 
@@ -87,8 +87,8 @@ function get_manage()
         while($row = @mysqli_fetch_assoc($query))
         {
             $row_array = array();
-            array_push($row_array,$row['farm#'],$row['identity'],$row['username'],$row['applicationDateTime'],$row['auditDateTime'],$row['auditor']);
-            array_push($manage_array,$row_array);
+            @array_push($row_array,$row['farm#'],$row['identity'],$row['username'],$row['applicationDateTime'],$row['auditDateTime'],$row['auditor']);
+            @array_push($manage_array,$row_array);
         }
         return $manage_array;
     }
@@ -157,7 +157,7 @@ function get_data($farm,$typeOfData,$start,$end)
 //monitor.php
 function monitor_get_farm()
 {
-    $result = get_farm();
+    $result = @get_farm();
     $html = "";
     if($result!="")
     {
@@ -168,7 +168,7 @@ function monitor_get_farm()
                     </button>
                     <ul class="dropdown-menu" aria-labelledby="farmChoose" id="farmChoose1stChild">';
         
-        $i = 1; 
+        $i = 0; 
         foreach($result as $row)
         {
             //輸出FARM000000以外的農場
@@ -392,6 +392,47 @@ function application_get_farm()
     }
 }
 
+//權限申請
+//application_identity.php
+function application_identity($farm,$identity)
+{
+    $result = null;
+
+    //申請日期時間
+    $dateTime = @date ("Y-m-d H:i:s" , mktime(date('H')+8, date('i'), date('s'), date('m'), date('d'), date('Y'))); 
+    
+    $sql = "INSERT INTO `manage` (`farm#`,`username`,`identity`,`applicationDateTime`,`auditStatus`) VALUES ('{$farm}','{$_SESSION['login_user_id']}','{$identity}','{$dateTime}',0)";
+    $query = @mysqli_query($_SESSION['link'],$sql);
+    if($query)
+    {
+        if(@mysqli_affected_rows($_SESSION['link'])==1)
+        {
+            //identity申請成功
+            $result = '1';
+        }
+        else
+        {
+            //identity申請失敗
+            $result = '0';
+        }
+    }
+    else
+    {
+        if(@mysqli_connect_errno()=='#1062')
+        {
+            //語法執行失敗，權限已存在
+            $result = '1062';
+        }
+        else
+        {
+            $result = '0';
+            //echo "語法執行失敗，錯誤訊息：" . mysqli_error($_SESSION['link']);
+        }
+    }
+    return $result;
+}
+
+
 //////////////////////////////ArduinoBlock//////////////////////////////
 
 //新增arduino
@@ -454,7 +495,7 @@ function change_arduino($oldarduino,$arduino,$positionDescription,$GPS)
 //account.php
 function account_get_farm()
 {
-    $result = get_farm();
+    $result = @get_farm();
 
     $html = "";
     if($result!="")
@@ -510,7 +551,7 @@ function get_admin_arduino($farm)
     return @json_encode($json_array);
 }
 
-//////////////////////////////ApplicationBlock//////////////////////////////
+//////////////////////////////PermissionAuditBlock//////////////////////////////
 
 //列出所有權限申請清單
 //account.php
@@ -595,77 +636,6 @@ function get_application_list()
     
 }
 
-//列出登入者可管理的所有權限
-//account.php
-function get_manage_list()
-{
-    $result = get_manage();
-    $html="";
-    $html.='<ul class="list-group account-list-group">';
-    foreach($result as $row)
-    {
-        if($row[1] == "MIS")
-        {
-            $row[1]=$row[1]."&nbsp"."&nbsp";
-        }
-        $html.='<li class="list-group-item list-group-item-action borderless" id="'.$row[0].' '.$row[1].' '.$row[2].'">
-                    <div style="float:right;">
-                        <svg xmlns="http://www.w3.org/2000/svg" height="17" viewBox="0 0 48 48" width="17">
-                            <g>
-                                <path d="M6 34.5v7.5h7.5l22.13-22.13-7.5-7.5-22.13 22.13zm35.41-20.41c.78-.78.78-2.05 0-2.83l-4.67-4.67c-.78-.78-2.05-.78-2.83 0l-3.66 3.66 7.5 7.5 3.66-3.66z"/>
-                                <path d="M0 0h48v48h-48z" fill="none"/>
-                                <rect class="btn" x="0" y="0" width="50" height="50" onclick="editPeopleClick('.'\''.$row[0].','.$row[1].','.$row[2].','.$row[3].','.$row[4].','.$row[5].'\''.')" />
-                            </g>
-                        </svg>
-                    </div>
-                    <strong id="username">'.$row[0].' '.$row[1].' '.$row[2].'</strong>
-                </li>';
-    }
-    //'\''.$row[0].' '.$row[1].' '.$row[2].' '.$row[3].' '.$row[4].' '.$row[5].'\''
-    $html.='</ul>'; 
-    echo $html;
-}
-
-//權限申請
-//application_identity.php
-function application_identity($farm,$identity)
-{
-    $result = null;
-
-    //申請日期時間
-    $dateTime = @date ("Y-m-d H:i:s" , mktime(date('H')+8, date('i'), date('s'), date('m'), date('d'), date('Y'))); 
-    
-    $sql = "INSERT INTO `manage` (`farm#`,`username`,`identity`,`applicationDateTime`,`auditStatus`) VALUES ('{$farm}','{$_SESSION['login_user_id']}','{$identity}','{$dateTime}',0)";
-    $query = @mysqli_query($_SESSION['link'],$sql);
-    if($query)
-    {
-        if(@mysqli_affected_rows($_SESSION['link'])==1)
-        {
-            //identity申請成功
-            $result = '1';
-        }
-        else
-        {
-            //identity申請失敗
-            $result = '0';
-        }
-    }
-    else
-    {
-        if(@mysqli_connect_errno()=='#1062')
-        {
-            //語法執行失敗，權限已存在
-            $result = '1062';
-        }
-        else
-        {
-            $result = '0';
-            //echo "語法執行失敗，錯誤訊息：" . mysqli_error($_SESSION['link']);
-        }
-    }
-    return $result;
-}
-
 //允許權限申請，賦予權限並刪除權限申請清單中的資料
 //application_permit.php
 function application_permit($username,$farm,$identity,$dateTime)
@@ -704,12 +674,12 @@ function application_permit($username,$farm,$identity,$dateTime)
     return $result;
 }
 
-//刪除權限申請清單中的資料
-//application_delete.php
-function application_delete($username,$farm,$identity,$dateTime)
+//刪除使用者權限或權限申請清單中的資料
+//application_delete.php,delete_permission.php
+function delete_permission($farm,$identity,$username)
 {
     $result = null;
-    $sql = "DELETE FROM `manage` WHERE `username` = '{$username}' AND `farm#` = '{$farm}' AND `identity` = '{$identity}'AND `applicationDateTime` = '{$dateTime}'";
+    $sql = "DELETE FROM `manage` WHERE `username` = '{$username}' AND `farm#` = '{$farm}' AND `identity` = '{$identity}'";
     $query = @mysqli_query($_SESSION['link'],$sql);
     if($query)
     {
@@ -723,5 +693,40 @@ function application_delete($username,$farm,$identity,$dateTime)
     }
     return $result;
 }
+
+//////////////////////////////PermissionListBlock//////////////////////////////
+
+//列出登入者可管理的所有權限
+//account.php
+function get_manage_list()
+{
+    $result = @get_manage();
+    $html="";
+    $html.='<ul class="list-group account-list-group">';
+    foreach($result as $row)
+    {
+        if($row[1] == "MIS")
+        {
+            $row[1]=$row[1]."&nbsp"."&nbsp";
+        }
+        $html.='<li class="list-group-item list-group-item-action borderless" id="'.$row[0].' '.$row[1].' '.$row[2].'">
+                    <div style="float:right;">
+                        <svg xmlns="http://www.w3.org/2000/svg" height="17" viewBox="0 0 48 48" width="17">
+                            <g>
+                                <path d="M6 34.5v7.5h7.5l22.13-22.13-7.5-7.5-22.13 22.13zm35.41-20.41c.78-.78.78-2.05 0-2.83l-4.67-4.67c-.78-.78-2.05-.78-2.83 0l-3.66 3.66 7.5 7.5 3.66-3.66z"/>
+                                <path d="M0 0h48v48h-48z" fill="none"/>
+                                <rect class="btn" x="0" y="0" width="50" height="50" onclick="editPeopleClick('.'\''.$row[0].','.$row[1].','.$row[2].','.$row[3].','.$row[4].','.$row[5].'\''.')" />
+                            </g>
+                        </svg>
+                    </div>
+                    <strong id="username">'.$row[0].' '.$row[1].' '.$row[2].'</strong>
+                </li>';
+    }
+    //'\''.$row[0].' '.$row[1].' '.$row[2].' '.$row[3].' '.$row[4].' '.$row[5].'\''
+    $html.='</ul>'; 
+    echo $html;
+}
+
+
 endif;
 ?>

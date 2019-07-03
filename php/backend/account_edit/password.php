@@ -135,7 +135,7 @@ else:
                             }
                             else
                             {
-                                console.log(data);
+                                //console.log(data);
                             }
                             return false;
                         }).fail(function(jqXHR,textStatus,errorThrown){

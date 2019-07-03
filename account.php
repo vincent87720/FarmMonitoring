@@ -389,8 +389,7 @@
                         {
                             'username':$('.carousel-inner div.active #application_username strong').text(),
                             'farm':$('.carousel-inner div.active #application_farm strong').text(),
-                            'identity':$('.carousel-inner div.active #application_identity strong').text(),
-                            'dateTime':$('.carousel-inner div.active #application_dateTime strong').text()
+                            'identity':$('.carousel-inner div.active #application_identity strong').text()
                         },
                         dataType:'html'
                     }).done(function(data){
