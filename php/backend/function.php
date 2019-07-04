@@ -67,15 +67,15 @@ function get_manage()
     }
     if($isFarmZero == 1)
     {
-        $sql="SELECT DISTINCT `farm#`,`identity`,`username`,`applicationDateTime`,`auditDateTime`,`auditor`
-              FROM `manage`
+        $sql="SELECT DISTINCT m.`farm#`,m.`identity`,m.`username`,u.`name`,m.`applicationDateTime`,m.`auditDateTime`,m.`auditor`
+              FROM `manage` m INNER JOIN `users` u ON m.`username` = u.`username` 
               WHERE `auditStatus` = 1
               ORDER BY `farm#`";
     }
     else
     {
-        $sql="SELECT DISTINCT b.`farm#`,b.`identity`,b.`username`,b.`applicationDateTime`,b.`auditDateTime`,b.`auditor`
-              FROM `manage` a INNER JOIN `manage` b ON a.`farm#` = b.`farm#`
+        $sql="SELECT DISTINCT b.`farm#`,b.`identity`,b.`username`,u.`name`,b.`applicationDateTime`,b.`auditDateTime`,b.`auditor`
+              FROM (`manage` a INNER JOIN `manage` b ON a.`farm#` = b.`farm#`) INNER JOIN `users` u ON a.`username` = u.username
               WHERE a.`username` = '{$_SESSION['login_user_id']}' AND a.`auditStatus` = 1 AND b.`auditStatus` = 1 AND (a.`identity` = 'ADMIN' OR a.`identity` = 'MIS')
               ORDER BY b.`farm#`";
     }
@@ -87,7 +87,7 @@ function get_manage()
         while($row = @mysqli_fetch_assoc($query))
         {
             $row_array = array();
-            @array_push($row_array,$row['farm#'],$row['identity'],$row['username'],$row['applicationDateTime'],$row['auditDateTime'],$row['auditor']);
+            @array_push($row_array,$row['farm#'],$row['identity'],$row['username'],$row['name'],$row['applicationDateTime'],$row['auditDateTime'],$row['auditor']);
             @array_push($manage_array,$row_array);
         }
         return $manage_array;
@@ -715,7 +715,7 @@ function get_manage_list()
                             <g>
                                 <path d="M6 34.5v7.5h7.5l22.13-22.13-7.5-7.5-22.13 22.13zm35.41-20.41c.78-.78.78-2.05 0-2.83l-4.67-4.67c-.78-.78-2.05-.78-2.83 0l-3.66 3.66 7.5 7.5 3.66-3.66z"/>
                                 <path d="M0 0h48v48h-48z" fill="none"/>
-                                <rect class="btn" x="0" y="0" width="50" height="50" onclick="editPeopleClick('.'\''.$row[0].','.$row[1].','.$row[2].','.$row[3].','.$row[4].','.$row[5].'\''.')" />
+                                <rect class="btn" x="0" y="0" width="50" height="50" onclick="editPeopleClick('.'\''.$row[0].','.$row[1].','.$row[2].','.$row[3].','.$row[4].','.$row[5].','.$row[6].'\''.')" />
                             </g>
                         </svg>
                     </div>

@@ -22,6 +22,10 @@ else:
                     <input type="text" class="form-control" id="manage_username" value="" readonly>
                 </div>
                 <div class="form-group">
+                    <label for="manage_name">Name</label>
+                    <input type="text" class="form-control" id="manage_name" value="" readonly>
+                </div>
+                <div class="form-group">
                     <label for="manage_farm">Farm</label>
                     <input type="text" class="form-control" id="manage_farm" value="" readonly>
                 </div>
@@ -107,12 +111,13 @@ else:
             }
 
             $(document).ready(function(){
-                $('#manage_username').val("<?php echo $_POST['permissionInfo'][2];?>");
                 $('#manage_farm').val("<?php echo $_POST['permissionInfo'][0];?>");
                 $('#manage_identity').val("<?php echo $_POST['permissionInfo'][1];?>");
-                $('#manage_applicationDateTime').val("<?php echo $_POST['permissionInfo'][3];?>");
-                $('#manage_auditDateTime').val("<?php echo $_POST['permissionInfo'][4];?>");
-                $('#manage_auditor').val("<?php echo $_POST['permissionInfo'][5];?>");
+                $('#manage_username').val("<?php echo $_POST['permissionInfo'][2];?>");
+                $('#manage_name').val("<?php echo $_POST['permissionInfo'][3];?>");
+                $('#manage_applicationDateTime').val("<?php echo $_POST['permissionInfo'][4];?>");
+                $('#manage_auditDateTime').val("<?php echo $_POST['permissionInfo'][5];?>");
+                $('#manage_auditor').val("<?php echo $_POST['permissionInfo'][6];?>");
                 
             });
         </script>
