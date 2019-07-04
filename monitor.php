@@ -227,7 +227,7 @@
                         
                         //在圖表下方顯示農場位置描述
                         //$('#showFarmDescription').val()
-                        document.getElementById("showFarmDescription").innerHTML = '<div class="btn-group" role="group" aria-label="Basic example"><button type="button" class="btn btn-warning">'+$(this).text().substring(96,150)+'</button></div>';
+                        document.getElementById("showFarmDescription").innerHTML = '<div class="btn-group" role="group" aria-label="Basic example"><button type="button" class="btn btn-warning">'+$(this).text().trim().substring(10,150)+'</button></div>';
                         
                         drawChart();
                     });
