@@ -9,8 +9,8 @@
 <!DOCTYPE HTML>
 <html>
     <head>
-        <title>自動化農場監測</title>
-        <meta name="keyword" content="農場'自動化農場'農場數據監測'"><!--keyword讓搜索引擎容易找到此網頁-->
+        <title>智慧化環境監測管理系統</title>
+        <meta name="keyword" content="智慧化'自動化'環境'監測'管理'系統'智慧化環境監測管理系統"><!--keyword讓搜索引擎容易找到此網頁-->
         <meta name="viewport" content="width=device-width, initial-scale=1" ><!--指定螢幕寬度為裝置寬度，畫面載入初始縮放比例 100%-->
         <link rel="icon" href="image/barrier.ico">
         <noscript>
@@ -51,7 +51,7 @@
                         <div class="col-sm-12">
                             <embed src="./image/barrier.svg" style="display:block; width:70px; height:70px; margin:auto;"/>
                             <br>
-                            <h2 class="text-center">自動化農場監測</h2>
+                            <h2 class="text-center">智慧化環境監測管理系統</h2>
                             <br>
                         </div>
                     </div>
