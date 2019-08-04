@@ -48,7 +48,7 @@ else:
                 <div class="col-sm-12 text-center">
                     <a href="../../../account.php" class="btn btn-info" role="button" aria-pressed="true" id="backbutton">返回</a>
                     <!-- Button trigger modal -->
-                    <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteModalCenter">刪除權限</button>
+                    <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteModalCenter" id="deletePermissionButton">刪除權限</button>
 
                     <!-- Modal -->
                     <div class="modal fade" id="deleteModalCenter" tabindex="-1" role="dialog" aria-labelledby="deleteModalCenterTitle" aria-hidden="true">

@@ -40,9 +40,12 @@ else:
                     </div>
                 </div> -->
                 <div class="col-sm-12 text-center">
-                    <!-- Button trigger modal -->
-                    <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteArduinoCenter">刪除Arduino</button>
+                    <a href="../../../account.php" class="btn btn-info" role="button" aria-pressed="true" id="backbutton">返回</a>
+                    
+                    <button type="submit" class="btn btn-info" id="editArduinoButton">確認修改</button>
 
+                    <!-- Button trigger modal -->
+                    <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteArduinoCenter" id="deleteArduinoButton">刪除Arduino</button>
                     <!-- Modal -->
                     <div class="modal fade" id="deleteArduinoCenter" tabindex="-1" role="dialog" aria-labelledby="deleteArduinoCenterTitle" aria-hidden="true">
                         <div class="modal-dialog modal-dialog-centered" role="document">
@@ -63,8 +66,6 @@ else:
                             </div>
                         </div>
                     </div>
-                    <a href="../../../account.php" class="btn btn-info" role="button" aria-pressed="true" id="backbutton">返回</a>
-                    <button type="submit" class="btn btn-info">確認修改</button>
                 </div>
                 </form>
             </div>

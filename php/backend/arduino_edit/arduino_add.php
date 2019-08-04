@@ -33,7 +33,7 @@ else:
                 </div>
                 <div class="col-sm-12 text-center">
                     <a href="../../../account.php" class="btn btn-info" role="button" aria-pressed="true" id="backbutton">返回</a>
-                    <button type="submit" class="btn btn-info">確認新增</button>
+                    <button type="submit" class="btn btn-info" id="addArduinoButton">確認新增</button>
                 </div>
                 </form>
             </div>

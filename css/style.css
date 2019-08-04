@@ -139,3 +139,30 @@ li.borderless
 {
     background-image: url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='rgb(128,128,128)' viewBox='0 0 8 8'%3E%3Cpath d='M2.75 0l-1.5 1.5 2.5 2.5-2.5 2.5 1.5 1.5 4-4-4-4z'/%3E%3C/svg%3E") !important;
 }
+
+
+/*****permission_edit.php*****/
+#backbutton
+{
+    margin-bottom:10px;
+}
+#deletePermissionButton
+{
+    margin-bottom:10px;
+}
+
+/*****arduino.php*****/
+#editArduinoButton
+{
+    margin-bottom:10px;
+}
+#deleteArduinoButton
+{
+    margin-bottom:10px;
+}
+
+/*****arduino_add.php*****/
+#addArduinoButton
+{
+    margin-bottom:10px;
+}
