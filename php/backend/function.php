@@ -463,6 +463,26 @@ function add_arduino($arduino,$positionDescription,$farm)
     return $result;
 }
 
+//刪除arduino
+//delete_arduino.php
+function delete_arduino($arduino)
+{
+    $result = null;
+    $sql = "DELETE FROM `arduino` WHERE `arduino#` = '{$arduino}'";
+    $query = @mysqli_query($_SESSION['link'],$sql);
+    if($query)
+    {
+        //刪除資料成功
+        $result = '1';
+    }
+    else
+    {
+        $result = '0';
+        //echo "語法執行失敗，錯誤訊息：" . mysqli_error($_SESSION['link']);
+    }
+    return $result;
+}
+
 //編輯arduino
 //change_arduino.php
 function change_arduino($oldarduino,$arduino,$positionDescription,$GPS)

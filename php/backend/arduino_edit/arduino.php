@@ -16,6 +16,7 @@ else:
         <div class="row">
             <div class="col-sm-10 ml-auto mr-auto">
                 <p id="edit_status" class="text-center"></p>
+                <p id="arduino_list_edit_status" class="text-center"></p>
                 <form id="arduino_change_form">
                 <div class="form-group">
                     <label for="arduinoNum">Arduino編號</label>
@@ -39,6 +40,29 @@ else:
                     </div>
                 </div> -->
                 <div class="col-sm-12 text-center">
+                    <!-- Button trigger modal -->
+                    <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteArduinoCenter">刪除Arduino</button>
+
+                    <!-- Modal -->
+                    <div class="modal fade" id="deleteArduinoCenter" tabindex="-1" role="dialog" aria-labelledby="deleteArduinoCenterTitle" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered" role="document">
+                            <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="deleteArduinoCenterTitle">刪除Arduino</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                確定要刪除<?php echo $_POST['oldarduino']."\"嗎?";?>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+                                <button type="button" class="btn btn-danger" onclick=deleteArduino(<?php echo "\"".$_POST['oldarduino']."\"";?>)>確認刪除</button>
+                            </div>
+                            </div>
+                        </div>
+                    </div>
                     <a href="../../../account.php" class="btn btn-info" role="button" aria-pressed="true" id="backbutton">返回</a>
                     <button type="submit" class="btn btn-info">確認修改</button>
                 </div>
@@ -46,6 +70,38 @@ else:
             </div>
         </div>
         <script>
+            function deleteArduino(arduinoNum)
+            {
+                $.ajax({
+                        type : "post",
+                        url : "php/backend/delete_arduino.php",
+                        data : 
+                        {
+                            'arduino_id':arduinoNum
+                        }
+                    }).done(function(data){
+                        $('#deleteArduinoCenter').modal('hide');
+                        //console.log(data);
+                        if(data=='deleteArduinoSuccess')
+                        {
+                            //刪除資料成功
+                            document.getElementById("arduino_list_edit_status").innerHTML = '<div class="alert alert-success alert-dismissible fade show" role="alert"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>已刪除Arduino</div>';
+                            setTimeout('window.location.href = "account.php";',3000);
+                        }
+                        else if(data=='deleteArduinoFail')
+                        {
+                            //刪除資料失敗
+                            document.getElementById("arduino_list_edit_status").innerHTML = '<div class="alert alert-danger alert-dismissible fade show" role="alert"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>Arduino刪除失敗</div>';
+                            setTimeout('window.location.href = "account.php";',3000);
+                        }
+                        else
+                        {
+                            //console.log(data);
+                        }
+                    }).fail(function(jqXHR,textStatus,errorThrown){
+                        //console.log(jqXHR);console.log(textStatus);console.log(errorThrown);
+                    });
+            }
 
             $(document).ready(function(){
                 
