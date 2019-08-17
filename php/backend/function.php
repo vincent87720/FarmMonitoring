@@ -70,14 +70,14 @@ function get_manage()
         $sql="SELECT DISTINCT m.`farm#`,m.`identity`,m.`username`,u.`name`,m.`applicationDateTime`,m.`auditDateTime`,m.`auditor`
               FROM `manage` m INNER JOIN `users` u ON m.`username` = u.`username` 
               WHERE `auditStatus` = 1
-              ORDER BY `farm#`";
+              ORDER BY m.`farm#`, m.`identity`, m.`username`";
     }
     else
     {
         $sql="SELECT DISTINCT b.`farm#`,b.`identity`,b.`username`,u.`name`,b.`applicationDateTime`,b.`auditDateTime`,b.`auditor`
               FROM (`manage` a INNER JOIN `manage` b ON a.`farm#` = b.`farm#`) INNER JOIN `users` u ON a.`username` = u.username
               WHERE a.`username` = '{$_SESSION['login_user_id']}' AND a.`auditStatus` = 1 AND b.`auditStatus` = 1 AND (a.`identity` = 'ADMIN' OR a.`identity` = 'MIS')
-              ORDER BY b.`farm#`";
+              ORDER BY b.`farm#`, b.`identity`, b.`username`";
     }
 
     $query = @mysqli_query($_SESSION['link'],$sql);
