@@ -33,7 +33,7 @@ else:
                 </div>
                 <div class="col-sm-12 text-center">
                     <a href="../../../account.php" class="btn btn-info" role="button" aria-pressed="true" id="backbutton">返回</a>
-                    <button type="submit" class="btn btn-info">確認修改</button>
+                    <button type="submit" class="btn btn-info" id="editAccountButton">確認修改</button>
                 </div>
                 </form>
             </div>
