@@ -75,7 +75,7 @@ function get_manage()
     else
     {
         $sql="SELECT DISTINCT b.`farm#`,b.`identity`,b.`username`,u.`name`,b.`applicationDateTime`,b.`auditDateTime`,b.`auditor`
-              FROM (`manage` a INNER JOIN `manage` b ON a.`farm#` = b.`farm#`) INNER JOIN `users` u ON a.`username` = u.username
+              FROM (`manage` a INNER JOIN `manage` b ON a.`farm#` = b.`farm#`) INNER JOIN `users` u ON b.`username` = u.username
               WHERE a.`username` = '{$_SESSION['login_user_id']}' AND a.`auditStatus` = 1 AND b.`auditStatus` = 1 AND (a.`identity` = 'ADMIN' OR a.`identity` = 'MIS')
               ORDER BY b.`farm#`, b.`identity`, b.`username`";
     }
