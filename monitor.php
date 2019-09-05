@@ -126,7 +126,9 @@
                                 <!--繪製圖表-->
                                 <div class="chart-container" id="ChartParent" style="position: relative; height:100%; width:100%">
                                     <canvas id="Chart"></canvas>
+                                    <div class="d-flex justify-content-center" id="spinners"></div>
                                 </div>
+                                
                                 <!--繪製圖表-->
 
                                 
@@ -329,6 +331,21 @@
                     {
                         farmChoose = $("#farmChoose:first-child").val();
                     }
+                    document.getElementById('spinners').innerHTML = '<div class="spinner-grow text-warning" role="status">'+
+                                                                        '<span class="sr-only">Loading...</span>'+
+                                                                    '</div>'+
+                                                                    '<div class="spinner-grow text-info" role="status">'+
+                                                                        '<span class="sr-only">Loading...</span>'+
+                                                                    '</div>'+
+                                                                    '<div class="spinner-grow text-warning" role="status">'+
+                                                                        '<span class="sr-only">Loading...</span>'+
+                                                                    '</div>'+
+                                                                    '<div class="spinner-grow text-info" role="status">'+
+                                                                        '<span class="sr-only">Loading...</span>'+
+                                                                    '</div>'+
+                                                                    '<div class="spinner-grow text-warning" role="status">'+
+                                                                        '<span class="sr-only">Loading...</span>'+
+                                                                    '</div>';
 
                     $.ajax({
                         type:"POST",//使用表單的方式傳送，同form的method
@@ -553,6 +570,7 @@
                                 }
                             }
                         });
+                        document.getElementById('spinners').innerHTML = "";
                     }).fail(function(jqXHR,textStatus,errorThrown){
                         //ajax執行失敗
                         //alert("有錯誤產生，請看console log");
