@@ -135,12 +135,167 @@ function get_data($farm,$typeOfData,$start,$end)
           AND d.`dateTime` <= '{$end}'
           ORDER BY d.`dateTime` ASC";
     $query = @mysqli_query($_SESSION['link'],$sql);
+    $rowNum = mysqli_num_rows($query);
     $data_array = array();
+
+    $result="";
+    $year = ((int)substr($end,0,4)-(int)substr($start,0,4));
+    $month = ((int)substr($end,5,2)-(int)substr($start,5,2));
+    $day = ((int)substr($end,8,2)-(int)substr($start,8,2));
+    $hour = ((int)substr($end,11,2)-(int)substr($start,11,2));
+    $minute = ((int)substr($end,14,2)-(int)substr($start,14,2));
+    $second = ((int)substr($end,17,2)-(int)substr($start,17,2));
+    $result = $hour+$day*24+$month*30*24+$year*12*30*24;
+    
     if ($query)
     {
-        while($row = @mysqli_fetch_assoc($query))
+        // $row = @mysqli_fetch_assoc($query);
+        $rowCount = 0;
+        
+        if($result<24)//小於一天
         {
-            $data_array[] = $row;
+            while($row = @mysqli_fetch_assoc($query))
+            {
+                $data_array[] = $row;
+            }
+        }
+        else if($result<720)//大於等於三天，小於一個月
+        {
+            $lasthr = "";
+            $total = 0;
+            $quantity = 0;
+            while($row = @mysqli_fetch_assoc($query))
+            {
+                $hr=substr($row['dateTime'],11,2);
+                if($rowCount != 0)
+                {
+                    if($lasthr != $hr)
+                    {
+                        $object = (object) [
+                            'dateTime' => substr($row['dateTime'],0,11).$lasthr.":00:00",
+                            'data' => $total/$quantity,
+                            'arduino#' => $row['arduino#'],
+                        ];
+                        $data_array[] = $object;//push $object into $data_array
+                        $lasthr = $hr;//
+                        $total = $row['data'];
+                        $quantity = 1;
+                    }
+                    else if($rowCount == $rowNum-1)
+                    {
+                        $object = (object) [
+                            'dateTime' => substr($row['dateTime'],0,11).$lasthr.":00:00",
+                            'data' => $total/$quantity,
+                            'arduino#' => $row['arduino#'],
+                        ];
+                        $data_array[] = $object;//push $object into $data_array
+                    }
+                    else
+                    {
+                        $total+=$row['data'];
+                        $quantity+=1;
+                    }
+                }
+                else
+                {
+                    $lasthr = $hr;
+                    $total+=$row['data'];
+                    $quantity+=1;
+                }
+                $rowCount++;
+            }
+        } 
+        else if($result<8640)//大於等於一個月，小於一年
+        {
+            $lastday = "";
+            $total = 0;
+            $quantity = 0;
+            while($row = @mysqli_fetch_assoc($query))
+            {
+                $day=substr($row['dateTime'],8,2);
+                if($rowCount != 0)
+                {
+                    if($lastday != $day)
+                    {
+                        $object = (object) [
+                            'dateTime' => substr($row['dateTime'],0,8).$lastday." 00:00:00",
+                            'data' => $total/$quantity,
+                            'arduino#' => $row['arduino#'],
+                        ];
+                        $data_array[] = $object;//push $object into $data_array
+                        $lastday = $day;
+                        $total = $row['data'];
+                        $quantity = 1;
+                    }
+                    else if($rowCount == $rowNum-1)
+                    {
+                        $object = (object) [
+                            'dateTime' => substr($row['dateTime'],0,8).$lastday." 00:00:00",
+                            'data' => $total/$quantity,
+                            'arduino#' => $row['arduino#'],
+                        ];
+                        $data_array[] = $object;//push $object into $data_array
+                    }
+                    else
+                    {
+                        $total+=$row['data'];
+                        $quantity+=1;
+                    }
+                }
+                else
+                {
+                    $lastday = $day;
+                    $total+=$row['data'];
+                    $quantity+=1;
+                }
+                $rowCount++;
+            }
+        }
+        else//一年以上
+        {
+            $lastmonth = "";
+            $total = 0;
+            $quantity = 0;
+            while($row = @mysqli_fetch_assoc($query))
+            {
+                $month=substr($row['dateTime'],5,2);
+                if($rowCount != 0)
+                {
+                    if($lastmonth != $month)
+                    {
+                        $object = (object) [
+                            'dateTime' => substr($row['dateTime'],0,5).$lastmonth."-01 00:00:00",
+                            'data' => $total/$quantity,
+                            'arduino#' => $row['arduino#'],
+                        ];
+                        $data_array[] = $object;//push $object into $data_array
+                        $lastmonth = $month;
+                        $total = $row['data'];
+                        $quantity = 1;
+                    }
+                    else if($rowCount == $rowNum-1)
+                    {
+                        $object = (object) [
+                            'dateTime' => substr($row['dateTime'],0,5).$lastmonth."-01 00:00:00",
+                            'data' => $total/$quantity,
+                            'arduino#' => $row['arduino#'],
+                        ];
+                        $data_array[] = $object;//push $object into $data_array
+                    }
+                    else
+                    {
+                        $total+=$row['data'];
+                        $quantity+=1;
+                    }
+                }
+                else
+                {
+                    $lastmonth = $month;
+                    $total+=$row['data'];
+                    $quantity+=1;
+                }
+                $rowCount++;
+            }
         }
     }
     else
@@ -149,7 +304,7 @@ function get_data($farm,$typeOfData,$start,$end)
         return false;
     }
 
-    $json_array = @array("arduino" => $arduino_array,"data" => $data_array);
+    $json_array = @array("arduino" => $arduino_array,"data" => $data_array,"temp" => $result);
     return @json_encode($json_array);
 }
 
